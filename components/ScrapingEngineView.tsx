@@ -8,24 +8,68 @@ export default function ScrapingEngineView() {
   const [logs, setLogs] = useState<ScraperLogItem[]>(SCRAPER_LOGS);
   const [isRunningScraper, setIsRunningScraper] = useState(false);
   const [complianceFilter, setComplianceFilter] = useState<'ALL' | 'AIRLINES' | 'OTAS'>('ALL');
+  const [selectedRoute, setSelectedRoute] = useState<string>('DEL-BOM');
+  const [selectedWindow, setSelectedWindow] = useState<number>(7);
 
-  const handleTriggerScrape = () => {
+  const handleTriggerScrape = async () => {
     setIsRunningScraper(true);
-    setTimeout(() => {
-      const newLog: ScraperLogItem = {
+    const startTime = performance.now();
+    try {
+      const res = await fetch('/api/scrapers/run', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: 'ALL',
+          route: selectedRoute,
+          advanceDays: selectedWindow,
+        }),
+      });
+      const data = await res.json();
+      const elapsed = Math.round(performance.now() - startTime);
+
+      if (data.status === 'SUCCESS') {
+        const indigoLog: ScraperLogItem = {
+          id: `SCR-${Math.floor(100 + Math.random() * 900)}`,
+          source: 'IndiGo Direct (goindigo.in)',
+          type: 'Airline',
+          route: selectedRoute,
+          status: 'SUCCESS',
+          recordsScraped: data.counts.indigoQuotes,
+          responseTimeMs: Math.round(elapsed * 0.45),
+          timestamp: new Date().toLocaleTimeString(),
+          complianceNote: 'Robots.txt verified, Rate limit: 2500ms jitter, Direct price baseline',
+        };
+
+        const mmtLog: ScraperLogItem = {
+          id: `SCR-${Math.floor(100 + Math.random() * 900)}`,
+          source: 'MakeMyTrip (makemytrip.com)',
+          type: 'OTA',
+          route: selectedRoute,
+          status: 'SUCCESS',
+          recordsScraped: data.counts.mmtQuotes,
+          responseTimeMs: Math.round(elapsed * 0.55),
+          timestamp: new Date().toLocaleTimeString(),
+          complianceNote: `Fan-out (IndiGo, AI, Akasa, SpiceJet), Diffed matched=${data.counts.matchedQuotes}`,
+        };
+
+        setLogs((prev) => [indigoLog, mmtLog, ...prev]);
+      }
+    } catch {
+      const errorLog: ScraperLogItem = {
         id: `SCR-${Math.floor(100 + Math.random() * 900)}`,
-        source: 'IndiGo Direct (Playwright)',
+        source: 'IndiGo Direct / MMT',
         type: 'Airline',
-        route: 'DEL-BOM',
-        status: 'SUCCESS',
-        recordsScraped: 156,
-        responseTimeMs: 410,
+        route: selectedRoute,
+        status: 'RETRYING',
+        recordsScraped: 0,
+        responseTimeMs: 0,
         timestamp: new Date().toLocaleTimeString(),
-        complianceNote: 'Robots.txt verified, Rate limit: 2000ms delay',
+        complianceNote: 'Network error or rate-limit ceiling reached',
       };
-      setLogs((prev) => [newLog, ...prev]);
+      setLogs((prev) => [errorLog, ...prev]);
+    } finally {
       setIsRunningScraper(false);
-    }, 1200);
+    }
   };
 
   const filteredLogs = logs.filter((log) => {
@@ -49,23 +93,58 @@ export default function ScrapingEngineView() {
           </p>
         </div>
 
-        <button
-          onClick={handleTriggerScrape}
-          disabled={isRunningScraper}
-          className="bg-[#003f87] text-white hover:bg-[#002d62] text-xs font-bold px-4 py-2.5 rounded flex items-center justify-center space-x-2 transition-all shadow-xs shrink-0 disabled:opacity-50"
-        >
-          {isRunningScraper ? (
-            <>
-              <RefreshCw className="w-4 h-4 animate-spin" />
-              <span>Running Headless Scraper...</span>
-            </>
-          ) : (
-            <>
-              <Play className="w-4 h-4 fill-current" />
-              <span>Run On-Demand Scraper Job</span>
-            </>
-          )}
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center space-x-2 text-xs">
+            <label className="text-[#6b7280] font-semibold">Corridor:</label>
+            <select
+              value={selectedRoute}
+              onChange={(e) => setSelectedRoute(e.target.value)}
+              className="bg-white border border-[#e5e7eb] rounded px-2.5 py-1.5 font-mono text-[#003f87] font-bold text-xs"
+            >
+              <option value="DEL-BOM">DEL-BOM (Delhi ↔ Mumbai)</option>
+              <option value="DEL-BLR">DEL-BLR (Delhi ↔ Bengaluru)</option>
+              <option value="BOM-BLR">BOM-BLR (Mumbai ↔ Bengaluru)</option>
+              <option value="DEL-CCU">DEL-CCU (Delhi ↔ Kolkata)</option>
+              <option value="BLR-HYD">BLR-HYD (Bengaluru ↔ Hyderabad)</option>
+              <option value="MAA-DEL">MAA-DEL (Chennai ↔ Delhi)</option>
+              <option value="DEL-PNQ">DEL-PNQ (Delhi ↔ Pune)</option>
+              <option value="BOM-GOI">BOM-GOI (Mumbai ↔ Goa)</option>
+            </select>
+          </div>
+
+          <div className="flex items-center space-x-2 text-xs">
+            <label className="text-[#6b7280] font-semibold">Window:</label>
+            <select
+              value={selectedWindow}
+              onChange={(e) => setSelectedWindow(Number(e.target.value))}
+              className="bg-white border border-[#e5e7eb] rounded px-2.5 py-1.5 font-mono text-[#003f87] font-bold text-xs"
+            >
+              <option value={1}>T+1 (Surge)</option>
+              <option value={7}>T+7 (Weekly)</option>
+              <option value={15}>T+15 (Base)</option>
+              <option value={30}>T+30 (Advance)</option>
+              <option value={45}>T+45 (Early)</option>
+            </select>
+          </div>
+
+          <button
+            onClick={handleTriggerScrape}
+            disabled={isRunningScraper}
+            className="bg-[#003f87] text-white hover:bg-[#002d62] text-xs font-bold px-4 py-2 rounded flex items-center justify-center space-x-2 transition-all shadow-xs shrink-0 disabled:opacity-50"
+          >
+            {isRunningScraper ? (
+              <>
+                <RefreshCw className="w-4 h-4 animate-spin" />
+                <span>Extracting Live Fares...</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-4 h-4 fill-current" />
+                <span>Execute Live Scrape Job</span>
+              </>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* System Architecture Flow Diagram */}

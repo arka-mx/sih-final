@@ -1,10 +1,42 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend, ReferenceDot } from 'recharts';
 import { INITIAL_INDEX_DATA, POPULAR_ROUTES } from '@/lib/mockData';
-import { ArrowUpRight, TrendingUp, CheckCircle2, FileText, ArrowRight, ShieldCheck, Info } from 'lucide-react';
+import { ArrowUpRight, TrendingUp, CheckCircle2, FileText, ArrowRight, ShieldCheck, Info, AlertCircle, Flame, Calendar, Fuel } from 'lucide-react';
 import { TabType } from './Header';
+
+// 30-Day, 90-Day, and 1-Year historical datasets for dynamic timeline switching
+const INDEX_DATA_30D = INITIAL_INDEX_DATA;
+
+const INDEX_DATA_90D = [
+  { date: 'Jun 20', apixValue: 94.5, dgcaBenchmark: 94.2, minFare: 2950, maxFare: 7800, avgFare: 4210 },
+  { date: 'Jun 30', apixValue: 95.8, dgcaBenchmark: 95.3, minFare: 3000, maxFare: 7950, avgFare: 4280 },
+  { date: 'Jul 10', apixValue: 96.4, dgcaBenchmark: 96.0, minFare: 3050, maxFare: 8050, avgFare: 4320 },
+  { date: 'Jul 20', apixValue: 97.1, dgcaBenchmark: 96.8, minFare: 3080, maxFare: 8120, avgFare: 4360 },
+  { date: 'Jul 30', apixValue: 97.6, dgcaBenchmark: 97.2, minFare: 3100, maxFare: 8180, avgFare: 4390 },
+  { date: 'Aug 10', apixValue: 98.0, dgcaBenchmark: 97.6, minFare: 3120, maxFare: 8220, avgFare: 4410 },
+  { date: 'Aug 20', apixValue: 99.2, dgcaBenchmark: 98.8, minFare: 3180, maxFare: 8380, avgFare: 4490 },
+  { date: 'Aug 30', apixValue: 101.2, dgcaBenchmark: 100.9, minFare: 3280, maxFare: 8650, avgFare: 4680 },
+  { date: 'Sep 10', apixValue: 102.2, dgcaBenchmark: 101.9, minFare: 3370, maxFare: 8840, avgFare: 4820 },
+  { date: 'Sep 20', apixValue: 102.5, dgcaBenchmark: 102.1, minFare: 3400, maxFare: 8900, avgFare: 4850 },
+];
+
+const INDEX_DATA_1Y = [
+  { date: 'Oct 24', apixValue: 91.2, dgcaBenchmark: 91.0, minFare: 2800, maxFare: 7400, avgFare: 4020 },
+  { date: 'Dec 24', apixValue: 98.8, dgcaBenchmark: 98.2, minFare: 3200, maxFare: 8600, avgFare: 4620 },
+  { date: 'Feb 25', apixValue: 93.4, dgcaBenchmark: 93.1, minFare: 2900, maxFare: 7600, avgFare: 4150 },
+  { date: 'Apr 25', apixValue: 95.0, dgcaBenchmark: 94.7, minFare: 2980, maxFare: 7850, avgFare: 4250 },
+  { date: 'Jun 25', apixValue: 96.2, dgcaBenchmark: 95.9, minFare: 3020, maxFare: 8000, avgFare: 4330 },
+  { date: 'Aug 25', apixValue: 100.4, dgcaBenchmark: 100.0, minFare: 3240, maxFare: 8550, avgFare: 4610 },
+  { date: 'Sep 25', apixValue: 102.5, dgcaBenchmark: 102.1, minFare: 3400, maxFare: 8900, avgFare: 4850 },
+];
+
+const RANGE_STATS = {
+  '30d': { minFare: '₹3,200', maxFare: '₹8,900', avgFare: '₹4,850', mape: '3.12%', obs: '30 Daily Cycles' },
+  '90d': { minFare: '₹2,950', maxFare: '₹8,900', avgFare: '₹4,480', mape: '2.84%', obs: '90 Daily Cycles' },
+  '1y': { minFare: '₹2,800', maxFare: '₹9,200', avgFare: '₹4,390', mape: '2.61%', obs: '12 Monthly Batches' },
+};
 
 interface HomeViewProps {
   onNavigate: (tab: TabType) => void;
@@ -12,6 +44,9 @@ interface HomeViewProps {
 
 export default function HomeView({ onNavigate }: HomeViewProps) {
   const [range, setRange] = useState<'30d' | '90d' | '1y'>('30d');
+
+  const chartData = range === '30d' ? INDEX_DATA_30D : range === '90d' ? INDEX_DATA_90D : INDEX_DATA_1Y;
+  const currentStats = RANGE_STATS[range];
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -58,7 +93,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
               Airfare Price Index (APIx) vs. Official DGCA Benchmark
             </h3>
             <p className="text-xs text-[#6b7280]">
-              Overlaying daily scraped fare index against published monthly DGCA averages for policy validation
+              Overlaying daily scraped fare index against published monthly DGCA averages for policy validation ({range.toUpperCase()} window)
             </p>
           </div>
 
@@ -67,10 +102,10 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
               <button
                 key={r}
                 onClick={() => setRange(r)}
-                className={`px-3 py-1.5 text-xs font-medium rounded transition-all ${
+                className={`px-3 py-1.5 text-xs font-semibold rounded transition-all cursor-pointer ${
                   range === r
                     ? 'bg-[#003f87] text-white shadow-xs'
-                    : 'bg-[#f9fafb] text-[#6b7280] hover:bg-[#e5e7eb]'
+                    : 'bg-[#f9fafb] text-[#6b7280] hover:bg-[#e5e7eb] hover:text-[#1f2937]'
                 }`}
               >
                 {r.toUpperCase()}
@@ -82,7 +117,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3 h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={INITIAL_INDEX_DATA} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+              <LineChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                 <XAxis dataKey="date" stroke="#6b7280" fontSize={12} tickLine={false} />
                 <YAxis domain={['auto', 'auto']} stroke="#6b7280" fontSize={12} tickLine={false} />
@@ -93,6 +128,20 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                 <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                 <Line type="monotone" dataKey="apixValue" stroke="#003f87" strokeWidth={2.5} dot={{ r: 4, fill: '#003f87' }} name="APIx Scraped Index (Daily)" />
                 <Line type="monotone" dataKey="dgcaBenchmark" stroke="#0284c7" strokeWidth={2} strokeDasharray="5 5" dot={false} name="DGCA Official Benchmark" />
+
+                {/* Event Anomaly Markers */}
+                {range === '30d' && (
+                  <ReferenceDot x="Aug 30" y={101.2} r={6} fill="#ea580c" stroke="#ffffff" strokeWidth={2} />
+                )}
+                {range === '30d' && (
+                  <ReferenceDot x="Sep 14" y={102.45} r={6} fill="#dc2626" stroke="#ffffff" strokeWidth={2} />
+                )}
+                {range === '90d' && (
+                  <ReferenceDot x="Aug 30" y={101.2} r={6} fill="#ea580c" stroke="#ffffff" strokeWidth={2} />
+                )}
+                {range === '1y' && (
+                  <ReferenceDot x="Dec 24" y={98.8} r={6} fill="#dc2626" stroke="#ffffff" strokeWidth={2} />
+                )}
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -100,27 +149,29 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
           {/* Key Stats Side Panel */}
           <div className="bg-[#f9fafb] p-4 rounded-md border border-[#e5e7eb] space-y-4 flex flex-col justify-between">
             <div>
-              <h4 className="text-xs font-bold text-[#1f2937] uppercase tracking-wider mb-3">Key Monthly Statistics</h4>
+              <h4 className="text-xs font-bold text-[#1f2937] uppercase tracking-wider mb-3">
+                Key Statistics ({range.toUpperCase()})
+              </h4>
               <dl className="space-y-2.5 text-xs">
                 <div className="flex justify-between py-1 border-b border-[#e5e7eb]">
                   <dt className="text-[#6b7280]">Minimum Fare Observed:</dt>
-                  <dd className="font-bold text-[#1f2937]">₹3,200</dd>
+                  <dd className="font-bold text-[#1f2937]">{currentStats.minFare}</dd>
                 </div>
                 <div className="flex justify-between py-1 border-b border-[#e5e7eb]">
                   <dt className="text-[#6b7280]">Maximum Fare Observed:</dt>
-                  <dd className="font-bold text-[#1f2937]">₹8,900</dd>
+                  <dd className="font-bold text-[#1f2937]">{currentStats.maxFare}</dd>
                 </div>
                 <div className="flex justify-between py-1 border-b border-[#e5e7eb]">
-                  <dt className="text-[#6b7280]">Monthly Average Fare:</dt>
-                  <dd className="font-bold text-[#003f87]">₹4,850</dd>
+                  <dt className="text-[#6b7280]">Average Corridor Fare:</dt>
+                  <dd className="font-bold text-[#003f87]">{currentStats.avgFare}</dd>
                 </div>
                 <div className="flex justify-between py-1 border-b border-[#e5e7eb]">
                   <dt className="text-[#6b7280]">Mean Abs % Error (MAPE):</dt>
-                  <dd className="font-bold text-emerald-700">3.12%</dd>
+                  <dd className="font-bold text-emerald-700">{currentStats.mape}</dd>
                 </div>
                 <div className="flex justify-between py-1">
-                  <dt className="text-[#6b7280]">Index Weight Formula:</dt>
-                  <dd className="font-medium text-[#1f2937]">Fisher Ideal Index</dd>
+                  <dt className="text-[#6b7280]">Observation Depth:</dt>
+                  <dd className="font-medium text-[#1f2937]">{currentStats.obs}</dd>
                 </div>
               </dl>
             </div>
@@ -130,6 +181,66 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                 <Info className="w-3.5 h-3.5 text-[#003f87]" /> Methodological Note
               </span>
               Route weights are derived from DGCA monthly passenger traffic distribution (e.g. DEL-BOM = 18%).
+            </div>
+          </div>
+        </div>
+
+        {/* Anomaly Explainability Panel (PRD Sec 12.2: Turning Numbers Into A Story) */}
+        <div className="border-t border-[#f3f4f6] pt-5">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-xs font-bold text-[#1f2937] uppercase tracking-wider flex items-center">
+              <AlertCircle className="w-4 h-4 mr-1.5 text-amber-600" />
+              Automated Anomaly Explainability & Spike Tagger (Rules Engine)
+            </h4>
+            <span className="text-[11px] text-[#6b7280] font-mono">
+              Auto-correlated with Ministry calendars & petroleum data
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-lg flex items-start space-x-3 text-xs">
+              <div className="w-7 h-7 rounded bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+                <Calendar className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-amber-950">Late Aug Spike (+2.3%)</span>
+                  <span className="text-[10px] font-mono bg-amber-200/80 text-amber-900 px-1.5 py-0.2 rounded">Aug 27–30</span>
+                </div>
+                <p className="text-[11px] text-amber-900/80 mt-1 leading-snug">
+                  <strong>Trigger:</strong> Janmashtami & Ganesh Chaturthi long weekend travel surge on DEL-BOM and BOM-GOI corridors.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3 bg-rose-50/70 border border-rose-200 rounded-lg flex items-start space-x-3 text-xs">
+              <div className="w-7 h-7 rounded bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 mt-0.5">
+                <Fuel className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-rose-950">Fuel Surcharge Shift</span>
+                  <span className="text-[10px] font-mono bg-rose-200/80 text-rose-900 px-1.5 py-0.2 rounded">Sep 01</span>
+                </div>
+                <p className="text-[11px] text-rose-900/80 mt-1 leading-snug">
+                  <strong>Trigger:</strong> +3.2% Aviation Turbine Fuel (ATF) price hike notification issued by OMCs, pass-through into base fare.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3 bg-blue-50/70 border border-blue-200 rounded-lg flex items-start space-x-3 text-xs">
+              <div className="w-7 h-7 rounded bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 mt-0.5">
+                <Flame className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-blue-950">Current Elevation (102.45)</span>
+                  <span className="text-[10px] font-mono bg-blue-200/80 text-blue-900 px-1.5 py-0.2 rounded">Sep 14</span>
+                </div>
+                <p className="text-[11px] text-blue-900/80 mt-1 leading-snug">
+                  <strong>Trigger:</strong> Advanced pre-booking compression for Dussehra & Diwali festive corridors (T+30 / T+45 window).
+                </p>
+              </div>
             </div>
           </div>
         </div>

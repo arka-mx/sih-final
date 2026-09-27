@@ -23,6 +23,20 @@ interface EndpointConfig {
 
 const AVAILABLE_ENDPOINTS: EndpointConfig[] = [
   {
+    path: '/api/scrapers/run',
+    method: 'POST',
+    desc: 'Trigger live extraction job across IndiGo Direct & MakeMyTrip with matched flight diffing',
+    authRequired: false,
+    category: 'Operations',
+  },
+  {
+    path: '/api/sources/compare?route=DEL-BOM&advance_days=7',
+    method: 'GET',
+    desc: 'Cross-source fee decomposition diffing identical IndiGo flight vs MakeMyTrip listing',
+    authRequired: false,
+    category: 'Microdata',
+  },
+  {
     path: '/api/public/summary',
     method: 'GET',
     desc: 'Public read-only summary (headline indices, top routes, 30 req/min)',

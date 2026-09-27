@@ -13,6 +13,7 @@ from app.routers import (
     public,
     metadata,
     health,
+    sources,
 )
 
 
@@ -21,7 +22,6 @@ async def lifespan(app: FastAPI):
     # Startup: initialize database tables and seed baseline data
     await init_db()
     yield
-    # Shutdown logic if needed
 
 
 app = FastAPI(
@@ -34,14 +34,6 @@ app = FastAPI(
 This API layer provides automated, statistically sound airfare price index metrics to augment 
 the **Transport and Communication** sub-group of the Consumer Price Index (CPI) for MoSPI/NSO 
 and the Reserve Bank of India (RBI) Monetary Policy Department.
-
-#### Key Capabilities:
-- **Daily Raw Index**: High-frequency Laspeyres & Fisher Ideal formulations with $T+1 \dots T+45$ lead-time elasticity.
-- **Weekly Rolling Average**: Noise-filtered 7-day aggregates.
-- **Monthly Index**: Official release cycle aligned index with MoM and YoY rates and CPI sub-group weights.
-- **Route Microdata**: Detailed fare components (base fare, taxes/UDF, convenience fee) with cryptographic audit hashes.
-- **DGCA Backtesting**: Statistical validation vs DGCA monthly benchmarks with Pearson $r$, MAPE, and RMSE.
-- **Public Open-Data Summary**: Rate-limited open government data endpoint for transparency.
 """,
     version="1.0.0",
     docs_url="/docs",
@@ -88,6 +80,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 app.include_router(public.router)
 app.include_router(index.router)
 app.include_router(routes.router)
+app.include_router(sources.router)
 app.include_router(backtest.router)
 app.include_router(metadata.router)
 app.include_router(health.router)
@@ -104,7 +97,6 @@ def custom_openapi():
         routes=app.routes,
     )
 
-    # Add security schemes for Swagger UI
     openapi_schema["components"]["securitySchemes"] = {
         "ApiKeyAuth": {
             "type": "apiKey",
@@ -119,8 +111,7 @@ def custom_openapi():
         },
     }
 
-    # Apply security requirement to all endpoints except public ones
-    public_paths = ["/api/public/summary", "/api/health", "/docs", "/redoc", "/openapi.json"]
+    public_paths = ["/api/public/summary", "/api/health", "/docs", "/redoc", "/openapi.json", "/api/sources/compare"]
     for path, path_item in openapi_schema.get("paths", {}).items():
         if path not in public_paths:
             for method in path_item:
