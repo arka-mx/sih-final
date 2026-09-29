@@ -1,3 +1,7 @@
+// Static sample data used ONLY when NEXT_PUBLIC_DEMO_MODE=true (see lib/demoMode.ts).
+// Components fetch live data from the FastAPI backend (via app/api/* proxy routes) by
+// default; this file must never silently power the default UI.
+
 export interface AirfareRecord {
   id: string;
   date: string;
@@ -66,6 +70,64 @@ export const AIRLINE_COMPARISON = [
   { name: 'Air India Express', avgPrice: 4050, marketShare: '6%', reliability: '97.9%', color: '#0284c7' },
 ];
 
+export interface DarkPatternFlagItem {
+  scrapeId: string;
+  sourcePlatform: string;
+  routePair: string;
+  carrier: string;
+  flightNo: string;
+  departureDate: string;
+  advanceDays: number;
+  patternType: string;
+  severity: 'HIGH' | 'MEDIUM' | 'LOW';
+  message: string;
+  evidence: Record<string, unknown>;
+}
+
+export const MOCK_DARK_PATTERN_FLAGS: DarkPatternFlagItem[] = [
+  {
+    scrapeId: 'MMT_a1b2c3d4',
+    sourcePlatform: 'simulated_makemytrip',
+    routePair: 'DEL-BOM',
+    carrier: 'Air India',
+    flightNo: 'AI-805',
+    departureDate: '2026-10-06',
+    advanceDays: 7,
+    patternType: 'SCARCITY_COPY_MISMATCH',
+    severity: 'HIGH',
+    message:
+      'Listing copy "Hurry! Only 3 seats left at this price." implies scarcity but seat_availability_flag="AVAILABLE" reports normal availability.',
+    evidence: { listing_copy: 'Hurry! Only 3 seats left at this price.', matched_phrase: 'Only 3 seats left', seat_availability_flag: 'AVAILABLE' },
+  },
+  {
+    scrapeId: 'MMT_a1b2c3d4',
+    sourcePlatform: 'simulated_makemytrip',
+    routePair: 'DEL-BOM',
+    carrier: 'SpiceJet',
+    flightNo: 'SG-153',
+    departureDate: '2026-10-06',
+    advanceDays: 7,
+    patternType: 'SCARCITY_MESSAGING',
+    severity: 'MEDIUM',
+    message: 'Listing copy "Selling fast — high demand on this route." uses scarcity/urgency framing.',
+    evidence: { listing_copy: 'Selling fast — high demand on this route.', matched_phrase: 'Selling fast', seat_availability_flag: 'FEW_SEATS_LEFT' },
+  },
+  {
+    scrapeId: 'MMT_a1b2c3d4',
+    sourcePlatform: 'simulated_makemytrip',
+    routePair: 'DEL-BOM',
+    carrier: 'Akasa Air',
+    flightNo: 'QP-1102',
+    departureDate: '2026-10-06',
+    advanceDays: 7,
+    patternType: 'REPEAT_VIEW_PRICE_ESCALATION',
+    severity: 'MEDIUM',
+    message:
+      'Fare shown for this listing rose 4.17% (₹4325.0 → ₹4507.0) across 3 simulated repeat views of the same session, consistent with fare-cookie/price-tracking markup.',
+    evidence: { repeat_view_fare_history: [4325.0, 4463.0, 4507.0], pct_change: 4.17 },
+  },
+];
+
 export const ELASTICITY_DATA = [
   { window: 'T+1', avgFare: 8100, label: '1 Day (Last Minute)' },
   { window: 'T+7', avgFare: 5400, label: '7 Days Advance' },
@@ -94,6 +156,66 @@ export const MOCK_RAW_FARES: AirfareRecord[] = [
   { id: 'F108', date: '2026-09-13', route: 'BLR-HYD', origin: 'BLR', destination: 'HYD', airline: 'IndiGo', bookingWindow: 'T+45', baseFare: 1800, tax: 400, totalFare: 2200, scrapedAt: '09:30:15 AM', source: 'IndiGo Direct' },
   { id: 'F109', date: '2026-09-13', route: 'MAA-DEL', origin: 'MAA', destination: 'DEL', airline: 'Air India', bookingWindow: 'T+1', baseFare: 7400, tax: 1000, totalFare: 8400, scrapedAt: '09:30:20 AM', source: 'Ixigo' },
   { id: 'F110', date: '2026-09-13', route: 'DEL-BOM', origin: 'DEL', destination: 'BOM', airline: 'Akasa Air', bookingWindow: 'T+1', baseFare: 7100, tax: 950, totalFare: 8050, scrapedAt: '09:30:25 AM', source: 'EaseMyTrip' },
+];
+
+export interface CleanedFareItem {
+  id: string;
+  pair: string;
+  origin: string;
+  destination: string;
+  carrier: string;
+  flight_no: string;
+  departure_date: string;
+  scrape_date: string;
+  advance_days: number;
+  fare_class: string;
+  base_fare: number;
+  taxes_udf: number;
+  convenience_fee: number;
+  total_fare: number;
+  seat_avail: boolean;
+  seat_availability_flag: 'AVAILABLE' | 'FEW_SEATS_LEFT' | 'SOLD_OUT' | 'CANCELLED';
+  source: string;
+  audit_hash: string;
+  imputation_applied: boolean;
+  imputed_fields: string[];
+  is_outlier: boolean;
+  outlier_reason: string | null;
+  is_duplicate: boolean;
+  include_in_cpi_index: boolean;
+  z_score: number;
+}
+
+export interface PipelineAuditSummary {
+  total_raw_ingested: number;
+  valid_cleaned_records: number;
+  duplicates_merged: number;
+  outliers_flagged: number;
+  imputed_records_count: number;
+  sold_out_excluded: number;
+  cpi_eligible_records: number;
+  data_quality_score_percent: number;
+}
+
+export const MOCK_PIPELINE_AUDIT: PipelineAuditSummary = {
+  total_raw_ingested: 8,
+  valid_cleaned_records: 7,
+  duplicates_merged: 1,
+  outliers_flagged: 1,
+  imputed_records_count: 1,
+  sold_out_excluded: 1,
+  cpi_eligible_records: 5,
+  data_quality_score_percent: 62.5,
+};
+
+export const MOCK_CLEANED_FARES: CleanedFareItem[] = [
+  { id: 'F_INDIGO_DEL_BOM_6E_205_7', pair: 'DEL-BOM', origin: 'DEL', destination: 'BOM', carrier: 'IndiGo', flight_no: '6E-205', departure_date: '2026-09-21', scrape_date: '2026-09-14', advance_days: 7, fare_class: 'Economy', base_fare: 3450, taxes_udf: 850, convenience_fee: 0, total_fare: 4300, seat_avail: true, seat_availability_flag: 'AVAILABLE', source: 'indigo_direct', audit_hash: 'sha256:0a1b2c3d4e5f60718293a4b5c6d7e8f9', imputation_applied: false, imputed_fields: [], is_outlier: false, outlier_reason: null, is_duplicate: false, include_in_cpi_index: true, z_score: -0.12 },
+  { id: 'F_MMT_DEL_BOM_6E_205_7', pair: 'DEL-BOM', origin: 'DEL', destination: 'BOM', carrier: 'IndiGo', flight_no: '6E-205', departure_date: '2026-09-21', scrape_date: '2026-09-14', advance_days: 7, fare_class: 'Economy', base_fare: 3450, taxes_udf: 850, convenience_fee: 399, total_fare: 4699, seat_avail: true, seat_availability_flag: 'AVAILABLE', source: 'makemytrip', audit_hash: 'sha256:1b2c3d4e5f60718293a4b5c6d7e8f9a0', imputation_applied: false, imputed_fields: [], is_outlier: false, outlier_reason: null, is_duplicate: false, include_in_cpi_index: true, z_score: 0.31 },
+  { id: 'F_MMT_DEL_BOM_AI_805_7', pair: 'DEL-BOM', origin: 'DEL', destination: 'BOM', carrier: 'Air India', flight_no: 'AI-805', departure_date: '2026-09-21', scrape_date: '2026-09-14', advance_days: 7, fare_class: 'Economy', base_fare: 22230, taxes_udf: 6270, convenience_fee: 399, total_fare: 28899, seat_avail: true, seat_availability_flag: 'FEW_SEATS_LEFT', source: 'makemytrip', audit_hash: 'sha256:2c3d4e5f60718293a4b5c6d7e8f9a0b1', imputation_applied: false, imputed_fields: [], is_outlier: true, outlier_reason: 'IQR_HIGH_OUTLIER (₹28899 > upper bound ₹9800)', is_duplicate: false, include_in_cpi_index: false, z_score: 2.91 },
+  { id: 'F_MMT_DEL_BOM_SG_8182_7', pair: 'DEL-BOM', origin: 'DEL', destination: 'BOM', carrier: 'SpiceJet', flight_no: 'SG-8182', departure_date: '2026-09-21', scrape_date: '2026-09-14', advance_days: 7, fare_class: 'Economy', base_fare: 3042, taxes_udf: 858, convenience_fee: 0, total_fare: 3900, seat_avail: true, seat_availability_flag: 'AVAILABLE', source: 'makemytrip', audit_hash: 'sha256:3d4e5f60718293a4b5c6d7e8f9a0b1c2', imputation_applied: true, imputed_fields: ['base_fare', 'taxes_udf'], is_outlier: false, outlier_reason: null, is_duplicate: false, include_in_cpi_index: true, z_score: -0.44 },
+  { id: 'F_INDIGO_DEL_BOM_6E_205_7_DUP', pair: 'DEL-BOM', origin: 'DEL', destination: 'BOM', carrier: 'IndiGo', flight_no: '6E-205', departure_date: '2026-09-21', scrape_date: '2026-09-14', advance_days: 7, fare_class: 'Economy', base_fare: 3450, taxes_udf: 850, convenience_fee: 0, total_fare: 4300, seat_avail: true, seat_availability_flag: 'AVAILABLE', source: 'indigo_direct', audit_hash: 'sha256:4e5f60718293a4b5c6d7e8f9a0b1c2d3', imputation_applied: false, imputed_fields: [], is_outlier: false, outlier_reason: null, is_duplicate: true, include_in_cpi_index: false, z_score: -0.12 },
+  { id: 'F_INDIGO_BLR_HYD_QP_1304_7', pair: 'BLR-HYD', origin: 'BLR', destination: 'HYD', carrier: 'Akasa Air', flight_no: 'QP-1304', departure_date: '2026-09-21', scrape_date: '2026-09-14', advance_days: 7, fare_class: 'Economy', base_fare: 2200, taxes_udf: 400, convenience_fee: 300, total_fare: 2900, seat_avail: false, seat_availability_flag: 'SOLD_OUT', source: 'makemytrip', audit_hash: 'sha256:5f60718293a4b5c6d7e8f9a0b1c2d3e4', imputation_applied: false, imputed_fields: [], is_outlier: false, outlier_reason: null, is_duplicate: false, include_in_cpi_index: false, z_score: 0.02 },
+  { id: 'F_INDIGO_BOM_BLR_IX_245_7', pair: 'BOM-BLR', origin: 'BOM', destination: 'BLR', carrier: 'Air India Express', flight_no: 'IX-245', departure_date: '2026-09-21', scrape_date: '2026-09-14', advance_days: 7, fare_class: 'Economy', base_fare: 2900, taxes_udf: 450, convenience_fee: 300, total_fare: 3650, seat_avail: true, seat_availability_flag: 'AVAILABLE', source: 'indigo_direct', audit_hash: 'sha256:60718293a4b5c6d7e8f9a0b1c2d3e4f5', imputation_applied: false, imputed_fields: [], is_outlier: false, outlier_reason: null, is_duplicate: false, include_in_cpi_index: true, z_score: -0.08 },
 ];
 
 export const SCRAPER_LOGS: ScraperLogItem[] = [

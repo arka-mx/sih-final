@@ -26,6 +26,9 @@ class CleanedFareRecord:
     source: str = "Direct Engine"
     audit_hash: str = ""
     raw_payload_ref: str = ""
+    data_mode: str = "simulated"
+    is_live_data: bool = False
+    simulation_disclaimer: str = "Deterministic fixture data for demonstration only; not a live fare or booking offer."
 
     # Pipeline metadata flags
     imputation_applied: bool = False

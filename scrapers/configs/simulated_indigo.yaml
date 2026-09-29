@@ -1,0 +1,94 @@
+# Config-driven scraper source definition.
+# Adding a new airline/OTA fixture source is: copy this file, change the
+# values, drop it in scrapers/configs/ -- no Python subclass required.
+# Schema is documented in scrapers/configs/README.md.
+
+source_key: simulated_indigo
+provider_label: "Simulated IndiGo direct channel"
+base_url: "https://www.simulated-indigo.local"
+channel_type: direct
+
+rate_limit:
+  min_delay: 0.0
+  max_delay: 0.0
+
+# Placeholder DOM/JSON selectors for when this source graduates from a
+# deterministic fixture to a live scraper; unused by the fixture engine today
+# but kept here so the config already carries the shape health_check.py's
+# SELECTOR_MISS classification is named after.
+selectors:
+  fare_container: ".flight-card"
+  price: ".fare-price"
+  flight_no: ".flight-number"
+
+# Flat convenience/booking fee applied to every listing unless a route entry
+# sets its own "fee". Direct-channel bookings carry no OTA markup.
+fee_model:
+  convenience_fee: 0.0
+
+# Advance-purchase-window fare multiplier curve.
+window_multiplier:
+  1: 1.85
+  7: 1.25
+  15: 1.0
+  30: 0.9
+  45: 0.88
+
+# No dark-pattern simulation on a direct-channel source.
+dark_patterns: {}
+
+routes:
+  DEL-BOM:
+    - {flight_no: "6E-205", carrier: IndiGo, dep: "06:00", arr: "08:15", base: 3450, tax: 850}
+    - {flight_no: "6E-503", carrier: IndiGo, dep: "09:30", arr: "11:45", base: 3800, tax: 890}
+    - {flight_no: "6E-2114", carrier: IndiGo, dep: "14:15", arr: "16:30", base: 3600, tax: 870}
+    - {flight_no: "6E-6814", carrier: IndiGo, dep: "19:45", arr: "22:00", base: 4200, tax: 920}
+  DEL-BLR:
+    - {flight_no: "6E-2131", carrier: IndiGo, dep: "07:10", arr: "10:00", base: 3100, tax: 800}
+    - {flight_no: "6E-5002", carrier: IndiGo, dep: "11:20", arr: "14:10", base: 3350, tax: 820}
+    - {flight_no: "6E-2423", carrier: IndiGo, dep: "17:50", arr: "20:40", base: 3750, tax: 860}
+  BOM-BLR:
+    - {flight_no: "6E-456", carrier: IndiGo, dep: "08:30", arr: "10:15", base: 2750, tax: 750}
+    - {flight_no: "6E-789", carrier: IndiGo, dep: "13:00", arr: "14:45", base: 2900, tax: 770}
+    - {flight_no: "6E-312", carrier: IndiGo, dep: "20:15", arr: "22:00", base: 3200, tax: 810}
+  DEL-CCU:
+    - {flight_no: "6E-201", carrier: IndiGo, dep: "06:15", arr: "08:30", base: 2450, tax: 710}
+    - {flight_no: "6E-253", carrier: IndiGo, dep: "12:40", arr: "14:55", base: 2600, tax: 730}
+    - {flight_no: "6E-621", carrier: IndiGo, dep: "18:25", arr: "20:45", base: 2950, tax: 780}
+  BLR-HYD:
+    - {flight_no: "6E-358", carrier: IndiGo, dep: "07:05", arr: "08:15", base: 1950, tax: 620}
+    - {flight_no: "6E-442", carrier: IndiGo, dep: "13:30", arr: "14:40", base: 2100, tax: 640}
+    - {flight_no: "6E-891", carrier: IndiGo, dep: "19:15", arr: "20:25", base: 2350, tax: 670}
+  MAA-DEL:
+    - {flight_no: "6E-2041", carrier: IndiGo, dep: "06:30", arr: "09:15", base: 3300, tax: 840}
+    - {flight_no: "6E-2207", carrier: IndiGo, dep: "14:50", arr: "17:40", base: 3550, tax: 870}
+    - {flight_no: "6E-2315", carrier: IndiGo, dep: "20:20", arr: "23:05", base: 3900, tax: 900}
+  DEL-PNQ:
+    - {flight_no: "6E-2125", carrier: IndiGo, dep: "05:45", arr: "07:55", base: 2850, tax: 760}
+    - {flight_no: "6E-6512", carrier: IndiGo, dep: "15:10", arr: "17:25", base: 3100, tax: 790}
+    - {flight_no: "6E-298", carrier: IndiGo, dep: "21:30", arr: "23:40", base: 3400, tax: 820}
+  BOM-GOI:
+    - {flight_no: "6E-512", carrier: IndiGo, dep: "08:00", arr: "09:10", base: 2200, tax: 650}
+    - {flight_no: "6E-6014", carrier: IndiGo, dep: "14:20", arr: "15:35", base: 2500, tax: 690}
+    - {flight_no: "6E-724", carrier: IndiGo, dep: "18:45", arr: "19:55", base: 2800, tax: 720}
+  DEL-HYD:
+    - {flight_no: "6E-733", carrier: IndiGo, dep: "06:20", arr: "08:40", base: 3600, tax: 880}
+    - {flight_no: "6E-2318", carrier: IndiGo, dep: "16:10", arr: "18:30", base: 3950, tax: 900}
+  CCU-BLR:
+    - {flight_no: "6E-891", carrier: IndiGo, dep: "07:45", arr: "10:35", base: 3800, tax: 870}
+    - {flight_no: "6E-1264", carrier: IndiGo, dep: "17:20", arr: "20:10", base: 4150, tax: 900}
+  DEL-PAT:
+    - {flight_no: "6E-2077", carrier: IndiGo, dep: "06:50", arr: "08:55", base: 3000, tax: 690}
+    - {flight_no: "6E-771", carrier: IndiGo, dep: "18:15", arr: "20:20", base: 3350, tax: 720}
+  DEL-GAU:
+    - {flight_no: "6E-6202", carrier: IndiGo, dep: "05:30", arr: "08:20", base: 4100, tax: 950}
+    - {flight_no: "6E-6314", carrier: IndiGo, dep: "15:45", arr: "18:35", base: 4450, tax: 980}
+  DEL-IXR:
+    - {flight_no: "6E-2205", carrier: IndiGo, dep: "07:15", arr: "09:20", base: 3100, tax: 720}
+    - {flight_no: "6E-935", carrier: IndiGo, dep: "19:05", arr: "21:10", base: 3400, tax: 750}
+  BOM-PAT:
+    - {flight_no: "6E-6501", carrier: IndiGo, dep: "06:40", arr: "09:00", base: 4200, tax: 900}
+    - {flight_no: "6E-6712", carrier: IndiGo, dep: "16:55", arr: "19:15", base: 4550, tax: 930}
+  CCU-GAU:
+    - {flight_no: "6E-6701", carrier: IndiGo, dep: "08:05", arr: "09:20", base: 2750, tax: 680}
+    - {flight_no: "6E-6822", carrier: IndiGo, dep: "17:40", arr: "18:55", base: 3000, tax: 700}

@@ -27,7 +27,7 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f9fafb] text-[#1f2937] font-sans antialiased">
+    <div className="min-h-screen flex flex-col bg-ink-50 text-ink-900 antialiased">
       {/* Header */}
       <Header
         activeTab={activeTab}
@@ -39,7 +39,7 @@ export default function Page() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-[1280px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-[1280px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {activeTab === 'home' && <HomeView onNavigate={setActiveTab} />}
         {activeTab === 'backtest' && <BacktestView />}
         {activeTab === 'routes' && <RouteExplorerView />}

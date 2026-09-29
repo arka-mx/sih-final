@@ -1,0 +1,19 @@
+{
+  "disclaimer": "Manually curated reference data for demonstration only. Fixed-date national holidays are confirmed. Movable lunar/Islamic festival dates are estimates derived from standard calendar conversion and MUST be verified against the Government of India gazetted holiday notification (Ministry of Home Affairs) or an official Panchang before any production statistical or compliance use.",
+  "source": "Fixed dates: Government of India gazetted holiday calendar. Movable dates: estimated Hindu/Islamic lunar calendar conversion, pending official confirmation.",
+  "events": [
+    { "date": "2026-01-14", "name": "Makar Sankranti / Pongal", "category": "festival", "impact_window_days": 2, "confidence": "estimated" },
+    { "date": "2026-01-26", "name": "Republic Day", "category": "long_weekend", "impact_window_days": 3, "confidence": "confirmed" },
+    { "date": "2026-03-04", "name": "Holi", "category": "festival", "impact_window_days": 2, "confidence": "estimated" },
+    { "date": "2026-04-03", "name": "Good Friday", "category": "long_weekend", "impact_window_days": 2, "confidence": "estimated" },
+    { "date": "2026-08-15", "name": "Independence Day", "category": "long_weekend", "impact_window_days": 3, "confidence": "confirmed" },
+    { "date": "2026-08-28", "name": "Raksha Bandhan", "category": "festival", "impact_window_days": 2, "confidence": "estimated" },
+    { "date": "2026-09-05", "name": "Janmashtami", "category": "festival", "impact_window_days": 3, "confidence": "estimated" },
+    { "date": "2026-09-14", "name": "Ganesh Chaturthi", "category": "festival", "impact_window_days": 4, "confidence": "estimated" },
+    { "date": "2026-10-02", "name": "Gandhi Jayanti", "category": "long_weekend", "impact_window_days": 2, "confidence": "confirmed" },
+    { "date": "2026-10-20", "name": "Dussehra / Vijayadashami", "category": "festival", "impact_window_days": 4, "confidence": "estimated" },
+    { "date": "2026-11-08", "name": "Diwali", "category": "festival", "impact_window_days": 5, "confidence": "estimated" },
+    { "date": "2026-11-24", "name": "Guru Nanak Jayanti", "category": "festival", "impact_window_days": 2, "confidence": "estimated" },
+    { "date": "2026-12-25", "name": "Christmas", "category": "long_weekend", "impact_window_days": 3, "confidence": "confirmed" }
+  ]
+}

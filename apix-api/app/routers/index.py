@@ -16,7 +16,46 @@ from app.schemas.index import (
 )
 from app.config import settings
 
+import sys
+from pathlib import Path as _Path
+
+_PROJECT_ROOT = _Path(__file__).resolve().parent.parent.parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+from index_math.chain_link import build_chained_series
+
 router = APIRouter(prefix="/api/index", tags=["Index Construction (Laspeyres/Fisher)"])
+
+
+async def _compute_chained_index_value(
+    db: AsyncSession, year: int, month: int, record: MonthlyIndex
+) -> float:
+    """
+    Real chain-linking: splices every MonthlyIndex row strictly before the
+    target period together with the target period's own record into one
+    continuous series (index_math/chain_link.build_chained_series), anchored
+    to the earliest known period's own index_value. This is what
+    "chained_laspeyres" actually means -- a continuous series built by
+    compounding period-over-period link relatives -- rather than returning a
+    single period's level in isolation.
+    """
+    history_query = (
+        select(MonthlyIndex)
+        .where(
+            (MonthlyIndex.year < year)
+            | ((MonthlyIndex.year == year) & (MonthlyIndex.month < month))
+        )
+        .order_by(MonthlyIndex.year.asc(), MonthlyIndex.month.asc())
+    )
+    history_result = await db.execute(history_query)
+    history = list(history_result.scalars().all())
+
+    all_periods = history + [record]
+    anchor_value = all_periods[0].index_value
+    mom_pct_changes = [0.0] + [period.mom_change_pct for period in all_periods[1:]]
+    chained_series = build_chained_series(anchor_value, mom_pct_changes)
+    return chained_series[-1]
 
 
 @router.get(
@@ -181,7 +220,7 @@ async def get_monthly_index(
         daily_query = select(
             func.avg(DailyIndex.fisher).label("avg_fisher"),
             func.avg(DailyIndex.laspeyres).label("avg_laspeyres"),
-            func.count(DailyIndex.id).label("count_records"),
+            func.count(DailyIndex.date).label("count_records"),
         ).where(and_(DailyIndex.date >= start_dt, DailyIndex.date <= end_dt))
 
         daily_res = await db.execute(daily_query)
@@ -244,13 +283,17 @@ async def get_monthly_index(
     routes = routes_result.scalars().all()
     weights_dict = {r.pair: round(r.dgca_weight, 3) for r in routes}
 
+    published_index = round(record.index_value, 2)
+    if formula == "chained_laspeyres":
+        published_index = round(await _compute_chained_index_value(db, year, month, record), 2)
+
     return MonthlyIndexResponse(
         status="success",
         year=year,
         month=month,
         formula=formula,
         base_period=settings.BASE_PERIOD,
-        index=round(record.index_value, 2),
+        index=published_index,
         mom_change_pct=round(record.mom_change_pct, 2),
         yoy_change_pct=round(record.yoy_change_pct, 2),
         contribution_to_cpi_transport=round(record.cpi_transport_contrib, 2),

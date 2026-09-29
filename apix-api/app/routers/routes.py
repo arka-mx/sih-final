@@ -1,12 +1,20 @@
+import sys
+from pathlib import Path as _Path
 from typing import Optional, List, Dict
 import statistics
 from fastapi import APIRouter, Depends, Query, Path, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, and_
+from sqlalchemy import select, and_, func
 from app.db import get_db
 from app.deps import require_nso_or_rbi
 from app.models import Fare, Route
 from app.schemas.fares import RouteFaresResponse, FareItem, RouteSummary
+
+_PROJECT_ROOT = _Path(__file__).resolve().parent.parent.parent.parent
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+from index_math.elasticity import find_optimal_window
 
 router = APIRouter(prefix="/api/routes", tags=["Route Fares & Microdata"])
 
@@ -128,3 +136,56 @@ async def get_route_fares(
         offset=offset,
         fares=fare_items,
     )
+
+
+@router.get(
+    "/{pair}/optimal-window",
+    summary="Optimal booking window (lead-time elasticity calculator)",
+    description=(
+        "Turns the route's lead-time elasticity curve into an explicit recommendation: "
+        "which advance-purchase window (T+1...T+45) has historically had the lowest "
+        "average fare, and how much booking then saves versus the most expensive "
+        "window. Requires NSO/RBI API key."
+    ),
+)
+async def get_optimal_booking_window(
+    pair: str = Path(..., description="Route city-pair code, e.g. DEL-BOM", examples=["DEL-BOM"]),
+    user=require_nso_or_rbi,
+    db: AsyncSession = Depends(get_db),
+):
+    pair_clean = pair.strip().upper()
+
+    query = (
+        select(Fare.advance_days, func.avg(Fare.total_fare))
+        .where(Fare.pair == pair_clean)
+        .group_by(Fare.advance_days)
+    )
+    result = await db.execute(query)
+    window_avg_fares: Dict[int, float] = {days: float(avg_fare) for days, avg_fare in result.all()}
+
+    if not window_avg_fares:
+        route_check = await db.execute(select(Route).where(Route.pair == pair_clean))
+        if route_check.scalar_one_or_none() is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail={
+                    "type": "https://errors.apix.mospi.gov.in/route-not-found",
+                    "title": "Route Pair Not Found",
+                    "status": 404,
+                    "detail": f"Route pair '{pair_clean}' is not part of the active DGCA monitored basket.",
+                    "instance": f"/api/routes/{pair_clean}/optimal-window",
+                },
+            )
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "type": "https://errors.apix.mospi.gov.in/no-fare-observations",
+                "title": "No fare observations for this route yet",
+                "status": 404,
+                "detail": f"'{pair_clean}' has no recorded fares across any advance-purchase window.",
+                "instance": f"/api/routes/{pair_clean}/optimal-window",
+            },
+        )
+
+    recommendation = find_optimal_window(window_avg_fares)
+    return {"status": "success", "pair": pair_clean, **recommendation}

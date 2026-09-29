@@ -1,6 +1,6 @@
 import math
 from typing import Optional, List
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.db import get_db
@@ -51,24 +51,28 @@ def calculate_rmse(actual: List[float], predicted: List[float]) -> float:
     "/dgca-comparison",
     response_model=BacktestResponse,
     summary="Statistical backtest against DGCA published average fare data",
-    description="Calculates Pearson Correlation Coefficient (r >= 0.8), MAPE (<= 3.5%), and RMSE over a 30 to 90-day historical window. Requires NSO/RBI API key.",
+    description="Calculates Pearson correlation, MAPE, and RMSE using an imported DGCA/MoSPI source dataset. Requires NSO/RBI API key.",
 )
 async def get_dgca_comparison(
-    days: int = Query(30, ge=7, le=90, description="Backtesting horizon in days (default: 30)"),
+    days: int = Query(30, ge=2, le=120, description="Backtesting observation horizon (default: 30)"),
     metric: Optional[str] = Query("all", description="Metric filter: correlation, mape, rmse, or all"),
     user=require_nso_or_rbi,
     db: AsyncSession = Depends(get_db),
 ):
-    query = select(BacktestRecord).order_by(BacktestRecord.date.asc()).limit(days)
+    query = select(BacktestRecord).order_by(BacktestRecord.date.desc()).limit(days)
     result = await db.execute(query)
-    records = result.scalars().all()
+    records = list(reversed(result.scalars().all()))
 
     if not records:
-        return BacktestResponse(
-            status="success",
-            period=BacktestPeriod(start="2026-08-16", end="2026-09-14", total_days=0),
-            metrics=BacktestMetrics(pearson_r=0.892, mape=3.12, rmse=142.5, target_met=True),
-            series=[],
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "type": "/errors/backtest-data-not-loaded",
+                "title": "DGCA backtest data unavailable",
+                "status": 404,
+                "detail": "Load an official DGCA/MoSPI CSV or XLSX with ingestion/dgca_loader.py before requesting a backtest.",
+                "instance": "/api/backtest/dgca-comparison",
+            },
         )
 
     indices = [r.apix_index for r in records]

@@ -4,10 +4,14 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends curl gcc && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+COPY apix-api/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY apix-api/app ./app
+COPY pipeline ./pipeline
+COPY scrapers ./scrapers
+COPY ingestion ./ingestion
+COPY index_math ./index_math
 
 EXPOSE 8000
 

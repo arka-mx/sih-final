@@ -52,6 +52,47 @@ jobs:
       - name: Run npm Audit
         run: npm audit --audit-level=high
 
+  python-tests:
+    name: Python Test Suite (pipeline, index math, scrapers, API)
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: apix_user
+          POSTGRES_PASSWORD: apix_secret
+          POSTGRES_DB: apix_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U apix_user -d apix_db"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql+asyncpg://apix_user:apix_secret@localhost:5432/apix_db
+      APIX_RAW_STORE_DIR: /tmp/apix_raw_store
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: "apix-api/requirements.txt"
+
+      - name: Install Dependencies
+        run: pip install -r apix-api/requirements.txt
+
+      - name: Run Root Pipeline / Index Math / Scraper Tests
+        run: pytest tests/ -v
+
+      - name: Run API Test Suite
+        working-directory: apix-api
+        run: pytest tests/ -v
+
   build:
     name: Build Verification
     runs-on: ubuntu-latest

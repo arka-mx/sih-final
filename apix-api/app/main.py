@@ -14,6 +14,9 @@ from app.routers import (
     metadata,
     health,
     sources,
+    pipeline,
+    anomalies,
+    dark_patterns,
 )
 
 
@@ -78,9 +81,12 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 # Include Routers
 app.include_router(public.router)
+app.include_router(anomalies.router)
+app.include_router(dark_patterns.router)
 app.include_router(index.router)
 app.include_router(routes.router)
 app.include_router(sources.router)
+app.include_router(pipeline.router)
 app.include_router(backtest.router)
 app.include_router(metadata.router)
 app.include_router(health.router)
@@ -111,7 +117,7 @@ def custom_openapi():
         },
     }
 
-    public_paths = ["/api/public/summary", "/api/health", "/docs", "/redoc", "/openapi.json", "/api/sources/compare"]
+    public_paths = ["/api/public/summary", "/api/public/anomalies", "/api/public/dark-patterns", "/api/health", "/docs", "/redoc", "/openapi.json", "/api/sources/compare", "/api/sources/health"]
     for path, path_item in openapi_schema.get("paths", {}).items():
         if path not in public_paths:
             for method in path_item:

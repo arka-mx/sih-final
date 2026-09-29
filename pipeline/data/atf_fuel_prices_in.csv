@@ -1,0 +1,13 @@
+# ATF (Aviation Turbine Fuel) price series for Delhi, INR per kilolitre.
+# MANUALLY CURATED reference data for demonstration purposes only.
+# Source: Indian Oil Corporation Ltd. (IOCL) revises and publishes ATF prices
+# on the 1st and 16th of every month (see "Petroleum Prices" at https://iocl.com).
+# These figures are illustrative and MUST be replaced with the actual published
+# circular values before this module is used for real statistical reporting.
+effective_date,atf_price_per_kl_inr,pct_change_mom
+2026-07-01,92500.00,-1.20
+2026-07-16,93800.00,1.41
+2026-08-01,95650.00,1.97
+2026-08-16,94900.00,-0.78
+2026-09-01,97200.00,2.42
+2026-09-16,96100.00,-1.13

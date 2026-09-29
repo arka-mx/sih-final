@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# stray local sqlite artifacts -- the real backend DB is Postgres (Supabase);
+# these were leftover from an earlier sqlite-based iteration and are never
+# read by the app
+*.db

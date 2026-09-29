@@ -205,18 +205,18 @@ export default function ApiHubView() {
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Header */}
-      <div className="bg-white p-6 rounded-lg border border-[#e5e7eb] shadow-xs space-y-3">
+      <div className="panel p-6 space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-xs font-bold text-[#003f87] uppercase tracking-wider">
-            <Code2 className="w-4 h-4 text-[#003f87]" />
-            <span>FastAPI REST Layer • PRD Section 6 Implementation</span>
+          <div className="flex items-center space-x-2 text-xs font-semibold text-navy-700 uppercase tracking-wider">
+            <Code2 className="w-4 h-4 text-navy-700" />
+            <span>FastAPI REST Layer</span>
           </div>
           <div className="flex items-center space-x-2">
             <a
               href={`${apiBaseUrl}/docs`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#003f87]/10 hover:bg-[#003f87]/20 text-[#003f87] text-xs font-semibold px-3 py-1.5 rounded flex items-center space-x-1.5 transition-colors"
+              className="bg-navy-50 hover:bg-navy-100 text-navy-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors cursor-pointer"
             >
               <span>Swagger UI (/docs)</span>
               <ExternalLink className="w-3 h-3" />
@@ -225,7 +225,7 @@ export default function ApiHubView() {
               href={`${apiBaseUrl}/redoc`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1.5 rounded flex items-center space-x-1.5 transition-colors"
+              className="bg-ink-50 hover:bg-ink-100 text-ink-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors cursor-pointer"
             >
               <span>ReDoc (/redoc)</span>
               <ExternalLink className="w-3 h-3" />
@@ -233,48 +233,48 @@ export default function ApiHubView() {
           </div>
         </div>
 
-        <h2 className="text-xl font-bold text-[#1f2937]">
+        <h2 className="text-xl font-semibold text-ink-900">
           MoSPI & RBI Real-Time Airfare Price Index API
         </h2>
-        <p className="text-xs text-[#6b7280]">
+        <p className="text-xs text-ink-500">
           High-frequency FastAPI endpoints designed for integration into MoSPI National
           Statistical Office (NSO) Consumer Price Index (CPI) and the Reserve Bank of India (RBI)
           Monetary Policy Department.
         </p>
 
         {/* API Base URL and Credentials Bar */}
-        <div className="pt-2 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-gray-100">
+        <div className="pt-2 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-ink-100">
           <div>
-            <label className="block text-[11px] font-semibold text-gray-600 mb-1">
+            <label className="block text-[11px] font-semibold text-ink-500 mb-1">
               FastAPI Service Base URL
             </label>
             <input
               type="text"
               value={apiBaseUrl}
               onChange={(e) => setApiBaseUrl(e.target.value)}
-              className="w-full text-xs font-mono px-3 py-1.5 rounded border border-gray-300 focus:outline-none focus:border-[#003f87]"
+              className="w-full text-xs font-mono px-3 py-1.5 rounded-lg border border-ink-200 focus:outline-none focus:border-navy-700"
               placeholder="http://localhost:8000"
             />
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold text-gray-600 mb-1 flex items-center space-x-1">
-              <Key className="w-3 h-3 text-[#003f87]" />
+            <label className="block text-[11px] font-semibold text-ink-500 mb-1 flex items-center space-x-1">
+              <Key className="w-3 h-3 text-navy-700" />
               <span>Authentication Persona (X-API-Key)</span>
             </label>
             {isDev ? (
               <div className="space-y-1.5">
-                <div className="text-[10px] text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded font-medium">
+                <div className="text-[10px] text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md font-medium">
                   DEMO MODE — Keys are local-only and rotate in production.
                 </div>
                 <div className="flex space-x-2">
                   <button
                     type="button"
                     onClick={() => setSelectedRole('none')}
-                    className={`text-xs px-2.5 py-1.5 rounded border font-medium ${
+                    className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors ${
                       selectedRole === 'none'
-                        ? 'bg-gray-800 text-white border-gray-800'
-                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border-gray-300'
+                        ? 'bg-ink-900 text-white border-ink-900'
+                        : 'bg-ink-50 text-ink-700 hover:bg-ink-100 border-ink-200'
                     }`}
                   >
                     Public (No Key)
@@ -282,10 +282,10 @@ export default function ApiHubView() {
                   <button
                     type="button"
                     onClick={() => setSelectedRole('nso')}
-                    className={`text-xs px-2.5 py-1.5 rounded border font-medium ${
+                    className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors ${
                       selectedRole === 'nso'
-                        ? 'bg-[#003f87] text-white border-[#003f87]'
-                        : 'bg-blue-50 text-blue-800 hover:bg-blue-100 border-blue-200'
+                        ? 'bg-navy-700 text-white border-navy-700'
+                        : 'bg-navy-50 text-navy-800 hover:bg-navy-100 border-navy-200'
                     }`}
                   >
                     NSO Team
@@ -293,7 +293,7 @@ export default function ApiHubView() {
                   <button
                     type="button"
                     onClick={() => setSelectedRole('rbi')}
-                    className={`text-xs px-2.5 py-1.5 rounded border font-medium ${
+                    className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors ${
                       selectedRole === 'rbi'
                         ? 'bg-emerald-700 text-white border-emerald-700'
                         : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border-emerald-200'
@@ -304,7 +304,7 @@ export default function ApiHubView() {
                   <button
                     type="button"
                     onClick={() => setSelectedRole('custom')}
-                    className={`text-xs px-2.5 py-1.5 rounded border font-medium ${
+                    className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors ${
                       selectedRole === 'custom'
                         ? 'bg-purple-700 text-white border-purple-700'
                         : 'bg-purple-50 text-purple-800 hover:bg-purple-100 border-purple-200'
@@ -315,7 +315,7 @@ export default function ApiHubView() {
                 </div>
               </div>
             ) : (
-              <div className="text-xs text-gray-500 bg-gray-50 border border-gray-200 px-3 py-2 rounded">
+              <div className="text-xs text-ink-500 bg-ink-50 border border-ink-100 px-3 py-2 rounded-lg">
                 Custom API key required for authorized access. Persona presets are disabled in production.
               </div>
             )}
@@ -329,7 +329,7 @@ export default function ApiHubView() {
               placeholder="Enter custom API Key"
               value={customKey}
               onChange={(e) => setCustomKey(e.target.value)}
-              className="w-full text-xs font-mono px-3 py-1.5 rounded border border-purple-300 focus:outline-none focus:border-purple-600"
+              className="w-full text-xs font-mono px-3 py-1.5 rounded-lg border border-purple-300 focus:outline-none focus:border-purple-600"
             />
           </div>
         )}
@@ -338,10 +338,10 @@ export default function ApiHubView() {
       {/* Endpoint List & Live Runner */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Endpoints List */}
-        <div className="bg-white p-6 rounded-lg border border-[#e5e7eb] shadow-xs space-y-4">
-          <div className="flex items-center justify-between border-b border-[#f3f4f6] pb-2">
-            <h3 className="text-sm font-bold text-[#1f2937]">REST Endpoints (PRD §6)</h3>
-            <span className="text-[10px] bg-gray-100 text-gray-600 font-semibold px-2 py-0.5 rounded">
+        <div className="panel p-6 space-y-4">
+          <div className="flex items-center justify-between border-b border-ink-100 pb-2">
+            <h3 className="text-sm font-semibold text-ink-900">REST Endpoints</h3>
+            <span className="text-[10px] bg-ink-100 text-ink-700 font-semibold px-2 py-0.5 rounded-md">
               {AVAILABLE_ENDPOINTS.length} Endpoints
             </span>
           </div>
@@ -357,33 +357,39 @@ export default function ApiHubView() {
                     setApiResponse(null);
                     setHttpStatus(null);
                   }}
-                  className={`p-3 rounded-md border cursor-pointer transition-all ${
+                  className={`p-3 rounded-lg border cursor-pointer transition-all ${
                     isSelected
-                      ? 'bg-[#e8f4f8] border-[#003f87] shadow-xs'
-                      : 'bg-[#f9fafb] border-[#e5e7eb] hover:bg-white'
+                      ? 'bg-navy-50 border-navy-700'
+                      : 'bg-ink-50 border-ink-100 hover:bg-white'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center space-x-1.5">
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">
+                      <span
+                        className={`text-[10px] font-mono font-semibold uppercase px-2 py-0.5 rounded-md border ${
+                          ep.method === 'GET'
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                            : 'bg-navy-50 text-navy-700 border-navy-200'
+                        }`}
+                      >
                         {ep.method}
                       </span>
-                      <span className="font-mono text-xs font-bold text-[#003f87]">
+                      <span className="font-mono text-xs font-semibold text-navy-700">
                         {ep.path.split('?')[0]}
                       </span>
                     </div>
                     {ep.authRequired ? (
-                      <span className="text-[9px] font-semibold px-1 py-0.5 rounded bg-amber-100 text-amber-800 flex items-center space-x-0.5">
+                      <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200 flex items-center space-x-0.5">
                         <ShieldCheck className="w-2.5 h-2.5" />
                         <span>Key Required</span>
                       </span>
                     ) : (
-                      <span className="text-[9px] font-semibold px-1 py-0.5 rounded bg-gray-100 text-gray-600">
+                      <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-md bg-ink-100 text-ink-700">
                         Public
                       </span>
                     )}
                   </div>
-                  <p className="text-[11px] text-[#6b7280] leading-snug">{ep.desc}</p>
+                  <p className="text-[11px] text-ink-500 leading-snug">{ep.desc}</p>
                 </div>
               );
             })}
@@ -391,12 +397,12 @@ export default function ApiHubView() {
         </div>
 
         {/* Live Runner & Response Box */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-[#e5e7eb] shadow-xs space-y-4 flex flex-col justify-between">
+        <div className="lg:col-span-2 panel p-6 space-y-4 flex flex-col justify-between">
           <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 border-b border-[#f3f4f6] pb-3">
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 border-b border-ink-100 pb-3">
               <div>
-                <span className="text-xs text-[#6b7280] block">Target Endpoint</span>
-                <span className="font-mono text-sm font-bold text-[#003f87]">
+                <span className="text-xs text-ink-500 block">Target Endpoint</span>
+                <span className="font-mono text-sm font-semibold text-navy-700">
                   {selectedEndpoint}
                 </span>
                 {currentEpConfig.authRequired && (
@@ -408,7 +414,7 @@ export default function ApiHubView() {
               <button
                 onClick={handleTestApi}
                 disabled={isLoading}
-                className="bg-[#003f87] text-white hover:bg-[#002d62] text-xs font-bold px-4 py-2 rounded flex items-center justify-center space-x-1.5 shadow-xs disabled:opacity-50 transition-colors"
+                className="bg-navy-700 text-white hover:bg-navy-800 text-xs font-semibold px-4 py-2 rounded-lg flex items-center justify-center space-x-1.5 disabled:opacity-50 transition-colors cursor-pointer"
               >
                 <Play className="w-3.5 h-3.5 fill-current" />
                 <span>{isLoading ? 'Executing Request...' : 'Send Live Request'}</span>
@@ -416,46 +422,46 @@ export default function ApiHubView() {
             </div>
 
             {/* Metrics & Header telemetry bar */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs bg-gray-50 p-2.5 rounded border border-gray-200">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs bg-ink-50 p-2.5 rounded-lg border border-ink-100">
               <div>
-                <span className="text-[10px] text-gray-500 block">HTTP Status</span>
+                <span className="text-[10px] text-ink-500 block">HTTP Status</span>
                 <span
-                  className={`font-mono font-bold ${
+                  className={`font-mono font-semibold font-tabular ${
                     httpStatus === 200
                       ? 'text-emerald-600'
                       : httpStatus && httpStatus >= 400
-                      ? 'text-red-600'
-                      : 'text-gray-600'
+                      ? 'text-rose-600'
+                      : 'text-ink-500'
                   }`}
                 >
                   {httpStatus ? `${httpStatus} ${httpStatus === 200 ? 'OK' : ''}` : '—'}
                 </span>
               </div>
               <div>
-                <span className="text-[10px] text-gray-500 block">Latency</span>
-                <span className="font-mono font-bold text-gray-700">
+                <span className="text-[10px] text-ink-500 block">Latency</span>
+                <span className="font-mono font-semibold font-tabular text-ink-700">
                   {responseTime !== null ? `${responseTime} ms` : '—'}
                 </span>
               </div>
               <div>
-                <span className="text-[10px] text-gray-500 block">Rate Limit Remaining</span>
-                <span className="font-mono font-bold text-[#003f87]">
+                <span className="text-[10px] text-ink-500 block">Rate Limit Remaining</span>
+                <span className="font-mono font-semibold font-tabular text-navy-700">
                   {rateLimitInfo.remaining !== null
                     ? `${rateLimitInfo.remaining} / ${rateLimitInfo.limit}`
                     : '—'}
                 </span>
               </div>
               <div>
-                <span className="text-[10px] text-gray-500 block">Rate Limiter Backend</span>
-                <span className="font-mono font-semibold text-gray-700">
+                <span className="text-[10px] text-ink-500 block">Rate Limiter Backend</span>
+                <span className="font-mono font-semibold text-ink-700">
                   {rateLimitInfo.backend || '—'}
                 </span>
               </div>
             </div>
 
             {/* Response Console */}
-            <div className="bg-[#1f2937] rounded-md p-4 font-mono text-xs text-emerald-400 space-y-2 relative min-h-[320px] max-h-[460px] overflow-auto">
-              <div className="flex justify-between items-center text-[11px] text-gray-400 border-b border-gray-700 pb-2">
+            <div className="bg-ink-950 text-ink-100 rounded-lg p-4 font-mono text-xs space-y-2 relative min-h-[320px] max-h-[460px] overflow-auto">
+              <div className="flex justify-between items-center text-[11px] text-ink-400 border-b border-ink-800 pb-2">
                 <span className="flex items-center">
                   <Terminal className="w-3.5 h-3.5 mr-1" />
                   {httpStatus
@@ -465,7 +471,7 @@ export default function ApiHubView() {
                 {apiResponse && (
                   <button
                     onClick={handleCopyCode}
-                    className="hover:text-white flex items-center space-x-1"
+                    className="hover:text-white flex items-center space-x-1 cursor-pointer"
                   >
                     {copied ? (
                       <Check className="w-3 h-3 text-emerald-400" />
@@ -477,7 +483,7 @@ export default function ApiHubView() {
                 )}
               </div>
 
-              <pre className="whitespace-pre-wrap text-[11px] leading-relaxed">
+              <pre className="whitespace-pre-wrap text-[11px] leading-relaxed text-ink-100">
                 {apiResponse ||
                   `// Select an endpoint and persona above, then click "Send Live Request"\n// Base URL: ${apiBaseUrl}\n// Active API Key: ${
                     getEffectiveApiKey() || '(None - Public Mode)'
@@ -487,19 +493,19 @@ export default function ApiHubView() {
           </div>
 
           {/* Compliance Footer */}
-          <div className="bg-[#f9fafb] p-3 rounded border border-[#e5e7eb] text-xs text-[#6b7280] flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+          <div className="bg-ink-50 p-3 rounded-lg border border-ink-100 text-xs text-ink-500 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
             <span className="flex items-center space-x-1">
-              <Info className="w-3.5 h-3.5 text-[#003f87] shrink-0" />
+              <Info className="w-3.5 h-3.5 text-navy-700 shrink-0" />
               <span>
-                Rate Limits: <strong>30 req/min</strong> for Public IP •{' '}
-                <strong>600 req/min</strong> for NSO/RBI API Keys.
+                Rate Limits: <strong className="font-semibold">30 req/min</strong> for Public IP •{' '}
+                <strong className="font-semibold">600 req/min</strong> for NSO/RBI API Keys.
               </span>
             </span>
             <a
               href={`${apiBaseUrl}/openapi.json`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#003f87] font-semibold hover:underline flex items-center space-x-1"
+              className="text-navy-700 font-semibold hover:underline flex items-center space-x-1"
             >
               <span>OpenAPI 3.1 Spec JSON</span>
               <ExternalLink className="w-3 h-3" />

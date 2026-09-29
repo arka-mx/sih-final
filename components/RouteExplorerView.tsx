@@ -1,53 +1,152 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { AIRLINE_COMPARISON, ELASTICITY_DATA } from '@/lib/mockData';
-import { Download, Filter, Share2, Calendar, PlaneTakeoff, PlaneLanding } from 'lucide-react';
+import { DEMO_MODE } from '@/lib/demoMode';
+import { useApiData } from '@/lib/useApiData';
+import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
+import { Download, Filter, Share2, Check, Calendar, PlaneTakeoff, PlaneLanding } from 'lucide-react';
+
+interface ApiFareRecord {
+  id: string;
+  airline: string;
+  date: string;
+  bookingWindow: string;
+  totalFare: number;
+}
+
+interface FaresApiResponse {
+  totalCount: number;
+  summary: { median_fare: number; iqr_spread: number; min_fare: number; max_fare: number } | null;
+  fares: ApiFareRecord[];
+}
+
+const WINDOWS = ['T+1', 'T+7', 'T+15', 'T+30', 'T+45'] as const;
+const WINDOW_LABELS: Record<string, string> = {
+  'T+1': '1 Day (Last Minute)',
+  'T+7': '7 Days Advance',
+  'T+15': '15 Days Advance',
+  'T+30': '30 Days Advance',
+  'T+45': '45 Days Advance',
+};
 
 export default function RouteExplorerView() {
   const [fromCity, setFromCity] = useState('DEL');
   const [toCity, setToCity] = useState('BOM');
   const [windowFilter, setWindowFilter] = useState<'T+1' | 'T+7' | 'T+15' | 'T+30' | 'T+45'>('T+7');
+  const [linkCopied, setLinkCopied] = useState(false);
 
-  // Generate dynamic chart data based on selected window
-  const chartData = [
-    { date: 'Sep 01', price: windowFilter === 'T+1' ? 8900 : windowFilter === 'T+7' ? 5800 : 4450 },
-    { date: 'Sep 05', price: windowFilter === 'T+1' ? 8600 : windowFilter === 'T+7' ? 5600 : 4300 },
-    { date: 'Sep 08', price: windowFilter === 'T+1' ? 9100 : windowFilter === 'T+7' ? 5900 : 4500 },
-    { date: 'Sep 11', price: windowFilter === 'T+1' ? 8800 : windowFilter === 'T+7' ? 5700 : 4400 },
-    { date: 'Sep 14', price: windowFilter === 'T+1' ? 9200 : windowFilter === 'T+7' ? 6100 : 4650 },
-  ];
+  const pair = `${fromCity}-${toCity}`;
+
+  const handleShareLink = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('route', pair);
+    url.searchParams.set('window', windowFilter);
+    navigator.clipboard.writeText(url.toString());
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  };
+
+  const routeFares = useApiData<FaresApiResponse>(
+    DEMO_MODE ? null : `/api/fares?route=${pair}&window=${windowFilter}&limit=30`,
+    [pair, windowFilter]
+  );
+
+  // Fetch all 5 windows in parallel to build the route-specific elasticity curve.
+  const elasticityUrls = WINDOWS.map((w) => `/api/fares?route=${pair}&window=${w}&limit=15`);
+  const w1 = useApiData<FaresApiResponse>(DEMO_MODE ? null : elasticityUrls[0], [pair]);
+  const w7 = useApiData<FaresApiResponse>(DEMO_MODE ? null : elasticityUrls[1], [pair]);
+  const w15 = useApiData<FaresApiResponse>(DEMO_MODE ? null : elasticityUrls[2], [pair]);
+  const w30 = useApiData<FaresApiResponse>(DEMO_MODE ? null : elasticityUrls[3], [pair]);
+  const w45 = useApiData<FaresApiResponse>(DEMO_MODE ? null : elasticityUrls[4], [pair]);
+  const windowResults = [w1, w7, w15, w30, w45];
+
+  const avg = (vals: number[]) => (vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null);
+
+  const routeElasticity = WINDOWS.map((w, idx) => ({
+    window: w,
+    label: WINDOW_LABELS[w],
+    avgFare: avg(windowResults[idx].data?.fares.map((f) => f.totalFare) ?? []),
+  }));
+
+  const routeAirlines = useMemo(() => {
+    const fares = routeFares.data?.fares ?? [];
+    const byCarrier: Record<string, { total: number; count: number }> = {};
+    for (const f of fares) {
+      if (!byCarrier[f.airline]) byCarrier[f.airline] = { total: 0, count: 0 };
+      byCarrier[f.airline].total += f.totalFare;
+      byCarrier[f.airline].count += 1;
+    }
+    const totalRecords = fares.length;
+    return Object.entries(byCarrier)
+      .map(([name, { total, count }]) => ({
+        name,
+        avgPrice: Math.round(total / count),
+        marketShare: totalRecords ? `${((count / totalRecords) * 100).toFixed(0)}%` : '0%',
+        observations: count,
+      }))
+      .sort((a, b) => b.avgPrice - a.avgPrice);
+  }, [routeFares.data]);
+
+  // Build a price-by-scrape-date trend from the individual fare records.
+  const chartData = useMemo(() => {
+    const fares = routeFares.data?.fares ?? [];
+    const byDate: Record<string, number[]> = {};
+    for (const f of fares) {
+      if (!byDate[f.date]) byDate[f.date] = [];
+      byDate[f.date].push(f.totalFare);
+    }
+    return Object.entries(byDate)
+      .map(([date, prices]) => ({ date, price: Math.round(avg(prices) ?? 0) }))
+      .sort((a, b) => (a.date < b.date ? -1 : 1));
+  }, [routeFares.data]);
 
   const handleDownloadCSV = () => {
-    const csvContent = "data:text/csv;charset=utf-8,Date,Route,Window,Price\n2026-09-14,DEL-BOM,T+7,4450\n2026-09-13,DEL-BOM,T+7,4400";
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `route_${fromCity}_${toCity}_${windowFilter}.csv`);
+    let csv = 'Date,Route,Window,Price\n';
+    chartData.forEach((row) => {
+      csv += `${row.date},${pair},${windowFilter},${row.price}\n`;
+    });
+    const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csv);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `route_${fromCity}_${toCity}_${windowFilter}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
+  const isLoading = !DEMO_MODE && routeFares.loading;
+  const hasError = !DEMO_MODE && routeFares.error;
+
+  const displayAirlines = DEMO_MODE ? AIRLINE_COMPARISON : routeAirlines;
+  const displayElasticity = DEMO_MODE ? ELASTICITY_DATA : routeElasticity;
+  const summary = routeFares.data?.summary;
+
   return (
     <div className="space-y-6 animate-fadeIn">
+      {DEMO_MODE && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold px-4 py-2.5 rounded-xl">
+          Demo mode — showing static sample data, not live APIx backend results.
+        </div>
+      )}
+
       {/* Route Filter Controls */}
-      <div className="bg-white p-6 rounded-lg border border-[#e5e7eb] shadow-xs space-y-4">
-        <div className="flex items-center space-x-2 text-[#003f87] font-bold text-sm">
+      <div className="panel p-6 space-y-4">
+        <div className="flex items-center gap-2 text-navy-700 font-semibold text-sm">
           <Filter className="w-4 h-4" />
           <span>Route & Booking Window Explorer</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="text-xs font-bold text-[#1f2937] block mb-1">Origin City (From):</label>
+            <label className="text-xs font-semibold text-ink-900 block mb-1">Origin City:</label>
             <div className="relative">
-              <PlaneTakeoff className="w-4 h-4 absolute left-3 top-3 text-[#6b7280]" />
+              <PlaneTakeoff className="w-4 h-4 absolute left-3 top-3 text-ink-500" />
               <select
                 value={fromCity}
                 onChange={(e) => setFromCity(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-[#d0d0d0] rounded bg-[#ffffff] focus:outline-none focus:border-[#003f87] focus:ring-1 focus:ring-[#003f87]"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-ink-200 rounded-lg bg-white focus:outline-none focus:border-navy-700 focus:ring-1 focus:ring-navy-700"
               >
                 <option value="DEL">Delhi (DEL)</option>
                 <option value="BOM">Mumbai (BOM)</option>
@@ -59,13 +158,13 @@ export default function RouteExplorerView() {
           </div>
 
           <div>
-            <label className="text-xs font-bold text-[#1f2937] block mb-1">Destination City (To):</label>
+            <label className="text-xs font-semibold text-ink-900 block mb-1">Destination City:</label>
             <div className="relative">
-              <PlaneLanding className="w-4 h-4 absolute left-3 top-3 text-[#6b7280]" />
+              <PlaneLanding className="w-4 h-4 absolute left-3 top-3 text-ink-500" />
               <select
                 value={toCity}
                 onChange={(e) => setToCity(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-[#d0d0d0] rounded bg-[#ffffff] focus:outline-none focus:border-[#003f87] focus:ring-1 focus:ring-[#003f87]"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-ink-200 rounded-lg bg-white focus:outline-none focus:border-navy-700 focus:ring-1 focus:ring-navy-700"
               >
                 <option value="BOM">Mumbai (BOM)</option>
                 <option value="DEL">Delhi (DEL)</option>
@@ -77,134 +176,153 @@ export default function RouteExplorerView() {
           </div>
 
           <div>
-            <label className="text-xs font-bold text-[#1f2937] block mb-1">Departure Month:</label>
+            <label className="text-xs font-semibold text-ink-900 block mb-1">Departure Date:</label>
             <div className="relative">
-              <Calendar className="w-4 h-4 absolute left-3 top-3 text-[#6b7280]" />
+              <Calendar className="w-4 h-4 absolute left-3 top-3 text-ink-500" />
               <input
                 type="date"
                 defaultValue="2026-09-14"
-                className="w-full pl-9 pr-3 py-2 text-xs border border-[#d0d0d0] rounded bg-[#ffffff] focus:outline-none focus:border-[#003f87]"
+                className="w-full pl-9 pr-3 py-2 text-xs border border-ink-200 rounded-lg bg-white focus:outline-none focus:border-navy-700"
               />
             </div>
           </div>
         </div>
 
         {/* Advance Purchase Buttons */}
-        <div className="pt-2 border-t border-[#f3f4f6]">
-          <span className="text-xs font-bold text-[#1f2937] block mb-2">Advance Purchase Window (Lead Time):</span>
-          <div className="flex flex-wrap gap-2">
-            {[
-              { id: 'T+1', label: 'T+1 (1 Day / Urgent)' },
-              { id: 'T+7', label: 'T+7 (1 Week Advance)' },
-              { id: 'T+15', label: 'T+15 (2 Weeks Advance)' },
-              { id: 'T+30', label: 'T+30 (1 Month Advance)' },
-              { id: 'T+45', label: 'T+45 (45 Days Advance)' },
-            ].map((win) => (
+        <div className="pt-2 border-t border-ink-100">
+          <span className="text-xs font-semibold text-ink-900 block mb-2">Advance Purchase Window (Lead Time):</span>
+          <div className="flex flex-wrap gap-1 bg-ink-50 border border-ink-100 rounded-lg p-1 w-fit">
+            {WINDOWS.map((win) => (
               <button
-                key={win.id}
-                onClick={() => setWindowFilter(win.id as 'T+1' | 'T+7' | 'T+15' | 'T+30' | 'T+45')}
-                className={`px-3 py-1.5 text-xs font-semibold rounded border transition-all ${
-                  windowFilter === win.id
-                    ? 'bg-[#003f87] text-white border-[#003f87]'
-                    : 'bg-white text-[#1f2937] border-[#d0d0d0] hover:bg-[#f9fafb]'
+                key={win}
+                onClick={() => setWindowFilter(win)}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
+                  windowFilter === win
+                    ? 'bg-white text-navy-800 shadow-panel'
+                    : 'text-ink-500 hover:text-ink-900'
                 }`}
               >
-                {win.label}
+                {WINDOW_LABELS[win]}
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Main Route Trend & Breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-[#e5e7eb] shadow-xs space-y-4">
-          <div className="flex justify-between items-center border-b border-[#f3f4f6] pb-3">
-            <div>
-              <h3 className="text-base font-bold text-[#1f2937]">
-                {fromCity} → {toCity} | {windowFilter} Lead Time Trend
-              </h3>
-              <p className="text-xs text-[#6b7280]">Observed price range: ₹3,200 to ₹8,900</p>
+      {isLoading && <LoadingPanel label={`Loading simulated fares for ${pair}...`} />}
+      {hasError && <ErrorPanel message={routeFares.error!} onRetry={routeFares.refetch} />}
+
+      {(DEMO_MODE || (!isLoading && !hasError)) && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 panel p-6 space-y-4">
+            <div className="flex justify-between items-center border-b border-ink-100 pb-3">
+              <div>
+                <h3 className="text-base font-semibold text-ink-900 font-mono">
+                  {fromCity} → {toCity} | {windowFilter} Lead Time Trend
+                </h3>
+                <p className="text-xs text-ink-500">
+                  {summary
+                    ? `Observed price range: ₹${Math.round(summary.min_fare).toLocaleString()} to ₹${Math.round(
+                        summary.max_fare
+                      ).toLocaleString()}`
+                    : 'Observed price range unavailable'}
+                </p>
+              </div>
+              <div className="text-right">
+                <span className="text-xs text-ink-500">Median Fare</span>
+                <span className="text-base font-semibold text-navy-700 block font-tabular">
+                  {summary ? `₹${Math.round(summary.median_fare).toLocaleString()}` : '—'}
+                </span>
+              </div>
             </div>
-            <div className="text-right">
-              <span className="text-xs text-[#6b7280]">Average Fare</span>
-              <span className="text-base font-bold text-[#003f87] block">
-                ₹{chartData[chartData.length - 1].price.toLocaleString()}
+
+            <div className="h-[260px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e7ebf1" />
+                  <XAxis dataKey="date" stroke="#7c8aa3" fontSize={12} tickLine={false} />
+                  <YAxis domain={['auto', 'auto']} stroke="#7c8aa3" fontSize={12} tickLine={false} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e7ebf1', borderRadius: '10px', fontSize: '12px' }}
+                    formatter={(val) => [`₹${val ?? ''}`, 'Average Fare']}
+                  />
+                  <Line type="monotone" dataKey="price" stroke="#003f87" strokeWidth={2.5} dot={{ r: 4, fill: '#003f87' }} />
+                </LineChart>
+              </ResponsiveContainer>
+              {chartData.length === 0 && (
+                <p className="text-xs text-center text-ink-500 -mt-32">No scraped observations for this window yet.</p>
+              )}
+            </div>
+
+            <div className="flex justify-between items-center pt-2 border-t border-ink-100">
+              <div className="flex space-x-2">
+                <button
+                  onClick={handleDownloadCSV}
+                  className="text-xs font-semibold text-navy-700 border border-ink-200 px-3 py-1.5 rounded-lg hover:bg-ink-50 flex items-center cursor-pointer transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5 mr-1" /> Download CSV
+                </button>
+                <button
+                  onClick={handleShareLink}
+                  className="text-xs font-semibold text-ink-700 border border-ink-200 px-3 py-1.5 rounded-lg hover:bg-ink-50 flex items-center cursor-pointer transition-colors"
+                >
+                  {linkCopied ? (
+                    <Check className="w-3.5 h-3.5 mr-1 text-emerald-600" />
+                  ) : (
+                    <Share2 className="w-3.5 h-3.5 mr-1" />
+                  )}
+                  {linkCopied ? 'Link Copied' : 'Share Route Link'}
+                </button>
+              </div>
+              <span className="text-[11px] text-ink-500">
+                IQR Spread: <strong className="text-ink-900 font-tabular">{summary ? `₹${Math.round(summary.iqr_spread).toLocaleString()}` : '—'}</strong>
               </span>
             </div>
           </div>
 
-          <div className="h-[260px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="date" stroke="#6b7280" fontSize={12} tickLine={false} />
-                <YAxis domain={['auto', 'auto']} stroke="#6b7280" fontSize={12} tickLine={false} />
-                <Tooltip
-                  contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e5e7eb', borderRadius: '6px', fontSize: '12px' }}
-                  formatter={(val) => [`₹${val ?? ''}`, 'Average Fare']}
-                />
-                <Line type="monotone" dataKey="price" stroke="#003f87" strokeWidth={2.5} dot={{ r: 4, fill: '#003f87' }} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          {/* Airline Breakdown Panel */}
+          <div className="panel p-6 space-y-4">
+            <h3 className="text-base font-semibold text-ink-900 border-b border-ink-100 pb-2 font-mono">
+              Airline Price Comparison ({fromCity}–{toCity})
+            </h3>
 
-          <div className="flex justify-between items-center pt-2 border-t border-[#f3f4f6]">
-            <div className="flex space-x-2">
-              <button onClick={handleDownloadCSV} className="text-xs font-semibold text-[#003f87] border border-[#003f87] px-3 py-1.5 rounded hover:bg-[#e8f4f8] flex items-center">
-                <Download className="w-3.5 h-3.5 mr-1" /> Download CSV
-              </button>
-              <button className="text-xs font-medium text-[#6b7280] border border-[#d0d0d0] px-3 py-1.5 rounded hover:bg-[#f9fafb] flex items-center">
-                <Share2 className="w-3.5 h-3.5 mr-1" /> Share Route Link
-              </button>
-            </div>
-            <span className="text-[11px] text-[#6b7280]">Volatility Index: <strong>14.2%</strong></span>
-          </div>
-        </div>
-
-        {/* Airline Breakdown Panel */}
-        <div className="bg-white p-6 rounded-lg border border-[#e5e7eb] shadow-xs space-y-4">
-          <h3 className="text-base font-bold text-[#1f2937] border-b border-[#f3f4f6] pb-2">
-            Airline Price Comparison ({fromCity}–{toCity})
-          </h3>
-
-          <div className="space-y-3">
-            {AIRLINE_COMPARISON.map((air) => (
-              <div key={air.name} className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span className="font-semibold text-[#1f2937]">{air.name}</span>
-                  <span className="font-bold text-[#003f87]">₹{air.avgPrice.toLocaleString()}</span>
-                </div>
-                <div className="w-full h-2 bg-[#f3f4f6] rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all"
-                    style={{
-                      width: `${(air.avgPrice / 5500) * 100}%`,
-                      backgroundColor: air.color,
-                    }}
-                  ></div>
-                </div>
-                <div className="flex justify-between text-[10px] text-[#6b7280]">
-                  <span>Market Share: {air.marketShare}</span>
-                  <span>On-Time: {air.reliability}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="pt-3 border-t border-[#f3f4f6] space-y-2">
-            <h4 className="text-xs font-bold text-[#1f2937]">Lead Time Price Progression</h4>
-            <div className="space-y-1 text-xs">
-              {ELASTICITY_DATA.map((e) => (
-                <div key={e.window} className="flex justify-between py-1 border-b border-[#f9fafb]">
-                  <span className="text-[#6b7280]">{e.label}:</span>
-                  <span className="font-bold text-[#1f2937]">₹{e.avgFare.toLocaleString()}</span>
+            <div className="space-y-3">
+              {displayAirlines.map((air) => (
+                <div key={air.name} className="space-y-1">
+                  <div className="flex justify-between text-xs">
+                    <span className="font-semibold text-ink-900">{air.name}</span>
+                    <span className="font-semibold text-navy-700 font-tabular">₹{air.avgPrice.toLocaleString()}</span>
+                  </div>
+                  <div className="w-full h-2 bg-ink-100 overflow-hidden">
+                    <div
+                      className="h-full transition-all bg-navy-700"
+                      style={{ width: `${Math.min((air.avgPrice / 9000) * 100, 100)}%` }}
+                    ></div>
+                  </div>
+                  <div className="flex justify-between text-[10px] text-ink-500">
+                    <span className="font-tabular">Market Share: {air.marketShare}</span>
+                  </div>
                 </div>
               ))}
+              {displayAirlines.length === 0 && (
+                <p className="text-xs text-ink-500">No carrier data for this route yet.</p>
+              )}
+            </div>
+
+            <div className="pt-3 border-t border-ink-100 space-y-2">
+              <h4 className="text-xs font-semibold text-ink-900">Lead Time Price Progression</h4>
+              <div className="space-y-1 text-xs">
+                {displayElasticity.map((e) => (
+                  <div key={e.window} className="flex justify-between py-1 border-b border-ink-50">
+                    <span className="text-ink-500">{e.label}:</span>
+                    <span className="font-semibold text-ink-900 font-tabular">{e.avgFare != null ? `₹${Math.round(e.avgFare).toLocaleString()}` : '—'}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

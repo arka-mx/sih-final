@@ -1,0 +1,33 @@
+source_key: simulated_air_india
+provider_label: "Simulated Air India direct channel"
+base_url: "https://www.simulated-airindia.local"
+channel_type: direct
+
+rate_limit:
+  min_delay: 0.0
+  max_delay: 0.0
+
+selectors:
+  fare_container: ".flight-result"
+  price: ".total-fare"
+  flight_no: ".flight-code"
+
+fee_model:
+  convenience_fee: 0.0
+
+window_multiplier:
+  1: 1.85
+  7: 1.25
+  15: 1.0
+  30: 0.9
+  45: 0.88
+
+dark_patterns: {}
+
+routes:
+  DEL-BOM:
+    - {carrier: "Air India", flight_no: "AI-805", dep: "08:00", arr: "10:15", base: 4200, tax: 950}
+  DEL-BLR:
+    - {carrier: "Air India", flight_no: "AI-506", dep: "09:45", arr: "12:35", base: 3900, tax: 900}
+  BOM-BLR:
+    - {carrier: "Air India", flight_no: "AI-639", dep: "12:15", arr: "14:00", base: 3400, tax: 830}

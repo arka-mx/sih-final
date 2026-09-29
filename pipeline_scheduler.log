@@ -1,0 +1,17 @@
+2026-09-30 02:29:06,155 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-30 02:29:06,155 [INFO] APIx.Scheduler: Scheduled T+1 cycle at UTC hours: 0,4,8,12,16,20
+2026-09-30 02:29:06,155 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-30 02:29:06,155 [INFO] APIx.Scheduler: Scheduled T+7 cycle at UTC hours: 1,13
+2026-09-30 02:29:06,156 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-30 02:29:06,156 [INFO] APIx.Scheduler: Scheduled T+15 cycle at UTC hours: 2,14
+2026-09-30 02:29:06,156 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-30 02:29:06,156 [INFO] APIx.Scheduler: Scheduled T+30 cycle at UTC hours: 3
+2026-09-30 02:29:06,156 [INFO] apscheduler.scheduler: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-09-30 02:29:06,156 [INFO] APIx.Scheduler: Scheduled T+45 cycle at UTC hours: 3
+2026-09-30 02:29:06,157 [INFO] APIx.Scheduler: APIx pipeline scheduler starting (Ctrl+C to stop)...
+2026-09-30 02:29:06,157 [INFO] apscheduler.scheduler: Added job "APIx scrape/clean/index cycle - T+1" to job store "default"
+2026-09-30 02:29:06,157 [INFO] apscheduler.scheduler: Added job "APIx scrape/clean/index cycle - T+7" to job store "default"
+2026-09-30 02:29:06,157 [INFO] apscheduler.scheduler: Added job "APIx scrape/clean/index cycle - T+15" to job store "default"
+2026-09-30 02:29:06,157 [INFO] apscheduler.scheduler: Added job "APIx scrape/clean/index cycle - T+30" to job store "default"
+2026-09-30 02:29:06,157 [INFO] apscheduler.scheduler: Added job "APIx scrape/clean/index cycle - T+45" to job store "default"
+2026-09-30 02:29:06,157 [INFO] apscheduler.scheduler: Scheduler started

@@ -1,33 +1,39 @@
-version: '3.8'
-
 services:
   api:
-    build: .
+    build:
+      context: ..
+      dockerfile: apix-api/Dockerfile
     container_name: apix-api-service
     ports:
       - "8000:8000"
     environment:
       - APP_ENV=production
-      - DATABASE_URL=postgresql+asyncpg://apix_user:apix_secret@db:5432/apix_db
+      # Points at a Supabase Postgres project -- set the real value in a
+      # local .env (see apix-api/.env.example) rather than hardcoding it here.
+      - DATABASE_URL=${DATABASE_URL}
       - REDIS_URL=redis://redis:6379/0
+      - APIX_RAW_STORE_DIR=/app/data/raw_store
       - API_KEYS={"mospi-nso-key-2026":"NSO_STATISTICIAN","rbi-mpd-key-2026":"RBI_ANALYST"}
       - RATE_LIMIT_PUBLIC=30
       - RATE_LIMIT_AUTH=600
     depends_on:
-      - db
-      - redis
-
-  db:
-    image: timescale/timescaledb:latest-pg16
-    container_name: apix-timescaledb
-    environment:
-      - POSTGRES_USER=apix_user
-      - POSTGRES_PASSWORD=apix_secret
-      - POSTGRES_DB=apix_db
-    ports:
-      - "5432:5432"
+      redis:
+        condition: service_started
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - raw_store_data:/app/data/raw_store
+
+  pipeline:
+    build:
+      context: ..
+      dockerfile: apix-api/Dockerfile
+    container_name: apix-pipeline-scheduler
+    command: ["python", "-m", "pipeline.scheduler"]
+    environment:
+      - APP_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - APIX_RAW_STORE_DIR=/app/data/raw_store
+    volumes:
+      - raw_store_data:/app/data/raw_store
 
   redis:
     image: redis:7-alpine
@@ -38,5 +44,5 @@ services:
       - redis_data:/data
 
 volumes:
-  postgres_data:
   redis_data:
+  raw_store_data:

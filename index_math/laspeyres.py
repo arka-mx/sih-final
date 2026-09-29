@@ -1,30 +1,26 @@
 from typing import Dict, List
 
-# Exactly the 3 routes in the basket with official DGCA traffic share weights:
-# Normalized so sum(weights) == 1.0 across the 3 corridors:
-# Raw published DGCA shares: DEL-BOM (0.18), DEL-BLR (0.14), BOM-BLR (0.12)
-# Sum = 0.44
-# Normalized weights:
-# DEL-BOM: 0.18 / 0.44 ≈ 0.4091 (40.91%)
-# DEL-BLR: 0.14 / 0.44 ≈ 0.3182 (31.82%)
-# BOM-BLR: 0.12 / 0.44 ≈ 0.2727 (27.27%)
+from index_math.weights import DGCA_BASKET_WEIGHTS, DGCA_DATA_VINTAGE
 
+# Legacy 3-route basket (DEL-BOM, DEL-BLR, BOM-BLR), normalized across only
+# those 3 corridors. Retained for the original hand-calculated formula tests
+# in tests/test_index_math.py; the live default basket used across the
+# pipeline/API is now the full 15-route DGCA_BASKET_WEIGHTS in
+# index_math/weights.py.
 DGCA_3_ROUTE_WEIGHTS = {
     "DEL-BOM": 0.4091,
     "DEL-BLR": 0.3182,
     "BOM-BLR": 0.2727,
 }
 
-DGCA_DATA_VINTAGE = "DGCA Domestic Air Traffic Statistics Report (Jan-Jun 2025 Release)"
-
 def laspeyres_aggregate_index(
     route_indices: Dict[str, float],
-    weights: Dict[str, float] = DGCA_3_ROUTE_WEIGHTS,
+    weights: Dict[str, float] = DGCA_BASKET_WEIGHTS,
 ) -> float:
     """
-    Laspeyres Aggregate Index across the 3 DGCA basket corridors:
+    Laspeyres Aggregate Index across the DGCA basket corridors:
     I_L = \sum_{r} ( W_r * I_r )
-    
+
     Where:
     - W_r is DGCA passenger-traffic consumption weight for route r
     - I_r is the elementary price index for route r

@@ -201,6 +201,12 @@ def clean_fare_record(
         source=source,
         audit_hash=audit_hash,
         raw_payload_ref=raw_payload_ref,
+        data_mode=data.get("data_mode", "simulated"),
+        is_live_data=bool(data.get("is_live_data", False)),
+        simulation_disclaimer=data.get(
+            "simulation_disclaimer",
+            "Deterministic fixture data for demonstration only; not a live fare or booking offer.",
+        ),
         imputation_applied=imputation_applied,
         imputed_fields=imputed_fields,
         include_in_cpi_index=is_avail,

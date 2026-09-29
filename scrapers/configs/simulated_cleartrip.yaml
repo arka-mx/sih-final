@@ -1,0 +1,33 @@
+source_key: simulated_cleartrip
+provider_label: "Simulated Cleartrip OTA"
+base_url: "https://www.simulated-cleartrip.local"
+channel_type: ota
+
+rate_limit:
+  min_delay: 0.0
+  max_delay: 0.0
+
+selectors:
+  fare_container: ".fareCard"
+  price: ".fareAmount"
+  flight_no: ".flightNumber"
+
+fee_model:
+  convenience_fee: 279
+
+window_multiplier:
+  1: 1.85
+  7: 1.25
+  15: 1.0
+  30: 0.9
+  45: 0.88
+
+dark_patterns: {}
+
+routes:
+  DEL-BOM:
+    - {carrier: IndiGo, flight_no: "6E-503", dep: "09:30", arr: "11:45", base: 3800, tax: 890, fee: 279}
+  DEL-BLR:
+    - {carrier: "Akasa Air", flight_no: "QP-1331", dep: "15:20", arr: "18:10", base: 2980, tax: 790, fee: 249}
+  BOM-BLR:
+    - {carrier: SpiceJet, flight_no: "SG-419", dep: "16:40", arr: "18:25", base: 2600, tax: 720, fee: 279}

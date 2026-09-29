@@ -1,0 +1,33 @@
+source_key: simulated_ixigo
+provider_label: "Simulated ixigo OTA"
+base_url: "https://www.simulated-ixigo.local"
+channel_type: ota
+
+rate_limit:
+  min_delay: 0.0
+  max_delay: 0.0
+
+selectors:
+  fare_container: ".resultCard"
+  price: ".priceValue"
+  flight_no: ".flightNo"
+
+fee_model:
+  convenience_fee: 199
+
+window_multiplier:
+  1: 1.85
+  7: 1.25
+  15: 1.0
+  30: 0.9
+  45: 0.88
+
+dark_patterns: {}
+
+routes:
+  DEL-BOM:
+    - {carrier: "Akasa Air", flight_no: "QP-1102", dep: "11:45", arr: "14:00", base: 3300, tax: 840, fee: 199}
+  DEL-BLR:
+    - {carrier: IndiGo, flight_no: "6E-2131", dep: "07:10", arr: "10:00", base: 3100, tax: 800, fee: 199}
+  BOM-BLR:
+    - {carrier: "Air India", flight_no: "AI-639", dep: "12:15", arr: "14:00", base: 3400, tax: 830, fee: 199}

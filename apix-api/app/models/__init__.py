@@ -8,6 +8,8 @@ from sqlalchemy import (
     Date,
     DateTime,
     Text,
+    func,
+    ForeignKey,
 )
 from sqlalchemy.orm import declarative_base
 
@@ -32,6 +34,7 @@ class Fare(Base):
     __tablename__ = "fares"
 
     id = Column(String(50), primary_key=True)
+    observed_at = Column(DateTime(timezone=True), primary_key=True, nullable=False, server_default=func.now(), index=True)
     pair = Column(String(10), nullable=False, index=True)
     origin = Column(String(5), nullable=False)
     destination = Column(String(5), nullable=False)
@@ -53,8 +56,9 @@ class Fare(Base):
 class DailyIndex(Base):
     __tablename__ = "index_daily"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    date = Column(String(15), unique=True, nullable=False, index=True)
+    id = Column(Integer)
+    date = Column(String(15), primary_key=True, nullable=False, index=True)
+    observed_at = Column(DateTime(timezone=True), primary_key=True, nullable=False, server_default=func.now(), index=True)
     laspeyres = Column(Float, nullable=False)
     fisher = Column(Float, nullable=False)
     ci_lower = Column(Float, nullable=False)
@@ -99,9 +103,38 @@ class BacktestRecord(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(String(15), unique=True, nullable=False, index=True)
+    dataset_id = Column(String(36), ForeignKey("backtest_datasets.id"), nullable=False, index=True)
     apix_index = Column(Float, nullable=False)
     dgca_avg_fare = Column(Float, nullable=False)
-    variance_pct = Column(Float, nullable=False)
+    variance_pct = Column(Float, nullable=True)
+
+
+class BacktestDataset(Base):
+    __tablename__ = "backtest_datasets"
+
+    id = Column(String(36), primary_key=True)
+    source_title = Column(String(255), nullable=False)
+    source_url = Column(Text, nullable=False)
+    source_file_name = Column(String(255), nullable=False)
+    source_sha256 = Column(String(64), nullable=False, unique=True)
+    coverage_start = Column(String(15), nullable=False)
+    coverage_end = Column(String(15), nullable=False)
+    imported_at = Column(DateTime(timezone=True), nullable=False, server_default=func.now())
+
+
+class PipelineJobRun(Base):
+    __tablename__ = "pipeline_job_runs"
+
+    id = Column(String(40), primary_key=True)
+    job_label = Column(String(50), nullable=False, index=True)
+    windows = Column(String(50), nullable=False)
+    started_at = Column(DateTime(timezone=True), nullable=False, index=True)
+    finished_at = Column(DateTime(timezone=True), nullable=True)
+    duration_seconds = Column(Float, nullable=True)
+    status = Column(String(10), nullable=False, index=True)
+    total_scraped = Column(Integer, nullable=True)
+    db_records_saved = Column(Integer, nullable=True)
+    error_message = Column(Text, nullable=True)
 
 
 def generate_audit_hash(record_dict: dict) -> str:

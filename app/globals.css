@@ -1,12 +1,94 @@
 @import "tailwindcss";
 
+@theme {
+  /* Brand navy — anchored to the existing MoSPI identity blue (navy-700) */
+  --color-navy-50: #eef3fa;
+  --color-navy-100: #dce7f4;
+  --color-navy-200: #b3cbe8;
+  --color-navy-300: #85abd8;
+  --color-navy-400: #4e83c0;
+  --color-navy-500: #2a63a3;
+  --color-navy-600: #124c8a;
+  --color-navy-700: #003f87;
+  --color-navy-800: #002d62;
+  --color-navy-900: #001d40;
+  --color-navy-950: #001028;
+
+  /* Neutrals — cool slate, used for all text/border/surface work */
+  --color-ink-950: #0b1220;
+  --color-ink-900: #10192b;
+  --color-ink-700: #33415a;
+  --color-ink-500: #5b6b85;
+  --color-ink-400: #7c8aa3;
+  --color-ink-300: #a6b1c4;
+  --color-ink-200: #d3d9e4;
+  --color-ink-100: #e7ebf1;
+  --color-ink-50: #f4f6f9;
+
+  /* Typography */
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
+
+  /* Restrained shadow scale — never go past this */
+  --shadow-panel: 0 1px 2px 0 rgb(16 25 43 / 0.04), 0 1px 1px 0 rgb(16 25 43 / 0.03);
+  --shadow-raised: 0 2px 8px -2px rgb(16 25 43 / 0.10), 0 1px 2px -1px rgb(16 25 43 / 0.06);
+  --shadow-overlay: 0 16px 40px -12px rgb(11 18 32 / 0.28);
+
+  /* Square-corner system: every rounded-* utility resolves to 0. Circular
+     elements (status dots) use rounded-full, which is unaffected by this scale. */
+  --radius-none: 0;
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+  --radius-4xl: 0;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-ink-50);
+    color: var(--color-ink-900);
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  ::selection {
+    background-color: var(--color-navy-200);
+    color: var(--color-navy-950);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-navy-500);
+    outline-offset: 2px;
+  }
+}
+
 @layer utilities {
+  /* Tailwind's bare `rounded` utility is a hardcoded 0.25rem, not tied to the
+     --radius-* scale above — close that one gap in the square-corner system. */
+  .rounded {
+    border-radius: 0;
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  .font-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .panel {
+    background-color: white;
+    border: 1px solid var(--color-ink-100);
+    box-shadow: var(--shadow-panel);
   }
 }
 
@@ -16,5 +98,5 @@
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }

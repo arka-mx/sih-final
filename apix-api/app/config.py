@@ -17,7 +17,7 @@ class Settings(BaseSettings):
         default='{"mospi-nso-key-2026":"NSO_STATISTICIAN","rbi-mpd-key-2026":"RBI_ANALYST"}'
     )
 
-    DATABASE_URL: str = "sqlite+aiosqlite:///./apix.db"
+    DATABASE_URL: str = "postgresql+asyncpg://apix_user:apix_secret@localhost:5432/apix_db"
     REDIS_URL: str = "redis://localhost:6379/0"
 
     RATE_LIMIT_PUBLIC: int = 30   # requests per minute

@@ -23,106 +23,109 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
     onClose();
   };
 
+  const inputClass =
+    'w-full pl-9 pr-3 py-2.5 border border-ink-200 rounded-lg text-sm placeholder:text-ink-300 focus:outline-none focus:border-navy-500 focus:ring-4 focus:ring-navy-100 transition-shadow';
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-fadeIn">
-      <div className="bg-white rounded-lg border border-[#e5e7eb] shadow-xl w-full max-w-md overflow-hidden space-y-4">
+    <div className="fixed inset-0 z-50 bg-ink-950/50 backdrop-blur-[2px] flex items-center justify-center p-4 animate-fadeIn">
+      <div className="bg-white rounded-2xl border border-ink-100 shadow-overlay w-full max-w-md overflow-hidden">
         {/* Header */}
-        <div className="bg-[#003f87] text-white p-5 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <ShieldCheck className="w-5 h-5 text-emerald-400" />
+        <div className="bg-navy-900 text-white p-5 flex justify-between items-center">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            </div>
             <div>
-              <h3 className="font-bold text-sm">Official Portal Access</h3>
-              <p className="text-[11px] opacity-80">Ministry of Statistics & Programme Implementation</p>
+              <h3 className="font-semibold text-sm">Official Portal Access</h3>
+              <p className="text-[11px] text-navy-300">Ministry of Statistics &amp; Programme Implementation</p>
             </div>
           </div>
-          <button onClick={onClose} className="hover:bg-white/10 p-1 rounded text-white">
-            <X className="w-5 h-5" />
+          <button onClick={onClose} className="hover:bg-white/10 p-1.5 rounded-md text-white/80 hover:text-white cursor-pointer transition-colors">
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Tab switch */}
-        <div className="px-6 flex space-x-4 border-b border-[#e5e7eb] text-xs">
-          <button
-            onClick={() => setActiveTab('credentials')}
-            className={`pb-2 font-semibold transition-all border-b-2 ${
-              activeTab === 'credentials'
-                ? 'border-[#003f87] text-[#003f87]'
-                : 'border-transparent text-[#6b7280]'
-            }`}
-          >
-            Govt / RBI Credentials
-          </button>
-          <button
-            onClick={() => setActiveTab('apikey')}
-            className={`pb-2 font-semibold transition-all border-b-2 ${
-              activeTab === 'apikey'
-                ? 'border-[#003f87] text-[#003f87]'
-                : 'border-transparent text-[#6b7280]'
-            }`}
-          >
-            API Key Auth
-          </button>
+        <div className="px-6 pt-5 flex gap-5 border-b border-ink-100 text-xs">
+          {(
+            [
+              { id: 'credentials', label: 'Govt / RBI Credentials' },
+              { id: 'apikey', label: 'API Key Auth' },
+            ] as const
+          ).map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`pb-3 font-semibold transition-colors border-b-2 cursor-pointer ${
+                activeTab === tab.id
+                  ? 'border-navy-700 text-navy-800'
+                  : 'border-transparent text-ink-400 hover:text-ink-700'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="px-6 pb-6 space-y-4 text-xs">
+        <form onSubmit={handleSubmit} className="px-6 py-5 space-y-4 text-xs">
           {activeTab === 'credentials' ? (
             <>
               <div>
-                <label className="font-bold text-[#1f2937] block mb-1">Official Govt Email (.gov.in / .rbi.org.in):</label>
+                <label className="font-semibold text-ink-900 block mb-1.5">Official Govt Email (.gov.in / .rbi.org.in)</label>
                 <div className="relative">
-                  <UserCheck className="w-4 h-4 absolute left-3 top-2.5 text-[#6b7280]" />
+                  <UserCheck className="w-4 h-4 absolute left-3 top-3 text-ink-400" />
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 border border-[#d0d0d0] rounded focus:outline-none focus:border-[#003f87]"
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="font-bold text-[#1f2937] block mb-1">Password:</label>
+                <label className="font-semibold text-ink-900 block mb-1.5">Password</label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 absolute left-3 top-2.5 text-[#6b7280]" />
+                  <Lock className="w-4 h-4 absolute left-3 top-3 text-ink-400" />
                   <input
                     type="password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2 border border-[#d0d0d0] rounded focus:outline-none focus:border-[#003f87]"
+                    className={inputClass}
                   />
                 </div>
               </div>
             </>
           ) : (
             <div>
-              <label className="font-bold text-[#1f2937] block mb-1">Restricted API Secret Key:</label>
+              <label className="font-semibold text-ink-900 block mb-1.5">Restricted API Secret Key</label>
               <div className="relative">
-                <Key className="w-4 h-4 absolute left-3 top-2.5 text-[#6b7280]" />
+                <Key className="w-4 h-4 absolute left-3 top-3 text-ink-400" />
                 <input
                   type="text"
                   placeholder="apix_live_sec_..."
                   value={apiKey}
                   onChange={(e) => setApiKey(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 border border-[#d0d0d0] rounded font-mono text-xs focus:outline-none focus:border-[#003f87]"
+                  className={`${inputClass} font-mono`}
                 />
               </div>
             </div>
           )}
 
-          <div className="pt-2">
+          <div className="pt-1">
             <button
               type="submit"
-              className="w-full bg-[#003f87] text-white hover:bg-[#002d62] py-2.5 rounded font-bold transition-all shadow-xs"
+              className="w-full bg-navy-700 text-white hover:bg-navy-800 py-2.5 rounded-lg font-semibold transition-colors cursor-pointer"
             >
               Authorize Analyst Session
             </button>
           </div>
 
-          <p className="text-[10px] text-[#6b7280] text-center">
-            Restricted to MoSPI statisticians, RBI monetary policy analysts, and SIH 2026 evaluators.
+          <p className="text-[11px] text-ink-400 text-center leading-relaxed">
+            Restricted to MoSPI statisticians and RBI monetary policy analysts.
           </p>
         </form>
       </div>

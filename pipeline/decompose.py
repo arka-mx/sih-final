@@ -61,12 +61,12 @@ def decompose_matched_flights(
     """
     Centerpiece feature:
     For matched (carrier, flight_no, departure_date, advance_days) across
-    IndiGo-direct and MakeMyTrip, computes:
+    simulated IndiGo direct-channel and simulated MakeMyTrip fixture records, computes:
         inferred_convenience_fee = mmt_total - direct_total
     
     Acts as:
     1. Cross-source outlier and consistency check
-    2. OTA hidden fee / dark-pattern surcharge transparency
+    2. Simulated OTA convenience-fee comparison
     3. Fully auditable back to underlying raw payloads
     """
     direct_index: Dict[Tuple[str, str, str, int], RawFareRecord] = {}
