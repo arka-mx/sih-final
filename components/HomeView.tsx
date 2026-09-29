@@ -69,10 +69,19 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3">
-          <div className="bg-[#f9fafb] p-3.5 rounded border border-[#e5e7eb] text-xs space-y-1">
-            <span className="text-[#6b7280] block font-medium">DGCA Backtest Correlation</span>
+          <div
+            onClick={() => onNavigate('backtest')}
+            className="bg-[#f9fafb] hover:bg-emerald-50/50 hover:border-emerald-300 p-3.5 rounded border border-[#e5e7eb] text-xs space-y-1 cursor-pointer transition-all group"
+            title="Click to view full 30-day DGCA backtesting & validation analysis"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[#6b7280] block font-medium">DGCA Backtest Correlation</span>
+              <span className="text-[10px] text-emerald-700 font-semibold group-hover:underline flex items-center">
+                View 30D Analysis &rarr;
+              </span>
+            </div>
             <span className="text-base font-bold text-emerald-700 flex items-center">
-              <CheckCircle2 className="w-4 h-4 mr-1 text-emerald-600" /> r = 0.892 (Strong)
+              <CheckCircle2 className="w-4 h-4 mr-1 text-emerald-600" /> r = 0.892 (Target Met)
             </span>
           </div>
           <div className="bg-[#f9fafb] p-3.5 rounded border border-[#e5e7eb] text-xs space-y-1">

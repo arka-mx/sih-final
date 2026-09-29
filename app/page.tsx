@@ -10,6 +10,7 @@ import ScrapingEngineView from '@/components/ScrapingEngineView';
 import DataPipelineView from '@/components/DataPipelineView';
 import DataExplorerView from '@/components/DataExplorerView';
 import ApiHubView from '@/components/ApiHubView';
+import BacktestView from '@/components/BacktestView';
 import LoginModal from '@/components/LoginModal';
 
 export default function Page() {
@@ -40,6 +41,7 @@ export default function Page() {
       {/* Main Content Area */}
       <main className="flex-1 max-w-[1280px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'home' && <HomeView onNavigate={setActiveTab} />}
+        {activeTab === 'backtest' && <BacktestView />}
         {activeTab === 'routes' && <RouteExplorerView />}
         {activeTab === 'analysis' && <MarketAnalysisView />}
         {activeTab === 'scrapers' && <ScrapingEngineView />}
