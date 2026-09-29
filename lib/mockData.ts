@@ -104,3 +104,60 @@ export const SCRAPER_LOGS: ScraperLogItem[] = [
   { id: 'SCR-905', source: 'EaseMyTrip Listing', type: 'OTA', route: 'BLR-HYD', status: 'SUCCESS', recordsScraped: 175, responseTimeMs: 390, timestamp: '10:12:00 AM', complianceNote: 'Partner API read-only endpoint' },
   { id: 'SCR-906', source: 'Akasa Air Engine', type: 'Airline', route: 'MAA-DEL', status: 'BLOCKED_QUEUE', recordsScraped: 0, responseTimeMs: 2100, timestamp: '10:10:15 AM', complianceNote: 'CAPTCHA barrier detected, fallback queue' },
 ];
+
+export interface BacktestDataPoint {
+  date: string;
+  displayDate: string;
+  apixIndex: number;
+  dgcaAvgFare: number;
+  impliedFare: number;
+  variancePct: number;
+  trackingResidual: number;
+}
+
+export const BACKTEST_SUMMARY_METRICS = {
+  pearsonR: 0.892,
+  targetR: 0.80,
+  mape: 3.12,
+  targetMape: 3.50,
+  rmse: 142.50,
+  daysEvaluated: 30,
+  pValue: '< 0.0001',
+  periodStart: '2026-08-16',
+  periodEnd: '2026-09-14',
+  status: 'TARGET MET (Pearson r ≥ 0.80)',
+};
+
+export const DGCA_BACKTEST_DATA: BacktestDataPoint[] = [
+  { date: '2026-08-16', displayDate: 'Aug 16', apixIndex: 98.2, dgcaAvgFare: 4380.0, impliedFare: 4380.0, variancePct: 0.00, trackingResidual: 0.0 },
+  { date: '2026-08-17', displayDate: 'Aug 17', apixIndex: 98.5, dgcaAvgFare: 4390.0, impliedFare: 4393.4, variancePct: 0.08, trackingResidual: 3.4 },
+  { date: '2026-08-18', displayDate: 'Aug 18', apixIndex: 98.9, dgcaAvgFare: 4420.0, impliedFare: 4411.2, variancePct: 0.20, trackingResidual: -8.8 },
+  { date: '2026-08-19', displayDate: 'Aug 19', apixIndex: 99.1, dgcaAvgFare: 4440.0, impliedFare: 4420.1, variancePct: 0.45, trackingResidual: -19.9 },
+  { date: '2026-08-20', displayDate: 'Aug 20', apixIndex: 99.3, dgcaAvgFare: 4460.0, impliedFare: 4429.1, variancePct: 0.69, trackingResidual: -30.9 },
+  { date: '2026-08-21', displayDate: 'Aug 21', apixIndex: 99.4, dgcaAvgFare: 4480.0, impliedFare: 4433.5, variancePct: 1.04, trackingResidual: -46.5 },
+  { date: '2026-08-22', displayDate: 'Aug 22', apixIndex: 99.7, dgcaAvgFare: 4500.0, impliedFare: 4446.9, variancePct: 1.18, trackingResidual: -53.1 },
+  { date: '2026-08-23', displayDate: 'Aug 23', apixIndex: 99.9, dgcaAvgFare: 4520.0, impliedFare: 4455.8, variancePct: 1.42, trackingResidual: -64.2 },
+  { date: '2026-08-24', displayDate: 'Aug 24', apixIndex: 100.1, dgcaAvgFare: 4550.0, impliedFare: 4464.8, variancePct: 1.87, trackingResidual: -85.2 },
+  { date: '2026-08-25', displayDate: 'Aug 25', apixIndex: 100.3, dgcaAvgFare: 4570.0, impliedFare: 4473.7, variancePct: 2.11, trackingResidual: -96.3 },
+  { date: '2026-08-26', displayDate: 'Aug 26', apixIndex: 100.6, dgcaAvgFare: 4590.0, impliedFare: 4487.1, variancePct: 2.24, trackingResidual: -102.9 },
+  { date: '2026-08-27', displayDate: 'Aug 27', apixIndex: 100.8, dgcaAvgFare: 4610.0, impliedFare: 4496.0, variancePct: 2.47, trackingResidual: -114.0 },
+  { date: '2026-08-28', displayDate: 'Aug 28', apixIndex: 101.0, dgcaAvgFare: 4630.0, impliedFare: 4504.9, variancePct: 2.70, trackingResidual: -125.1 },
+  { date: '2026-08-29', displayDate: 'Aug 29', apixIndex: 101.1, dgcaAvgFare: 4640.0, impliedFare: 4509.4, variancePct: 2.81, trackingResidual: -130.6 },
+  { date: '2026-08-30', displayDate: 'Aug 30', apixIndex: 101.2, dgcaAvgFare: 4660.0, impliedFare: 4513.8, variancePct: 3.14, trackingResidual: -146.2 },
+  { date: '2026-08-31', displayDate: 'Aug 31', apixIndex: 101.3, dgcaAvgFare: 4680.0, impliedFare: 4518.3, variancePct: 3.46, trackingResidual: -161.7 },
+  { date: '2026-09-01', displayDate: 'Sep 01', apixIndex: 101.4, dgcaAvgFare: 4700.0, impliedFare: 4522.8, variancePct: 3.77, trackingResidual: -177.2 },
+  { date: '2026-09-02', displayDate: 'Sep 02', apixIndex: 101.5, dgcaAvgFare: 4710.0, impliedFare: 4527.2, variancePct: 3.88, trackingResidual: -182.8 },
+  { date: '2026-09-03', displayDate: 'Sep 03', apixIndex: 101.6, dgcaAvgFare: 4730.0, impliedFare: 4531.7, variancePct: 4.19, trackingResidual: -198.3 },
+  { date: '2026-09-04', displayDate: 'Sep 04', apixIndex: 101.8, dgcaAvgFare: 4750.0, impliedFare: 4540.6, variancePct: 4.41, trackingResidual: -209.4 },
+  { date: '2026-09-05', displayDate: 'Sep 05', apixIndex: 101.9, dgcaAvgFare: 4760.0, impliedFare: 4545.1, variancePct: 4.51, trackingResidual: -214.9 },
+  { date: '2026-09-06', displayDate: 'Sep 06', apixIndex: 102.0, dgcaAvgFare: 4780.0, impliedFare: 4549.5, variancePct: 4.82, trackingResidual: -230.5 },
+  { date: '2026-09-07', displayDate: 'Sep 07', apixIndex: 102.1, dgcaAvgFare: 4790.0, impliedFare: 4554.0, variancePct: 4.93, trackingResidual: -236.0 },
+  { date: '2026-09-08', displayDate: 'Sep 08', apixIndex: 102.15, dgcaAvgFare: 4800.0, impliedFare: 4556.2, variancePct: 5.08, trackingResidual: -243.8 },
+  { date: '2026-09-09', displayDate: 'Sep 09', apixIndex: 102.20, dgcaAvgFare: 4810.0, impliedFare: 4558.5, variancePct: 5.23, trackingResidual: -251.5 },
+  { date: '2026-09-10', displayDate: 'Sep 10', apixIndex: 102.25, dgcaAvgFare: 4820.0, impliedFare: 4560.7, variancePct: 5.38, trackingResidual: -259.3 },
+  { date: '2026-09-11', displayDate: 'Sep 11', apixIndex: 102.30, dgcaAvgFare: 4830.0, impliedFare: 4562.9, variancePct: 5.53, trackingResidual: -267.1 },
+  { date: '2026-09-12', displayDate: 'Sep 12', apixIndex: 102.35, dgcaAvgFare: 4840.0, impliedFare: 4565.1, variancePct: 5.68, trackingResidual: -274.9 },
+  { date: '2026-09-13', displayDate: 'Sep 13', apixIndex: 102.40, dgcaAvgFare: 4850.0, impliedFare: 4567.4, variancePct: 5.83, trackingResidual: -282.6 },
+  { date: '2026-09-14', displayDate: 'Sep 14', apixIndex: 102.45, dgcaAvgFare: 4860.0, impliedFare: 4569.6, variancePct: 5.98, trackingResidual: -290.4 },
+];
+

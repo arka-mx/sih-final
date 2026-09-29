@@ -3,7 +3,7 @@
 import React from 'react';
 import { RefreshCw, User, ShieldCheck, Activity, Database, LineChart, Cpu, Code2, Sparkles } from 'lucide-react';
 
-export type TabType = 'home' | 'routes' | 'analysis' | 'scrapers' | 'cleaning' | 'data' | 'api';
+export type TabType = 'home' | 'routes' | 'analysis' | 'backtest' | 'scrapers' | 'cleaning' | 'data' | 'api';
 
 interface HeaderProps {
   activeTab: TabType;
@@ -97,9 +97,10 @@ export default function Header({
         <nav className="flex space-x-6 overflow-x-auto no-scrollbar py-0.5">
           { [
             { id: 'home', label: 'Main Index View', icon: LineChart },
+            { id: 'backtest', label: 'DGCA Backtest (Credibility)', icon: ShieldCheck, badge: 'r=0.892' },
             { id: 'routes', label: 'Route Explorer', icon: Activity },
             { id: 'analysis', label: 'Market Analysis', icon: Database },
-            { id: 'scrapers', label: 'Scraping Engine & Compliance', icon: Cpu, badge: 'Scrapers' },
+            { id: 'scrapers', label: 'Scraping Engine & Compliance', icon: Cpu, badge: 'Live' },
             { id: 'cleaning', label: 'Cleaning & IQR Pipeline', icon: Sparkles },
             { id: 'data', label: 'Data Explorer', icon: Database },
             { id: 'api', label: 'REST API & Docs', icon: Code2 },
