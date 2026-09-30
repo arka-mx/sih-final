@@ -1,0 +1,30 @@
+{
+  "success": true,
+  "data": [
+    {
+      "origin": "DEL",
+      "destination": "BOM",
+      "origin_airport": "DEL",
+      "destination_airport": "BOM",
+      "price": 3450,
+      "airline": "6E",
+      "flight_number": 2041,
+      "departure_at": "2026-10-15T06:30:00+05:30",
+      "transfers": 0,
+      "duration_to": 130
+    },
+    {
+      "origin": "DEL",
+      "destination": "BOM",
+      "origin_airport": "DEL",
+      "destination_airport": "BOM",
+      "price": 6820.5,
+      "airline": "AI",
+      "flight_number": 802,
+      "departure_at": "2026-10-15T09:00:00+05:30",
+      "transfers": 1,
+      "duration_to": 205
+    }
+  ],
+  "currency": "inr"
+}

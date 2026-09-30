@@ -19,6 +19,17 @@ for path in (PROJECT_ROOT, API_ROOT):
     if str(path) not in sys.path:
         sys.path.insert(0, str(path))
 
+# This process is invoked standalone (scheduler/CLI), not through FastAPI, so
+# apix-api/app/config.py's pydantic-settings env_file loading never runs here
+# -- without this, TRAVELPAYOUTS_TOKEN/AMADEUS_API_KEY in apix-api/.env would
+# silently never reach get_travelpayouts_scraper_if_configured()/
+# get_amadeus_scraper_if_configured() below, and both would look unconfigured
+# even after a human filled the keys in. load_dotenv() never overrides a var
+# the shell already set explicitly.
+from dotenv import load_dotenv  # noqa: E402
+
+load_dotenv(API_ROOT / ".env")
+
 # Windows' default ProactorEventLoop tears down asyncpg's SSL transport
 # asynchronously; a second top-level asyncio.run() call later in the same
 # process (this module makes two per cycle: one for persist_pipeline_outputs,
@@ -39,6 +50,7 @@ from pipeline.outlier_detection import run_quality_pipeline
 from pipeline.rollup import persist_weekly_rollup
 from pipeline.schema import CleanedFareRecord
 from scrapers.amadeus_fare_scraper import get_amadeus_scraper_if_configured
+from scrapers.travelpayouts_fare_scraper import get_travelpayouts_scraper_if_configured
 from scrapers.base import FailureClassification
 from scrapers.health_check import run_all_health_checks
 from scrapers.models import RawFareRecord
@@ -287,12 +299,25 @@ def execute_pipeline_cycle(
         for key in DEFAULT_SIMULATED_SOURCE_KEYS
         if key not in {"simulated_indigo", "simulated_makemytrip"}
     ]
-    # Real live source: participates automatically once AMADEUS_API_KEY/
-    # AMADEUS_API_SECRET are set (see scrapers/amadeus_fare_scraper.py);
-    # cleanly absent from the cycle otherwise, not an error.
+    # Real live sources, tried in priority order and inserted at the FRONT of
+    # additional_scrapers so each is attempted before the deterministic
+    # fixtures above. Each is cleanly absent (not an error) until its token
+    # is set -- see scrapers/travelpayouts_fare_scraper.py's module docstring
+    # for why Travelpayouts is first: it is the one real source proven to
+    # actually respond from this environment (a documented JSON API), where
+    # the airline-site scrapers above reliably 404/selector-miss and fall
+    # back to fixtures on every call. If neither real source is configured,
+    # this cycle runs exactly as it always has -- the existing indigo/mmt
+    # scraping (live-with-fallback or simulated per APIX_LIVE_SCRAPING) plus
+    # the simulated fixtures remain the fallback, unchanged.
+    travelpayouts_scraper = get_travelpayouts_scraper_if_configured()
+    if travelpayouts_scraper is not None:
+        additional_scrapers.insert(0, travelpayouts_scraper)
+        logger.info("Travelpayouts live-fare source is configured; it is the first-priority real source this cycle.")
+
     amadeus_scraper = get_amadeus_scraper_if_configured()
     if amadeus_scraper is not None:
-        additional_scrapers.append(amadeus_scraper)
+        additional_scrapers.insert(1 if travelpayouts_scraper is not None else 0, amadeus_scraper)
         logger.info("Amadeus live-fare source is configured; including it in this cycle.")
     raw_indigo: List[RawFareRecord] = []
     raw_mmt: List[RawFareRecord] = []
