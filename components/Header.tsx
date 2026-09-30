@@ -75,7 +75,6 @@ export default function Header({
               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
             </button>
           </div>
-          </div>
 
           <button
             onClick={onOpenLogin}
