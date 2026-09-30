@@ -1,10 +1,8 @@
 """
 Real live-fare client for the Travelpayouts / Aviasales Data API.
 
-Ported from the sibling VIMAAN project (https://github.com/hersheysss3/
-vimaan-airfare-index, backend/vimaan/collect/travelpayouts.py), which adopted
-this API after Amadeus decommissioned its Self-Service tier on 17 July 2026.
-Free registration at https://www.travelpayouts.com, no payment details
+This API was adopted after Amadeus decommissioned its Self-Service tier on
+17 July 2026. Free registration at https://www.travelpayouts.com, no payment details
 required, and unlike this codebase's own indigo_direct/makemytrip scrapers
 (which hit JS-rendered SPAs with a plain httpx GET and reliably 404/
 selector-miss -- see docs/backtest_data.md's sibling investigation), this is
@@ -13,8 +11,8 @@ is registered as the FIRST live source this pipeline attempts each cycle
 (see pipeline/runner.py) precisely because it is the one real source proven
 to actually respond, rather than fall back to a fixture on every call.
 
-METHODOLOGICAL LIMITATION, carried over verbatim from VIMAAN because it
-matters for an official statistic and must never be silently dropped: the
+METHODOLOGICAL LIMITATION, which matters for an official statistic and must
+never be silently dropped: the
 Data API serves prices from a cache built out of *what users searched for*,
 held for up to seven days. That is a selection-biased sample with a
 staleness window, not a designed panel:
