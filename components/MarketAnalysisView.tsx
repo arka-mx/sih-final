@@ -6,16 +6,8 @@ import { HEATMAP_DATA, ELASTICITY_DATA } from '@/lib/mockData';
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import {
-  GridFour as Grid,
-  Sparkle as Sparkles,
-  Info,
-  Pulse as Activity,
-  Warning as AlertTriangle,
-  Stack as Layers,
-  Scales,
-  ChartLineUp as Elasticity,
-} from '@phosphor-icons/react';
+import { Grid, Activity, Layers, Scales, Elasticity } from './icons';
+import { Callout } from './ui/callout';
 
 const WINDOWS = ['T+1', 'T+7', 'T+15', 'T+30', 'T+45'] as const;
 
@@ -99,17 +91,15 @@ export default function MarketAnalysisView() {
   return (
     <div className="space-y-6 animate-fadeIn">
       {DEMO_MODE && (
-        <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold px-4 py-2.5 rounded-xl flex items-center gap-2">
-          <Info className="w-3.5 h-3.5 shrink-0" />
-          Demo mode — showing static sample data, not live APIx backend results.
-        </div>
+        <Callout tone="warning">
+          Demo mode - showing static sample data, not live APIx backend results.
+        </Callout>
       )}
 
       {/* Tab Header */}
       <div className="panel p-6 space-y-4">
         <div>
           <h2 className="text-lg font-semibold text-ink-900">Market Analysis</h2>
-          <p className="text-xs text-ink-500">Fare index methodology, elasticity, and corridor analytics</p>
         </div>
 
         <div className="flex items-center gap-1 overflow-x-auto no-scrollbar border-b border-ink-100 -mx-6 px-6">
@@ -141,11 +131,8 @@ export default function MarketAnalysisView() {
             {(DEMO_MODE || (!dailyIndex.loading && !dailyIndex.error)) && (
               <>
                 {/* Route Weighting Basket Derivation Table */}
-                <div className="panel p-5 space-y-3">
-                  <h4 className="font-semibold text-sm text-ink-900 flex items-center">
-                    <Layers className="w-4 h-4 mr-2 text-navy-700" />
-                    Corridor Sector Contributions
-                  </h4>
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-sm text-ink-900">Corridor Sector Contributions</h4>
                   <p className="text-xs text-ink-500">
                     Weighted contribution of each DGCA corridor to today&apos;s Fisher index.
                   </p>
@@ -181,13 +168,9 @@ export default function MarketAnalysisView() {
                   </div>
                 </div>
 
-                <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-lg flex items-start space-x-3 text-xs text-emerald-950">
-                  <Sparkles className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="block mb-0.5">Methodology Note:</strong>
-                    A naive arithmetic average of scraped fares is upward-biased by low-volume luxury flights. APIx instead uses <strong>elementary Jevons geometric means</strong> aggregated via <strong>DGCA traffic weights</strong>, per MoSPI&apos;s official CPI methodology.
-                  </div>
-                </div>
+                <Callout tone="success" title="Methodology Note">
+                  A naive arithmetic average of scraped fares is upward-biased by low-volume luxury flights. APIx instead uses <strong className="text-ink-900">elementary Jevons geometric means</strong> aggregated via <strong className="text-ink-900">DGCA traffic weights</strong>, per MoSPI&apos;s official CPI methodology.
+                </Callout>
               </>
             )}
           </div>
@@ -196,13 +179,10 @@ export default function MarketAnalysisView() {
         {/* CROSS-SOURCE DIFF SECTION (IndiGo-direct vs MakeMyTrip) */}
         {activeTab === 'cross-source' && (
           <div className="space-y-5 pt-2">
-            <div className="bg-navy-50 border border-navy-200 rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+            <div className="bg-ink-50 border border-ink-100 rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
               <div>
-                <span className="font-semibold text-navy-700 text-sm flex items-center">
-                  <Scales className="w-4 h-4 mr-1.5 text-navy-700" />
-                  Cross-Source Fee Audit: Direct vs. OTA
-                </span>
-                <p className="text-ink-700 mt-1">
+                <span className="font-semibold text-ink-900 text-sm">Cross-Source Fee Audit: Direct vs. OTA</span>
+                <p className="text-ink-500 mt-1">
                   Compares direct-carrier and OTA fixtures for the same flight to isolate consumer markup before
                   CPI basket inclusion.
                 </p>
@@ -211,7 +191,7 @@ export default function MarketAnalysisView() {
                 <select
                   value={sourceRoute}
                   onChange={(e) => setSourceRoute(e.target.value)}
-                  className="text-xs font-mono px-2 py-1.5 rounded-lg border border-navy-200 bg-white cursor-pointer"
+                  className="text-xs font-mono px-2 py-1.5 rounded-lg border border-ink-200 bg-white cursor-pointer"
                 >
                   {['DEL-BOM', 'DEL-BLR', 'BOM-BLR'].map((r) => (
                     <option key={r} value={r}>
@@ -243,16 +223,16 @@ export default function MarketAnalysisView() {
                       <tr key={row.flightNo} className="hover:bg-ink-50/60 transition-colors">
                         <td className="p-3 font-semibold text-ink-900">
                           <span className="font-mono text-navy-700 mr-2">{row.route}</span>
-                          <span className="bg-navy-100 text-navy-700 px-1.5 py-0.5 rounded-md text-[11px] font-mono">{row.flightNo}</span>
+                          <span className="text-navy-700 text-[11px] font-mono">{row.flightNo}</span>
                         </td>
                         <td className="p-3 text-ink-500">{row.departureDate}</td>
                         <td className="p-3 text-right font-medium font-tabular">₹{row.directTotal.toLocaleString()}</td>
                         <td className="p-3 text-right font-medium text-ink-900 font-tabular">₹{row.mmtTotal.toLocaleString()}</td>
-                        <td className="p-3 text-right font-semibold text-amber-700 bg-amber-50/50 font-tabular">
+                        <td className="p-3 text-right font-semibold text-amber-700 font-tabular">
                           {row.markup >= 0 ? '+' : ''}₹{row.markup} <span className="text-[10px] text-amber-600 block font-normal">(Convenience Fee)</span>
                         </td>
                         <td className="p-3 text-center">
-                          <span className="inline-block text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200" title={row.auditRefDirect}>
+                          <span className="inline-block text-[10px] font-mono text-emerald-700" title={row.auditRefDirect}>
                             Raw JSON Stored
                           </span>
                         </td>
@@ -270,12 +250,9 @@ export default function MarketAnalysisView() {
               </div>
             )}
 
-            <div className="bg-ink-50 p-4 rounded-lg border border-ink-100 flex items-start space-x-3 text-xs text-ink-500">
-              <Info className="w-4 h-4 text-navy-700 shrink-0 mt-0.5" />
-              <p>
-                <strong>Methodology Distinction for NSO/MoSPI:</strong> Direct carrier scrapers (IndiGo) capture base fare and mandatory UDF/CUTE charges. OTA scrapers (MakeMyTrip) capture total consumer out-of-pocket costs including non-refundable convenience charges. The difference is isolated here to preserve pure price index integrity vs. retail expenditure tracking.
-              </p>
-            </div>
+            <Callout tone="info" title="Methodology Distinction for NSO/MoSPI">
+              Direct carrier scrapers (IndiGo) capture base fare and mandatory UDF/CUTE charges. OTA scrapers (MakeMyTrip) capture total consumer out-of-pocket costs including non-refundable convenience charges. The difference is isolated here to preserve pure price index integrity vs. retail expenditure tracking.
+            </Callout>
           </div>
         )}
 
@@ -283,10 +260,7 @@ export default function MarketAnalysisView() {
         {activeTab === 'heatmap' && (
           <div className="space-y-4 pt-2">
             <div className="flex justify-between items-center">
-              <h3 className="text-sm font-semibold text-ink-900 flex items-center">
-                <Grid className="w-4 h-4 mr-1.5 text-navy-700" />
-                Fare Matrix: Route vs. Booking Window (₹ Average)
-              </h3>
+              <h3 className="text-sm font-semibold text-ink-900">Fare Matrix: Route vs. Booking Window (₹ Average)</h3>
               <div className="flex items-center space-x-3 text-xs">
                 <span className="text-ink-500">Legend:</span>
                 <span className="flex items-center text-ink-700"><span className="w-3 h-3 bg-navy-800 rounded-md mr-1"></span> Expensive (₹7k+)</span>
@@ -333,12 +307,9 @@ export default function MarketAnalysisView() {
               </div>
             )}
 
-            <div className="bg-ink-50 p-4 rounded-lg border border-ink-100 flex items-start space-x-3 text-xs text-ink-500">
-              <Info className="w-4 h-4 text-navy-700 shrink-0 mt-0.5" />
-              <p>
-                <strong>Statistical Insight for Inflation Analysts:</strong> Fares experience severe non-linear escalation within $T+7$ window due to airline revenue management algorithms. Tracking $T+15$ and $T+30$ provides a more stable baseline for core CPI inflation calculation.
-              </p>
-            </div>
+            <Callout tone="info" title="Statistical Insight for Inflation Analysts">
+              Fares experience severe non-linear escalation within the T+7 window due to airline revenue management algorithms. Tracking T+15 and T+30 provides a more stable baseline for core CPI inflation calculation.
+            </Callout>
           </div>
         )}
 
@@ -364,27 +335,27 @@ export default function MarketAnalysisView() {
               </div>
             )}
 
-            <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-lg flex items-center space-x-3 text-xs text-emerald-900">
-              <Sparkles className="w-5 h-5 text-emerald-600 shrink-0" />
+            <Callout
+              tone="success"
+              title={
+                DEMO_MODE || !trends.data?.optimalWindow
+                  ? 'Sweet Spot Recommendation'
+                  : `Optimal Booking Window: ${trends.data.optimalWindow.optimalWindow}`
+              }
+            >
               {DEMO_MODE || !trends.data?.optimalWindow ? (
-                <div>
-                  <span className="font-semibold block">Sweet Spot Recommendation:</span>
-                  Booking 15 to 30 days in advance consistently yields lower fares than last-minute (T+1) pricing across the monitored basket.
-                </div>
+                <>Booking 15 to 30 days in advance consistently yields lower fares than last-minute (T+1) pricing across the monitored basket.</>
               ) : (
-                <div>
-                  <span className="font-semibold block">
-                    Optimal Booking Window: {trends.data.optimalWindow.optimalWindow}
-                  </span>
+                <>
                   Average fare ₹{trends.data.optimalWindow.optimalAvgFare.toLocaleString('en-IN')} at{' '}
                   {trends.data.optimalWindow.optimalWindow} vs ₹
                   {trends.data.optimalWindow.worstAvgFare.toLocaleString('en-IN')} at{' '}
-                  {trends.data.optimalWindow.worstWindow} — a saving of{' '}
+                  {trends.data.optimalWindow.worstWindow} - a saving of{' '}
                   ₹{trends.data.optimalWindow.savingsAmount.toLocaleString('en-IN')} (
                   {trends.data.optimalWindow.savingsPct}%) across the monitored basket.
-                </div>
+                </>
               )}
-            </div>
+            </Callout>
           </div>
         )}
 
@@ -393,10 +364,7 @@ export default function MarketAnalysisView() {
           <div className="space-y-6 pt-2">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <h3 className="text-sm font-semibold text-ink-900 flex items-center">
-                  <Activity className="w-4 h-4 mr-1.5 text-navy-700" />
-                  Corridor Price Volatility
-                </h3>
+                <h3 className="text-sm font-semibold text-ink-900">Corridor Price Volatility</h3>
                 <p className="text-xs text-ink-500">
                   Coefficient of variation across each corridor&apos;s T+1..T+45 average fares. Higher values indicate
                   aggressive lead-time-based pricing.
@@ -413,7 +381,7 @@ export default function MarketAnalysisView() {
             {!DEMO_MODE && trends.error && <ErrorPanel message={trends.error} onRetry={trends.refetch} />}
 
             {(DEMO_MODE || (!trends.loading && !trends.error)) && (
-              <div className="panel h-[280px] p-4">
+              <div className="h-[280px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={
@@ -449,16 +417,10 @@ export default function MarketAnalysisView() {
               </div>
             )}
 
-            <div className="p-4 border border-amber-200 rounded-lg bg-amber-50/40 text-xs">
-              <h4 className="font-semibold text-amber-900 mb-2 flex items-center">
-                <AlertTriangle className="w-4 h-4 mr-1.5 text-amber-600" />
-                Reading This Chart
-              </h4>
-              <p className="text-[11px] text-ink-500">
-                Volatility here is derived from the spread between a corridor&apos;s cheapest (T+45) and most urgent (T+1)
-                average fares — a proxy for revenue-management aggressiveness, not intraday price capture.
-              </p>
-            </div>
+            <Callout tone="warning" title="Reading This Chart">
+              Volatility here is derived from the spread between a corridor&apos;s cheapest (T+45) and most urgent (T+1)
+              average fares - a proxy for revenue-management aggressiveness, not intraday price capture.
+            </Callout>
           </div>
         )}
       </div>

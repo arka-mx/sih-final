@@ -30,7 +30,7 @@ from index_math.engine import compute_daily_aggregate_indices, BASE_PERIOD_ROUTE
 from index_math.weights import DGCA_ROUTE_TRAFFIC_SHARE
 
 # Create engine. Supabase's Postgres requires TLS, and its pooler/direct
-# connections get dropped after a period of idleness — pool_pre_ping
+# connections get dropped after a period of idleness - pool_pre_ping
 # validates a connection before handing it out instead of surfacing a stale
 # "connection is closed" InterfaceError on the next query.
 _connect_args = {}

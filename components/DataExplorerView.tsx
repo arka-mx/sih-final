@@ -5,8 +5,9 @@ import { MOCK_RAW_FARES } from '@/lib/mockData';
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { MagnifyingGlass as Search, Download, Copy, Check, X, Funnel as Filter } from '@phosphor-icons/react';
+import { Search, Download, Copy, Check, X, Filter } from './icons';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Callout } from './ui/callout';
 
 interface ApiFareRecord {
   id: string;
@@ -96,9 +97,9 @@ export default function DataExplorerView() {
   return (
     <div className="space-y-6 animate-fadeIn">
       {DEMO_MODE && (
-        <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold px-4 py-2.5 rounded-xl">
-          Demo mode — showing static sample data, not live APIx backend results.
-        </div>
+        <Callout tone="warning">
+          Demo mode - showing static sample data, not live APIx backend results.
+        </Callout>
       )}
 
       {/* Header & Controls */}
@@ -113,7 +114,7 @@ export default function DataExplorerView() {
         {/* Search & Filter Bar */}
         <div className="flex flex-col md:flex-row gap-3">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3 top-3 text-ink-500" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" />
             <input
               type="text"
               placeholder="Search route, airline, or source..."
@@ -134,7 +135,7 @@ export default function DataExplorerView() {
           <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-ink-500 shrink-0" />
             <Select value={selectedRoute} onValueChange={(v) => v && setSelectedRoute(v)}>
-              <SelectTrigger className="h-9 w-36 text-xs">
+              <SelectTrigger className="h-9! w-36 text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent alignItemWithTrigger={false} sideOffset={6} className="p-1">
@@ -147,7 +148,7 @@ export default function DataExplorerView() {
             </Select>
 
             <Select value={selectedAirline} onValueChange={(v) => v && setSelectedAirline(v)}>
-              <SelectTrigger className="h-9 w-36 text-xs">
+              <SelectTrigger className="h-9! w-36 text-xs">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent alignItemWithTrigger={false} sideOffset={6} className="p-1">
@@ -233,7 +234,7 @@ export default function DataExplorerView() {
                     <td className="p-3 font-semibold text-ink-900 font-mono">{f.route}</td>
                     <td className="p-3 font-medium">{f.airline}</td>
                     <td className="p-3">
-                      <span className="bg-navy-50 text-navy-700 text-[10px] font-semibold px-2 py-0.5 rounded-md">
+                      <span className="text-[10px] font-semibold text-navy-700 font-mono">
                         {f.bookingWindow}
                       </span>
                     </td>

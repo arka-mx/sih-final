@@ -94,7 +94,7 @@ def detect_scarcity_messaging(records: List[RawFareRecord]) -> List[DarkPatternF
 
     Two tiers:
     - SCARCITY_COPY_MISMATCH (HIGH): copy claims urgency/scarcity while the
-      underlying seat_availability_flag still reports AVAILABLE — the
+      underlying seat_availability_flag still reports AVAILABLE - the
       strongest signal that the messaging isn't backed by real inventory
       state.
     - SCARCITY_MESSAGING (MEDIUM): copy claims urgency and the availability

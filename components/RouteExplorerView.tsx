@@ -6,8 +6,9 @@ import { AIRLINE_COMPARISON, ELASTICITY_DATA, POPULAR_ROUTES } from '@/lib/mockD
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { Download, Funnel as Filter, ShareNetwork as Share2, Check, Calendar, AirplaneTakeoff as PlaneTakeoff } from '@phosphor-icons/react';
+import { Download, Share2, Check, Calendar, PlaneTakeoff } from './icons';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Callout } from './ui/callout';
 
 interface ApiFareRecord {
   id: string;
@@ -35,7 +36,7 @@ interface RouteMetadataResponse {
   routes: RouteMetaItem[];
 }
 
-// Fallback list used until the live route basket loads (or in demo mode) —
+// Fallback list used until the live route basket loads (or in demo mode) -
 // keeps the picker limited to routes that actually exist in the DGCA basket,
 // instead of letting origin/destination be chosen independently, which let
 // users land on unmonitored pairs like BOM-DEL or CCU-HYD that 404.
@@ -63,7 +64,7 @@ export default function RouteExplorerView() {
   const [linkCopied, setLinkCopied] = useState(false);
 
   // The default selection ('DEL-BOM') is present in both the fallback list
-  // and every real route basket, so no reconciliation effect is needed —
+  // and every real route basket, so no reconciliation effect is needed -
   // just fall back to the first available route if a stale pair ever isn't found.
   const selectedRoute = availableRoutes.find((r) => r.pair === pair) ?? availableRoutes[0];
   const fromCity = selectedRoute?.origin ?? pair.split('-')[0];
@@ -156,23 +157,20 @@ export default function RouteExplorerView() {
   return (
     <div className="space-y-6 animate-fadeIn">
       {DEMO_MODE && (
-        <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold px-4 py-2.5 rounded-xl">
-          Demo mode — showing static sample data, not live APIx backend results.
-        </div>
+        <Callout tone="warning">
+          Demo mode - showing static sample data, not live APIx backend results.
+        </Callout>
       )}
 
       {/* Route Filter Controls */}
       <div className="panel p-6 space-y-5">
-        <div className="flex items-center gap-2 text-ink-900 font-semibold text-sm">
-          <Filter className="w-4 h-4 text-navy-700" />
-          <span>Route Explorer</span>
-        </div>
+        <div className="text-ink-900 font-semibold text-sm">Route Explorer</div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-2 space-y-1.5">
             <label className="text-[10.5px] font-semibold text-ink-400 uppercase tracking-wide">Route</label>
             <Select value={pair} onValueChange={(value) => value && setPair(value)}>
-              <SelectTrigger className="w-full h-10 rounded-lg border-ink-200 text-xs [&_svg]:text-ink-400">
+              <SelectTrigger className="w-full h-10! rounded-lg border-ink-200 text-xs [&_svg]:text-ink-400">
                 <PlaneTakeoff className="w-4 h-4 text-ink-500 shrink-0" />
                 <SelectValue />
               </SelectTrigger>
@@ -232,7 +230,7 @@ export default function RouteExplorerView() {
           <div className="lg:col-span-2 panel p-6 space-y-4">
             <div className="flex justify-between items-center border-b border-ink-100 pb-3">
               <div>
-                <h3 className="text-base font-semibold text-ink-900 font-mono">
+                <h3 className="text-base font-semibold text-ink-900">
                   {fromCity} → {toCity} | {windowFilter} Lead Time Trend
                 </h3>
                 <p className="text-xs text-ink-500">
@@ -246,7 +244,7 @@ export default function RouteExplorerView() {
               <div className="text-right">
                 <span className="text-xs text-ink-500">Median Fare</span>
                 <span className="text-base font-semibold text-navy-700 block font-tabular">
-                  {summary ? `₹${Math.round(summary.median_fare).toLocaleString()}` : '—'}
+                  {summary ? `₹${Math.round(summary.median_fare).toLocaleString()}` : '-'}
                 </span>
               </div>
             </div>
@@ -290,14 +288,14 @@ export default function RouteExplorerView() {
                 </button>
               </div>
               <span className="text-[11px] text-ink-500">
-                IQR Spread: <strong className="text-ink-900 font-tabular">{summary ? `₹${Math.round(summary.iqr_spread).toLocaleString()}` : '—'}</strong>
+                IQR Spread: <strong className="text-ink-900 font-tabular">{summary ? `₹${Math.round(summary.iqr_spread).toLocaleString()}` : '-'}</strong>
               </span>
             </div>
           </div>
 
           {/* Airline Breakdown Panel */}
           <div className="panel p-6 space-y-4">
-            <h3 className="text-base font-semibold text-ink-900 border-b border-ink-100 pb-2 font-mono">
+            <h3 className="text-base font-semibold text-ink-900 border-b border-ink-100 pb-2">
               Airline Price Comparison ({fromCity}–{toCity})
             </h3>
 
@@ -330,7 +328,7 @@ export default function RouteExplorerView() {
                 {displayElasticity.map((e) => (
                   <div key={e.window} className="flex justify-between py-1 border-b border-ink-50">
                     <span className="text-ink-500">{e.label}:</span>
-                    <span className="font-semibold text-ink-900 font-tabular">{e.avgFare != null ? `₹${Math.round(e.avgFare).toLocaleString()}` : '—'}</span>
+                    <span className="font-semibold text-ink-900 font-tabular">{e.avgFare != null ? `₹${Math.round(e.avgFare).toLocaleString()}` : '-'}</span>
                   </div>
                 ))}
               </div>

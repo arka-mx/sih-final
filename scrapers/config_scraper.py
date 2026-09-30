@@ -138,7 +138,7 @@ class ConfigDrivenScraper(BaseScraper):
             fake_seats_left = 1 + (idx % scarcity_n)
             return "AVAILABLE", f"Hurry! Only {fake_seats_left} seats left at this price."
         if high_demand_n and idx % high_demand_n == high_demand_n - 1:
-            return "FEW_SEATS_LEFT", "Selling fast — high demand on this route."
+            return "FEW_SEATS_LEFT", "Selling fast - high demand on this route."
         return "AVAILABLE", None
 
     def _simulate_fare_cookie(self, idx: int, total: float) -> Optional[List[float]]:

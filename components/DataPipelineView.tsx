@@ -5,7 +5,8 @@ import { CleanedFareItem, MOCK_CLEANED_FARES, MOCK_PIPELINE_AUDIT, PipelineAudit
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { Sparkle as Sparkles, CheckCircle as CheckCircle2, Play, Prohibit as Ban, ArrowsClockwise as RefreshCw, Stack as Layers } from '@phosphor-icons/react';
+import { CheckCircle2, Play, Ban, RefreshCw } from './icons';
+import { StatusTag } from './ui/status-tag';
 
 interface PipelineCleanApiResponse {
   auditSummary: PipelineAuditSummary;
@@ -41,10 +42,7 @@ export default function DataPipelineView() {
       {/* Header Banner */}
       <div className="panel p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-ink-900 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-navy-700" />
-            Data Cleaning &amp; Outlier Detection
-          </h2>
+          <h2 className="text-xl font-semibold text-ink-900">Data Cleaning &amp; Outlier Detection</h2>
           <p className="text-xs text-ink-500 mt-1 max-w-lg">
             Normalizes currency, removes duplicate sessions, and filters CPI index eligibility from raw scrape payloads.
           </p>
@@ -99,54 +97,32 @@ export default function DataPipelineView() {
           <span className="text-xl font-semibold text-ink-400 font-tabular">{auditSummary.sold_out_excluded}</span>
         </div>
 
-        <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-200 text-center">
-          <span className="text-[11px] text-emerald-800 block font-medium">CPI Eligible Basket</span>
+        <div className="panel p-4 text-center">
+          <span className="text-[11px] text-ink-500 block font-medium">CPI Eligible Basket</span>
           <span className="text-xl font-semibold text-emerald-700 font-tabular">{auditSummary.cpi_eligible_records}</span>
         </div>
       </div>
 
       {/* 5-Stage Pipeline Process Diagram */}
       <div className="panel p-6 space-y-4">
-        <h3 className="text-sm font-semibold text-ink-900 flex items-center">
-          <Layers className="w-4 h-4 mr-2 text-navy-700" />
-          Normalization Pipeline
-        </h3>
+        <h3 className="text-sm font-semibold text-ink-900">Normalization Pipeline</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
-          <div className="p-3 bg-ink-50 border border-ink-100 rounded-lg space-y-1">
-            <span className="font-semibold text-navy-700 block">1. Parser &amp; Mapping</span>
-            <p className="text-[11px] text-ink-500">
-              Extracts core schema attributes (carrier, flight_no, dates, taxes/UDF, convenience fee, base fare).
-            </p>
-          </div>
-
-          <div className="p-3 bg-ink-50 border border-ink-100 rounded-lg space-y-1">
-            <span className="font-semibold text-navy-700 block">2. Currency &amp; Imputation</span>
-            <p className="text-[11px] text-ink-500">
-              Cleans ₹ strings and applies the standard 78% base-fare / 22% taxes &amp; UDF split when a leg is missing.
-            </p>
-          </div>
-
-          <div className="p-3 bg-ink-50 border border-ink-100 rounded-lg space-y-1">
-            <span className="font-semibold text-navy-700 block">3. De-duplication</span>
-            <p className="text-[11px] text-ink-500">
-              Fingerprints carrier-flight-departure-window-source to prevent duplicate scrape inflation.
-            </p>
-          </div>
-
-          <div className="p-3 bg-ink-50 border border-ink-100 rounded-lg space-y-1">
-            <span className="font-semibold text-navy-700 block">4. IQR &amp; Z-Score Filter</span>
-            <p className="text-[11px] text-ink-500">
-              Calculates Q1, Q3, IQR and flags extreme fares (|Z| &gt; 2.5) per route-window.
-            </p>
-          </div>
-
-          <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg space-y-1">
-            <span className="font-semibold text-emerald-900 block">5. Basket Verification</span>
-            <p className="text-[11px] text-emerald-700">
-              Flags sold-out / cancelled flights for load-factor analytics while keeping CPI index pure.
-            </p>
-          </div>
+          {[
+            { label: 'Parser & Mapping', body: 'Extracts core schema attributes (carrier, flight_no, dates, taxes/UDF, convenience fee, base fare).' },
+            { label: 'Currency & Imputation', body: 'Cleans ₹ strings and applies the standard 78% base-fare / 22% taxes & UDF split when a leg is missing.' },
+            { label: 'De-duplication', body: 'Fingerprints carrier-flight-departure-window-source to prevent duplicate scrape inflation.' },
+            { label: 'IQR & Z-Score Filter', body: 'Calculates Q1, Q3, IQR and flags extreme fares (|Z| > 2.5) per route-window.' },
+            { label: 'Basket Verification', body: 'Flags sold-out / cancelled flights for load-factor analytics while keeping CPI index pure.' },
+          ].map((stage, idx) => (
+            <div key={stage.label} className="p-3 bg-ink-50 border border-ink-100 rounded-lg space-y-1.5">
+              <span className="w-5 h-5 rounded-full bg-ink-900 text-white text-[10px] font-semibold flex items-center justify-center font-tabular">
+                {idx + 1}
+              </span>
+              <span className="font-semibold text-ink-900 block">{stage.label}</span>
+              <p className="text-[11px] text-ink-500">{stage.body}</p>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -216,53 +192,31 @@ export default function DataPipelineView() {
                     </span>
                   </td>
                   <td className="p-3">
-                    {rec.seat_availability_flag === 'AVAILABLE' && (
-                      <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md text-[10px] font-semibold">
-                        Available
-                      </span>
-                    )}
-                    {rec.seat_availability_flag === 'FEW_SEATS_LEFT' && (
-                      <span className="text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md text-[10px] font-semibold">
-                        Few Seats
-                      </span>
-                    )}
+                    {rec.seat_availability_flag === 'AVAILABLE' && <StatusTag tone="success">Available</StatusTag>}
+                    {rec.seat_availability_flag === 'FEW_SEATS_LEFT' && <StatusTag tone="warning">Few Seats</StatusTag>}
                     {(rec.seat_availability_flag === 'SOLD_OUT' || rec.seat_availability_flag === 'CANCELLED') && (
-                      <span className="text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md text-[10px] font-semibold flex items-center">
-                        <Ban className="w-3 h-3 mr-0.5" /> {rec.seat_availability_flag === 'SOLD_OUT' ? 'Sold Out' : 'Cancelled'}
-                      </span>
+                      <StatusTag tone="danger" icon={Ban}>{rec.seat_availability_flag === 'SOLD_OUT' ? 'Sold Out' : 'Cancelled'}</StatusTag>
                     )}
                   </td>
-                  <td className="p-3">
-                    {rec.is_duplicate && (
-                      <span className="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-md">
-                        Duplicate Merged
-                      </span>
-                    )}
+                  <td className="p-3 space-y-0.5">
+                    {rec.is_duplicate && <StatusTag tone="warning">Duplicate Merged</StatusTag>}
                     {rec.is_outlier && (
-                      <span className="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-md block" title={rec.outlier_reason ?? undefined}>
-                        Outlier Flagged
-                      </span>
+                      <StatusTag tone="danger" className="block" >
+                        <span title={rec.outlier_reason ?? undefined}>Outlier Flagged</span>
+                      </StatusTag>
                     )}
                     {rec.imputation_applied && (
-                      <span className="bg-navy-50 text-navy-700 text-[10px] font-semibold px-2 py-0.5 rounded-md inline-block mt-0.5">
-                        Imputed ({rec.imputed_fields.join(', ')})
-                      </span>
+                      <StatusTag tone="info" className="block">Imputed ({rec.imputed_fields.join(', ')})</StatusTag>
                     )}
                     {!rec.is_duplicate && !rec.is_outlier && !rec.imputation_applied && (
-                      <span className="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-md">
-                        Verified Clean
-                      </span>
+                      <StatusTag tone="success">Verified Clean</StatusTag>
                     )}
                   </td>
                   <td className="p-3 text-center">
                     {rec.include_in_cpi_index ? (
-                      <span className="inline-flex items-center text-emerald-700 font-semibold text-[11px]">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 mr-1" /> Included
-                      </span>
+                      <StatusTag tone="success" icon={CheckCircle2} className="text-[11px]">Included</StatusTag>
                     ) : (
-                      <span className="inline-flex items-center text-ink-400 text-[11px]">
-                        <Ban className="w-3.5 h-3.5 mr-1" /> Excluded
-                      </span>
+                      <StatusTag tone="neutral" icon={Ban} className="text-[11px]">Excluded</StatusTag>
                     )}
                   </td>
                 </tr>

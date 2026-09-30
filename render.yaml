@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: apix-api
+    runtime: docker
+    dockerfilePath: ./apix-api/Dockerfile
+    dockerContext: .
+    plan: starter
+    healthCheckPath: /docs
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: apix-redis
+          property: connectionString
+      - key: APIX_RAW_STORE_DIR
+        value: /app/data/raw_store
+      - key: API_KEYS
+        sync: false
+      - key: RATE_LIMIT_PUBLIC
+        value: "30"
+      - key: RATE_LIMIT_AUTH
+        value: "600"
+
+  - type: worker
+    name: apix-pipeline-scheduler
+    runtime: docker
+    dockerfilePath: ./apix-api/Dockerfile
+    dockerContext: .
+    dockerCommand: python -m pipeline.scheduler
+    plan: starter
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: APIX_RAW_STORE_DIR
+        value: /app/data/raw_store
+    disk:
+      name: raw-store
+      mountPath: /app/data/raw_store
+      sizeGB: 1
+
+  - type: redis
+    name: apix-redis
+    plan: starter
+    ipAllowList: []

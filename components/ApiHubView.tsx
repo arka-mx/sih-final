@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Code as Code2, Play, Copy, Check, Terminal, ArrowSquareOut as ExternalLink, ShieldCheck, Key, Info } from '@phosphor-icons/react';
+import { Play, Copy, Check, Terminal, ExternalLink, ShieldCheck } from './icons';
+import { StatusTag } from './ui/status-tag';
 
 interface EndpointConfig {
   path: string;
@@ -197,10 +198,7 @@ export default function ApiHubView() {
       {/* Header */}
       <div className="panel p-6 space-y-3">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-xs font-semibold text-navy-700 uppercase tracking-wider">
-            <Code2 className="w-4 h-4 text-navy-700" />
-            <span>FastAPI REST Layer</span>
-          </div>
+          <h2 className="text-xl font-semibold text-ink-900">Airfare Price Index API</h2>
           <div className="flex items-center space-x-2">
             <a
               href={`${apiBaseUrl}/docs`}
@@ -223,9 +221,8 @@ export default function ApiHubView() {
           </div>
         </div>
 
-        <h2 className="text-xl font-semibold text-ink-900">Airfare Price Index API</h2>
         <p className="text-xs text-ink-500">
-          REST endpoints for MoSPI/NSO and RBI integration.
+          FastAPI REST endpoints for MoSPI/NSO and RBI integration.
         </p>
 
         {/* API Base URL and Credentials Bar */}
@@ -244,60 +241,34 @@ export default function ApiHubView() {
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold text-ink-500 mb-1 flex items-center space-x-1">
-              <Key className="w-3 h-3 text-navy-700" />
-              <span>API Key Persona</span>
-            </label>
+            <label className="block text-[11px] font-semibold text-ink-500 mb-1">API Key Persona</label>
             {isDev ? (
               <div className="space-y-1.5">
-                <div className="text-[10px] text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md font-medium">
-                  DEMO MODE — Keys are local-only and rotate in production.
-                </div>
+                <p className="text-[10px] text-ink-400 font-medium">
+                  Demo mode - keys are local-only and rotate in production.
+                </p>
                 <div className="flex space-x-2">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole('none')}
-                    className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors ${
-                      selectedRole === 'none'
-                        ? 'bg-ink-900 text-white border-ink-900'
-                        : 'bg-ink-50 text-ink-700 hover:bg-ink-100 border-ink-200'
-                    }`}
-                  >
-                    Public
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole('nso')}
-                    className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors ${
-                      selectedRole === 'nso'
-                        ? 'bg-navy-700 text-white border-navy-700'
-                        : 'bg-navy-50 text-navy-800 hover:bg-navy-100 border-navy-200'
-                    }`}
-                  >
-                    NSO Team
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole('rbi')}
-                    className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors ${
-                      selectedRole === 'rbi'
-                        ? 'bg-emerald-700 text-white border-emerald-700'
-                        : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border-emerald-200'
-                    }`}
-                  >
-                    RBI Analyst
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole('custom')}
-                    className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors ${
-                      selectedRole === 'custom'
-                        ? 'bg-purple-700 text-white border-purple-700'
-                        : 'bg-purple-50 text-purple-800 hover:bg-purple-100 border-purple-200'
-                    }`}
-                  >
-                    Custom
-                  </button>
+                  {(
+                    [
+                      { id: 'none', label: 'Public' },
+                      { id: 'nso', label: 'NSO Team' },
+                      { id: 'rbi', label: 'RBI Analyst' },
+                      { id: 'custom', label: 'Custom' },
+                    ] as const
+                  ).map((role) => (
+                    <button
+                      key={role.id}
+                      type="button"
+                      onClick={() => setSelectedRole(role.id)}
+                      className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors ${
+                        selectedRole === role.id
+                          ? 'bg-ink-900 text-white border-ink-900'
+                          : 'bg-ink-50 text-ink-700 hover:bg-ink-100 border-ink-200'
+                      }`}
+                    >
+                      {role.label}
+                    </button>
+                  ))}
                 </div>
               </div>
             ) : (
@@ -343,38 +314,35 @@ export default function ApiHubView() {
                     setApiResponse(null);
                     setHttpStatus(null);
                   }}
-                  className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                  className={`p-3 rounded-lg border-l-[3px] border cursor-pointer transition-all ${
                     isSelected
-                      ? 'bg-navy-50 border-navy-700'
-                      : 'bg-ink-50 border-ink-100 hover:bg-white'
+                      ? 'bg-navy-50 border-l-navy-700 border-navy-200'
+                      : 'bg-ink-50 border-l-transparent border-ink-100 hover:bg-white hover:border-l-ink-300'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center space-x-1.5">
-                      <span
-                        className={`text-[10px] font-mono font-semibold uppercase px-2 py-0.5 rounded-md border ${
-                          ep.method === 'GET'
-                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                            : 'bg-navy-50 text-navy-700 border-navy-200'
-                        }`}
-                      >
-                        {ep.method}
-                      </span>
-                      <span className="font-mono text-xs font-semibold text-navy-700">
-                        {ep.path.split('?')[0]}
-                      </span>
-                    </div>
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <span
+                      className={`shrink-0 text-[10px] font-mono font-bold uppercase px-1.5 py-0.5 rounded ${
+                        ep.method === 'GET'
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : 'bg-navy-100 text-navy-700'
+                      }`}
+                    >
+                      {ep.method}
+                    </span>
                     {ep.authRequired ? (
-                      <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200 flex items-center space-x-0.5">
-                        <ShieldCheck className="w-2.5 h-2.5" />
-                        <span>Key Required</span>
-                      </span>
+                      <StatusTag tone="warning" icon={ShieldCheck} className="shrink-0 whitespace-nowrap text-[9px]">
+                        Key Required
+                      </StatusTag>
                     ) : (
-                      <span className="text-[9px] font-semibold px-1.5 py-0.5 rounded-md bg-ink-100 text-ink-700">
+                      <StatusTag tone="neutral" className="shrink-0 whitespace-nowrap text-[9px]">
                         Public
-                      </span>
+                      </StatusTag>
                     )}
                   </div>
+                  <p className="font-mono text-xs font-semibold text-navy-700 break-all leading-snug mb-1">
+                    {ep.path.split('?')[0]}
+                  </p>
                   <p className="text-[11px] text-ink-500 leading-snug">{ep.desc}</p>
                 </div>
               );
@@ -420,13 +388,13 @@ export default function ApiHubView() {
                       : 'text-ink-500'
                   }`}
                 >
-                  {httpStatus ? `${httpStatus} ${httpStatus === 200 ? 'OK' : ''}` : '—'}
+                  {httpStatus ? `${httpStatus} ${httpStatus === 200 ? 'OK' : ''}` : '-'}
                 </span>
               </div>
               <div>
                 <span className="text-[10px] text-ink-500 block">Latency</span>
                 <span className="font-mono font-semibold font-tabular text-ink-700">
-                  {responseTime !== null ? `${responseTime} ms` : '—'}
+                  {responseTime !== null ? `${responseTime} ms` : '-'}
                 </span>
               </div>
               <div>
@@ -434,13 +402,13 @@ export default function ApiHubView() {
                 <span className="font-mono font-semibold font-tabular text-navy-700">
                   {rateLimitInfo.remaining !== null
                     ? `${rateLimitInfo.remaining} / ${rateLimitInfo.limit}`
-                    : '—'}
+                    : '-'}
                 </span>
               </div>
               <div>
                 <span className="text-[10px] text-ink-500 block">Limiter Backend</span>
                 <span className="font-mono font-semibold text-ink-700">
-                  {rateLimitInfo.backend || '—'}
+                  {rateLimitInfo.backend || '-'}
                 </span>
               </div>
             </div>
@@ -472,7 +440,7 @@ export default function ApiHubView() {
               <pre className="whitespace-pre-wrap text-[11px] leading-relaxed text-ink-100">
                 {apiResponse ||
                   `// Select an endpoint above, then Send Live Request\n// Base URL: ${apiBaseUrl}\n// API Key: ${
-                    getEffectiveApiKey() || '(none — public mode)'
+                    getEffectiveApiKey() || '(none - public mode)'
                   }`}
               </pre>
             </div>
@@ -480,12 +448,9 @@ export default function ApiHubView() {
 
           {/* Compliance Footer */}
           <div className="bg-ink-50 p-3 rounded-lg border border-ink-100 text-xs text-ink-500 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
-            <span className="flex items-center space-x-1">
-              <Info className="w-3.5 h-3.5 text-navy-700 shrink-0" />
-              <span>
-                Rate Limits: <strong className="font-semibold">30 req/min</strong> for Public IP •{' '}
-                <strong className="font-semibold">600 req/min</strong> for NSO/RBI API Keys.
-              </span>
+            <span>
+              Rate Limits: <strong className="font-semibold">30 req/min</strong> for Public IP •{' '}
+              <strong className="font-semibold">600 req/min</strong> for NSO/RBI API Keys.
             </span>
             <a
               href={`${apiBaseUrl}/openapi.json`}

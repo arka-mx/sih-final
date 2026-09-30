@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ArrowsClockwise as RefreshCw, User, ShieldCheck, List as Menu } from '@phosphor-icons/react';
+import { RefreshCw, User, ShieldCheck, Menu } from './icons';
 
 interface HeaderProps {
   onOpenLogin: () => void;
@@ -21,18 +21,16 @@ export default function Header({
   return (
     <header className="w-full bg-white border-b border-ink-100 sticky top-0 z-40">
       <div className="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        <button
-          onClick={onOpenMobileNav}
-          className="lg:hidden shrink-0 p-2 -ml-2 rounded-md text-ink-500 hover:text-ink-900 hover:bg-ink-50 cursor-pointer"
-          aria-label="Open navigation"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
-        <div className="hidden lg:block" />
-
-        {/* Right Side Status & User Session */}
         <div className="flex items-center gap-3 shrink-0">
-          <div className="hidden sm:flex items-center gap-2 text-xs text-ink-500 bg-ink-50 pl-3 pr-1.5 py-1.5 rounded-lg border border-ink-100">
+          <button
+            onClick={onOpenMobileNav}
+            className="lg:hidden shrink-0 p-2 -ml-2 rounded-md text-ink-500 hover:text-ink-900 hover:bg-ink-50 cursor-pointer"
+            aria-label="Open navigation"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+
+          <div className="hidden sm:flex items-center h-9 gap-2 text-xs text-ink-500 bg-ink-50 pl-3 pr-1.5 rounded-lg border border-ink-100">
             <span>Updated <strong className="text-ink-900 font-semibold font-tabular">2m ago</strong></span>
             <button
               onClick={onRefresh}
@@ -43,10 +41,13 @@ export default function Header({
               <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
             </button>
           </div>
+        </div>
 
+        {/* Right Side: User Session */}
+        <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={onOpenLogin}
-            className={`flex items-center gap-1.5 text-xs font-semibold px-3.5 py-2 rounded-lg transition-colors cursor-pointer ${
+            className={`flex items-center h-9 gap-1.5 text-xs font-semibold px-3.5 rounded-lg transition-colors cursor-pointer ${
               userRole === 'analyst'
                 ? 'bg-navy-700 text-white hover:bg-navy-800'
                 : 'bg-white text-navy-700 border border-navy-200 hover:bg-navy-50'

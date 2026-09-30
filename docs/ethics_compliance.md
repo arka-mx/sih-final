@@ -17,7 +17,7 @@ mistaken for live collection.
 **One source is a real, non-simulated exception:**
 `scrapers/wayback_fare_scraper.py` fetches real archived HTML of real OTA/
 airline pages from the Internet Archive's public Wayback Machine
-(`web.archive.org`) — a credential-free, ToS-permitting, public-interest
+(`web.archive.org`) - a credential-free, ToS-permitting, public-interest
 archive, not a live anti-bot-protected booking engine. Records from this
 source carry `data_mode="archived"` (still `is_live_data=false`, since the
 page was captured in the past, not fetched live today) and a disclaimer
@@ -30,7 +30,7 @@ dated observations.
 
 There is therefore exactly one third-party system accessed by the current
 implementation (`web.archive.org`, via its own public CDX API, with a real
-`robots.txt` check performed before any fetch — see
+`robots.txt` check performed before any fetch - see
 `scrapers/wayback_fare_scraper.py::check_robots_allowed`), no CAPTCHA
 workflow anywhere, and no PII collected by any source.
 
@@ -64,5 +64,5 @@ Brand names identify the scenario the fixture models; they do not assert an affi
 ## 4. Deliberate Tradeoffs
 1. **Five simulated sources, one real archived source, zero live-commercial-site sources**: Multiple fixture shapes exercise direct-channel, OTA, multi-carrier, and fee-decomposition paths without implying operational live-scraping coverage; the Wayback Machine source adds genuinely real historical data without touching a commercial site directly.
 2. **No fabricated collection history**: Scheduled runs generate new simulated observations. They are not presented as a 30-day history of live market collection. The Wayback source's `scrape_date` is always the snapshot's own real capture date, never "today."
-3. **Live-commercial-site data requires separate approval**: A production transition to scraping a real airline/OTA booking engine directly needs legal, robots.txt, terms, reliability, and data-governance review for each provider — this is a materially different risk profile from either the simulated fixtures or the public-archive source, and is not attempted here.
-4. **The Wayback source's live network calls are unverified in this codebase's development environment** (no outbound network access there): the code is written directly against the CDX API's documented, stable JSON contract and unit-tested against realistic fixtures, but needs one post-deployment smoke test — see `scrapers/wayback_fare_scraper.py`'s module docstring.
+3. **Live-commercial-site data requires separate approval**: A production transition to scraping a real airline/OTA booking engine directly needs legal, robots.txt, terms, reliability, and data-governance review for each provider - this is a materially different risk profile from either the simulated fixtures or the public-archive source, and is not attempted here.
+4. **The Wayback source's live network calls are unverified in this codebase's development environment** (no outbound network access there): the code is written directly against the CDX API's documented, stable JSON contract and unit-tested against realistic fixtures, but needs one post-deployment smoke test - see `scrapers/wayback_fare_scraper.py`'s module docstring.

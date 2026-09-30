@@ -70,7 +70,7 @@ scheduling tool, with APScheduler/Celery+Redis (Option A above) as an
 explicit "simpler prototype" fallback. `dags/apix_pipeline_dag.py` is the
 Airflow-native alternative: one DAG per advance-purchase window, on the exact
 same cadence as Option A's table above, each calling the same
-`pipeline.runner.run_scheduled_cycle` entrypoint — switching between Option A
+`pipeline.runner.run_scheduled_cycle` entrypoint - switching between Option A
 and Option C changes only *what orchestrates* the pipeline, never the
 pipeline logic itself.
 

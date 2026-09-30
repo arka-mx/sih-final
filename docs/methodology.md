@@ -1,5 +1,5 @@
 # APIx Price Index Methodology Specification
-**MoSPI — Data Informatics & Innovation Division (DIID)**
+**MoSPI - Data Informatics & Innovation Division (DIID)**
 
 ---
 
@@ -32,7 +32,7 @@ The overall national airfare price index aggregates elementary route indices usi
 $$I_L = \sum_{r} W_r \cdot I_{J, r}$$
 
 The production basket (`index_math/weights.py`) covers 15 DGCA corridors
-representing 63.1% of total DGCA domestic passenger traffic — the 10
+representing 63.1% of total DGCA domestic passenger traffic - the 10
 highest-volume metro and metro-leisure pairs (DEL-BOM, DEL-BLR, BOM-BLR,
 DEL-CCU, DEL-HYD, BLR-HYD, MAA-DEL, CCU-BLR, DEL-PNQ, BOM-GOI) plus 5
 metro-to-tier2 pairs into Patna, Ranchi and Guwahati (DEL-PAT, DEL-GAU,
@@ -63,9 +63,9 @@ $$I_L = 41.9328 + 32.1382 + 27.1336 = \mathbf{101.20}$$
 ### C. Higher-Level Corridor Aggregation: Fisher Ideal Index Formula
 Laspeyres systematically overstates inflation because it freezes base-period
 consumption patterns and never lets travelers substitute toward corridors
-that got relatively cheaper. **Fisher's Ideal Index** — the formula
+that got relatively cheaper. **Fisher's Ideal Index** - the formula
 recommended by the ILO/IMF/Eurostat CPI Manual for headline published price
-indices — corrects for this by taking the **geometric mean of the Laspeyres
+indices - corrects for this by taking the **geometric mean of the Laspeyres
 and Paasche aggregates**:
 
 $$I_F = \sqrt{I_L \times I_P}$$
@@ -97,7 +97,7 @@ $$I_P = \frac{1.0000}{0.0098824} = \mathbf{101.19}$$
 Fisher computation (using $I_L = 101.20$ from the Laspeyres example):
 $$I_F = \sqrt{101.20 \times 101.19} = \mathbf{101.20}$$
 
-#### Laspeyres vs. Paasche vs. Fisher — Comparison
+#### Laspeyres vs. Paasche vs. Fisher - Comparison
 | Formula | Weighting | Direction of Bias | Used For |
 |---|---|---|---|
 | Laspeyres ($I_L$) | Base-period weights, arithmetic mean | Overstates inflation (ignores substitution) | Fast, always-computable headline number |
@@ -109,7 +109,7 @@ Both `apix-api/app/db.py` (the live-Fare seed path) and `pipeline/runner.py`
 `index_math.engine.compute_daily_aggregate_indices()` function, so the
 `DailyIndex.laspeyres` and `DailyIndex.fisher` columns served by
 `/api/index/daily` are always derived from the identical route-level Jevons
-indices — never independently hardcoded.
+indices - never independently hardcoded.
 
 ---
 
@@ -173,7 +173,7 @@ $$C_0 = I_{\text{anchor month}}, \qquad C_t = C_{t-1} \times \left(1 + \frac{\De
 
 This is the standard technique statistical agencies use to splice a run of
 short-run (month-over-month) comparisons into one continuous long-run series
-— including across a future base-year/basket revision, using the overlap-
+- including across a future base-year/basket revision, using the overlap-
 linking method in `index_math/chain_link.py::splice_basket_revision`: the
 overlap period is computed once on the old weights (published as the last
 pre-revision figure) and once on the new weights (used only to derive a link
@@ -193,7 +193,7 @@ period.
 
 The PRD calls for a "weekly (rolling avg)" frequency distinct from the daily
 raw index and the monthly CPI-aligned index. A rolling average is, by
-definition, recomputed every time a new daily observation lands — not once a
+definition, recomputed every time a new daily observation lands - not once a
 week. `pipeline/rollup.py::persist_weekly_rollup` runs as part of every daily
 pipeline cycle (`pipeline/runner.py::persist_pipeline_outputs`) and
 upserts the `index_weekly` row for `week_ending = today`, averaging

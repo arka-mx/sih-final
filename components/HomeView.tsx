@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ResponsiveContainer, ComposedChart, Line, Area, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
 import { POPULAR_ROUTES, INITIAL_INDEX_DATA } from '@/lib/mockData';
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { ArrowUpRight, TrendUp as TrendingUp, CheckCircle as CheckCircle2, FileText, ArrowRight, ShieldCheck, Info, WarningCircle as AlertCircle, Flame, Calendar, GasPump as Fuel } from '@phosphor-icons/react';
-import { TabType } from './Sidebar';
+import { Callout } from './ui/callout';
+import { ArrowUpRight, ArrowUp, ArrowDown, TrendingUp, FileText, ArrowRight, ShieldCheck, Flame, Calendar, Fuel } from './icons';
+import { TabType, TAB_ROUTES } from '@/lib/routes';
 
 interface TrendPoint {
   date: string;
@@ -58,28 +60,10 @@ interface AnomalyResponse {
   methodologyNote: string;
 }
 
-const ANOMALY_CAUSE_STYLES: Record<string, { icon: typeof Calendar; wrap: string; iconWrap: string; title: string; body: string }> = {
-  FESTIVAL_CALENDAR_MATCH: {
-    icon: Calendar,
-    wrap: 'bg-amber-50/70 border-amber-200',
-    iconWrap: 'bg-amber-100 text-amber-700',
-    title: 'text-amber-950',
-    body: 'text-amber-900/80',
-  },
-  ATF_FUEL_PRICE_REVISION: {
-    icon: Fuel,
-    wrap: 'bg-rose-50/70 border-rose-200',
-    iconWrap: 'bg-rose-100 text-rose-700',
-    title: 'text-rose-950',
-    body: 'text-rose-900/80',
-  },
-  UNEXPLAINED_STATISTICAL_VOLATILITY: {
-    icon: Flame,
-    wrap: 'bg-navy-50/70 border-navy-200',
-    iconWrap: 'bg-navy-100 text-navy-700',
-    title: 'text-navy-950',
-    body: 'text-navy-900/80',
-  },
+const ANOMALY_CAUSE_STYLES: Record<string, { icon: typeof Calendar; accent: string; iconColor: string }> = {
+  FESTIVAL_CALENDAR_MATCH: { icon: Calendar, accent: 'border-l-amber-500', iconColor: 'text-amber-600' },
+  ATF_FUEL_PRICE_REVISION: { icon: Fuel, accent: 'border-l-rose-500', iconColor: 'text-rose-600' },
+  UNEXPLAINED_STATISTICAL_VOLATILITY: { icon: Flame, accent: 'border-l-navy-500', iconColor: 'text-navy-600' },
 };
 
 interface HomeViewProps {
@@ -88,7 +72,9 @@ interface HomeViewProps {
 
 const RANGE_DAYS: Record<'30d' | '90d' | '1y', number> = { '30d': 30, '90d': 90, '1y': 90 };
 
-export default function HomeView({ onNavigate }: HomeViewProps) {
+export default function HomeView() {
+  const router = useRouter();
+  const onNavigate = (tab: TabType) => router.push(TAB_ROUTES[tab]);
   const [range, setRange] = useState<'30d' | '90d' | '1y'>('30d');
 
   const trend = useApiData<TrendResponse>(DEMO_MODE ? null : `/api/index?days=${RANGE_DAYS[range]}`, [range]);
@@ -127,49 +113,46 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
       {/* Hero Section */}
       <div className="panel p-6 sm:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
         <div className="space-y-2.5">
-          <div className="flex items-center gap-2 text-xs font-semibold text-navy-700 uppercase tracking-wider">
-            <ShieldCheck className="w-4 h-4" />
-            <span>National CPI Augmentation Baseline</span>
-          </div>
-          <h2 className="font-sans text-4xl sm:text-5xl font-semibold text-ink-950 tracking-tighter font-tabular">
-            {latestIndex?.toFixed(2) ?? '—'}
+          <div className="text-sm font-medium text-ink-500">National CPI Augmentation Baseline</div>
+          <div className="flex items-baseline flex-wrap gap-3">
+            <h2 className="font-sans text-4xl sm:text-5xl font-semibold text-ink-950 tracking-tighter font-tabular leading-none">
+              {latestIndex?.toFixed(2) ?? '-'}
+            </h2>
             {typeof momChange === 'number' && (
               <span
-                className={`ml-4 align-middle text-sm font-sans font-semibold px-2.5 py-1 rounded-lg border inline-flex items-center ${
-                  momChange >= 0
-                    ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                    : 'text-rose-700 bg-rose-50 border-rose-200'
+                className={`text-sm font-semibold inline-flex items-baseline gap-1 ${
+                  momChange >= 0 ? 'text-emerald-700' : 'text-rose-700'
                 }`}
               >
-                {momChange >= 0 ? '↑' : '↓'} {Math.abs(momChange)}%{' '}
-                <span className="text-xs font-normal text-ink-500 ml-1">MoM</span>
+                {momChange >= 0 ? <ArrowUp className="w-3.5 h-3.5 self-center" /> : <ArrowDown className="w-3.5 h-3.5 self-center" />}
+                {Math.abs(momChange)}%
+                <span className="text-xs font-normal text-ink-500">MoM</span>
               </span>
             )}
-          </h2>
+          </div>
           <p className="text-xs text-ink-500 max-w-md leading-relaxed">
             Base period = 100 (Jan 2025) &middot; Weighted across top DGCA flight corridors
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 shrink-0 sm:pl-6 sm:border-l sm:border-ink-100">
           <button
             onClick={() => onNavigate('backtest')}
-            className="text-left bg-ink-50 hover:bg-emerald-50 hover:border-emerald-200 p-4 rounded-xl border border-ink-100 text-xs space-y-1.5 cursor-pointer transition-colors group min-w-[190px]"
+            className="text-left text-xs space-y-1 cursor-pointer group min-w-[170px]"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-ink-500 font-medium">DGCA Backtest Correlation</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-ink-300 group-hover:text-emerald-600 transition-colors" />
+            <div className="flex items-center gap-1">
+              <span className="text-ink-400 font-medium">DGCA Backtest Correlation</span>
+              <ArrowUpRight className="w-3 h-3 text-ink-300 group-hover:text-emerald-600 transition-colors" />
             </div>
             <span className="text-base font-semibold text-emerald-700 flex items-center gap-1.5 font-tabular">
-              <CheckCircle2 className="w-4 h-4" />
-              {metrics ? `r = ${metrics.pearson_r.toFixed(3)}` : '—'}
-              {metrics?.target_met && <span className="text-[10px] font-sans font-semibold text-emerald-600">TARGET MET</span>}
+              {metrics ? `r = ${metrics.pearson_r.toFixed(3)}` : '-'}
+              {metrics?.target_met && <span className="text-[10px] font-sans font-medium text-emerald-600/80">Target met</span>}
             </span>
           </button>
-          <div className="bg-ink-50 p-4 rounded-xl border border-ink-100 text-xs space-y-1.5 min-w-[150px]">
-            <span className="text-ink-500 font-medium block">Tracking Error (MAPE)</span>
+          <div className="text-xs space-y-1 min-w-[130px]">
+            <span className="text-ink-400 font-medium block">Tracking Error (MAPE)</span>
             <span className="text-base font-semibold text-navy-800 flex items-center font-tabular">
-              {metrics ? `${metrics.mape.toFixed(2)}%` : '—'}
+              {metrics ? `${metrics.mape.toFixed(2)}%` : '-'}
             </span>
           </div>
         </div>
@@ -180,11 +163,8 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-ink-100 pb-4">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-base font-semibold text-ink-900 flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-navy-700" />
-                APIx vs. Official DGCA Benchmark
-              </h3>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-navy-50 text-navy-700 border border-navy-200">
+              <h3 className="text-base font-semibold text-ink-900">APIx vs. Official DGCA Benchmark</h3>
+              <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-navy-700">
                 <span className="w-1.5 h-1.5 rounded-full bg-navy-600 animate-pulse"></span>
                 95% CI Bounded (±1.96 SE)
               </span>
@@ -236,7 +216,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                             <span className="font-tabular font-bold text-ink-950 text-sm">{data.apixIndex.toFixed(2)}</span>
                           </div>
                           {data.ciLower != null && data.ciUpper != null && (
-                            <div className="bg-navy-50/70 p-2 rounded-lg border border-navy-100/80 text-[11px] space-y-0.5">
+                            <div className="border-t border-b border-ink-100 py-1 text-[11px] space-y-0.5">
                               <div className="flex items-center justify-between text-navy-800 font-medium">
                                 <span>95% Confidence Interval:</span>
                                 <span className="font-tabular font-semibold">[{data.ciLower.toFixed(2)} – {data.ciUpper.toFixed(2)}]</span>
@@ -287,31 +267,31 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
           {/* Key Stats Side Panel */}
           <div className="bg-ink-50 p-4 rounded-xl border border-ink-100 space-y-4 flex flex-col justify-between">
             <div>
-              <h4 className="text-[11px] font-semibold text-ink-700 uppercase tracking-wider mb-3">
-                Key Statistics &middot; {range.toUpperCase()}
+              <h4 className="text-xs font-semibold text-ink-900 mb-3">
+                Key statistics &middot; {range.toUpperCase()}
               </h4>
               <dl className="space-y-2.5 text-xs">
                 <div className="flex justify-between py-1.5 border-b border-ink-100">
                   <dt className="text-ink-500">Minimum DGCA Fare</dt>
                   <dd className="font-semibold text-ink-900 font-tabular">
-                    {stats?.minFare != null ? `₹${Math.round(stats.minFare).toLocaleString()}` : '—'}
+                    {stats?.minFare != null ? `₹${Math.round(stats.minFare).toLocaleString()}` : '-'}
                   </dd>
                 </div>
                 <div className="flex justify-between py-1.5 border-b border-ink-100">
                   <dt className="text-ink-500">Maximum DGCA Fare</dt>
                   <dd className="font-semibold text-ink-900 font-tabular">
-                    {stats?.maxFare != null ? `₹${Math.round(stats.maxFare).toLocaleString()}` : '—'}
+                    {stats?.maxFare != null ? `₹${Math.round(stats.maxFare).toLocaleString()}` : '-'}
                   </dd>
                 </div>
                 <div className="flex justify-between py-1.5 border-b border-ink-100">
                   <dt className="text-ink-500">Average DGCA Fare</dt>
                   <dd className="font-semibold text-navy-700 font-tabular">
-                    {stats?.avgFare != null ? `₹${Math.round(stats.avgFare).toLocaleString()}` : '—'}
+                    {stats?.avgFare != null ? `₹${Math.round(stats.avgFare).toLocaleString()}` : '-'}
                   </dd>
                 </div>
                 <div className="flex justify-between py-1.5 border-b border-ink-100">
                   <dt className="text-ink-500">Mean Abs % Error</dt>
-                  <dd className="font-semibold text-emerald-700 font-tabular">{metrics ? `${metrics.mape.toFixed(2)}%` : '—'}</dd>
+                  <dd className="font-semibold text-emerald-700 font-tabular">{metrics ? `${metrics.mape.toFixed(2)}%` : '-'}</dd>
                 </div>
                 <div className="flex justify-between py-1.5">
                   <dt className="text-ink-500">Observation Depth</dt>
@@ -320,11 +300,10 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
               </dl>
             </div>
 
-            <div className="bg-white p-3 rounded-lg border border-ink-100 text-[11px] text-ink-500 leading-relaxed">
-              <span className="font-semibold text-ink-900 flex items-center gap-1.5 mb-1">
-                <Info className="w-3.5 h-3.5 text-navy-700" /> Methodological Note
-              </span>
-              Route weights are derived from DGCA monthly passenger traffic distribution.
+            <div className="pt-3 border-t border-ink-200">
+              <Callout tone="info" title="Methodological Note" className="text-[11px]">
+                Route weights are derived from DGCA monthly passenger traffic distribution.
+              </Callout>
             </div>
           </div>
         </div>
@@ -332,10 +311,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
         {/* Anomaly Explainability Panel */}
         <div className="border-t border-ink-100 pt-5">
           <div className="flex items-center justify-between mb-3">
-            <h4 className="text-[11px] font-semibold text-ink-700 uppercase tracking-wider flex items-center gap-1.5">
-              <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
-              Anomaly Explainability &amp; Spike Tagger
-            </h4>
+            <h4 className="text-xs font-semibold text-ink-900">Anomaly explainability &amp; spike tagger</h4>
             <span className="text-[11px] text-ink-400 font-mono">
               {anomalies.data
                 ? `${anomalies.data.windowStart} → ${anomalies.data.windowEnd} · z > ${anomalies.data.zThreshold}`
@@ -364,7 +340,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                     <span className="text-xs font-semibold text-ink-900 font-tabular">
                       {spike.date} &middot; Index {spike.indexValue.toFixed(2)}
                     </span>
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-md font-tabular ${spike.dayChangePct >= 0 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
+                    <span className={`text-xs font-semibold font-tabular ${spike.dayChangePct >= 0 ? 'text-amber-700' : 'text-emerald-700'}`}>
                       {spike.dayChangePct >= 0 ? '+' : ''}{spike.dayChangePct.toFixed(2)}% (z={spike.zScore.toFixed(2)})
                     </span>
                   </div>
@@ -373,15 +349,13 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                       const style = ANOMALY_CAUSE_STYLES[tag.cause] ?? ANOMALY_CAUSE_STYLES.UNEXPLAINED_STATISTICAL_VOLATILITY;
                       const TagIcon = style.icon;
                       return (
-                        <div key={idx} className={`p-3 border rounded-lg flex items-start gap-3 text-xs ${style.wrap}`}>
-                          <div className={`w-7 h-7 rounded-md flex items-center justify-center shrink-0 mt-0.5 ${style.iconWrap}`}>
-                            <TagIcon className="w-4 h-4" />
-                          </div>
+                        <div key={idx} className={`border-l-2 ${style.accent} pl-2.5 py-0.5 flex items-start gap-2.5 text-xs`}>
+                          <TagIcon className={`w-4 h-4 shrink-0 mt-0.5 ${style.iconColor}`} />
                           <div>
-                            <span className={`font-semibold ${style.title}`}>
-                              {tag.label} <span className="font-normal">({tag.confidence})</span>
+                            <span className="font-semibold text-ink-900">
+                              {tag.label} <span className="font-normal text-ink-500">({tag.confidence})</span>
                             </span>
-                            <p className={`text-[11px] mt-1 leading-snug ${style.body}`}>{tag.detail}</p>
+                            <p className="text-[11px] mt-1 leading-snug text-ink-500">{tag.detail}</p>
                           </div>
                         </div>
                       );
@@ -420,7 +394,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                   </h4>
                   <span className="text-[11px] text-ink-500 font-tabular">APIx Index: {route.index.toFixed(2)}</span>
                 </div>
-                <span className={`text-xs font-semibold px-2 py-0.5 rounded-md font-tabular ${route.trend.startsWith('+') ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
+                <span className={`text-xs font-semibold font-tabular ${route.trend.startsWith('+') ? 'text-amber-700' : 'text-emerald-700'}`}>
                   {route.trend}
                 </span>
               </div>
@@ -470,9 +444,9 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
 function HomeViewDemo({ onNavigate }: HomeViewProps) {
   return (
     <div className="space-y-6 animate-fadeIn">
-      <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold px-4 py-2.5 rounded-xl flex items-center gap-2">
-        <Info className="w-3.5 h-3.5" /> Demo mode — showing static sample data, not live APIx backend results.
-      </div>
+      <Callout tone="warning">
+        Demo mode - showing static sample data, not live APIx backend results.
+      </Callout>
       <div className="panel p-6 sm:p-8 space-y-2">
         <h2 className="font-sans text-4xl font-semibold text-ink-950 tracking-tighter font-tabular">102.45</h2>
         <p className="text-xs text-ink-500">Airfare Price Index (APIx) &middot; Base Period = 100 (Jan 2025)</p>

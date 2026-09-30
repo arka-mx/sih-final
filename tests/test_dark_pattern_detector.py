@@ -42,7 +42,7 @@ def test_scarcity_copy_mismatch_flagged_high_when_available():
 
 
 def test_scarcity_copy_consistent_flagged_medium_when_few_seats_left():
-    rec = _base_record(listing_copy="Selling fast — high demand on this route.", seat_availability_flag="FEW_SEATS_LEFT")
+    rec = _base_record(listing_copy="Selling fast - high demand on this route.", seat_availability_flag="FEW_SEATS_LEFT")
     flags = detect_scarcity_messaging([rec])
     assert len(flags) == 1
     assert flags[0].pattern_type == "SCARCITY_MESSAGING"

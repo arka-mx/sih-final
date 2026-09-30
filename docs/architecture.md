@@ -1,11 +1,11 @@
 # APIx System Architecture
-**Ministry of Statistics and Programme Implementation (MoSPI) — DIID**
+**Ministry of Statistics and Programme Implementation (MoSPI) - DIID**
 
-This document maps the PRD's target architecture (Section 6, "System Architecture —
+This document maps the PRD's target architecture (Section 6, "System Architecture -
 High-Level Flow") onto what is actually implemented in this repository today. Where the
 current implementation deliberately simplifies or diverges from the PRD's live-data
-target architecture — chiefly because scraping runs in **simulated fixture mode**, see
-[`docs/ethics_compliance.md`](ethics_compliance.md) — that is called out explicitly.
+target architecture - chiefly because scraping runs in **simulated fixture mode**, see
+[`docs/ethics_compliance.md`](ethics_compliance.md) - that is called out explicitly.
 
 ## 1. High-Level Flow
 
@@ -58,7 +58,7 @@ target architecture — chiefly because scraping runs in **simulated fixture mod
   `NETWORK_ERROR`) before each pipeline cycle trusts a source's output.
 - **PRD divergence:** the PRD's target architecture uses live Playwright/Selenium/Scrapy
   scraping with proxy rotation and CAPTCHA-avoidance. The default daily pipeline cycle
-  does not perform any live network scraping against a commercial site — every fare in
+  does not perform any live network scraping against a commercial site - every fare in
   it is generated from deterministic fixture data (`data_mode="simulated"`,
   `is_live_data=False`, source IDs prefixed `simulated_`).
   `BaseScraper.enforce_rate_limit()` (1.5–3.5s randomized per-domain delay,
@@ -74,7 +74,7 @@ target architecture — chiefly because scraping runs in **simulated fixture mod
 ### 2.2 Scheduler
 - `pipeline/scheduler.py` drives periodic pipeline cycles (`pipeline/runner.py::
   run_scheduled_cycle`) per advance-purchase window (T+1/7/15/30/45), recording each
-  run's outcome (`PipelineJobRun` — status, duration, records saved, error message) for
+  run's outcome (`PipelineJobRun` - status, duration, records saved, error message) for
   the ≥95%-successful-jobs/day resilience target.
 - `pipeline/runner.py::_scrape_with_tracking` wraps each source's `search()` call with
   exponential-backoff retries (`_scrape_with_retry`) and per-source call/failure
@@ -99,8 +99,8 @@ target architecture — chiefly because scraping runs in **simulated fixture mod
 - `pipeline/outlier_detection.py::run_quality_pipeline` runs, in order:
   deduplication (`deduplicate_fare_records`), sold-out/cancelled exclusion
   (`filter_sold_out_and_cancelled`), and hybrid IQR + z-score outlier detection
-  partitioned by `(pair, advance_days)` (`detect_statistical_outliers`) — matching the
-  PRD's per-route-window IQR/z-score requirement — producing a `PipelineAuditSummary`.
+  partitioned by `(pair, advance_days)` (`detect_statistical_outliers`) - matching the
+  PRD's per-route-window IQR/z-score requirement - producing a `PipelineAuditSummary`.
 - `pipeline/decompose.py::decompose_matched_flights` matches simulated direct-channel
   vs OTA fixture quotes on `(carrier, flight_no, departure_date, advance_days)` to
   infer the OTA convenience fee (`mmt_total - direct_total`), the repo's centerpiece
@@ -116,23 +116,23 @@ target architecture — chiefly because scraping runs in **simulated fixture mod
 - `apix-api/app/db.py` owns the async SQLAlchemy engine/session factory
   (`AsyncSessionLocal`, `init_db`) shared by both the FastAPI app and
   `pipeline/runner.py::persist_pipeline_outputs`, so the pipeline and the API read/write
-  through the same schema — no separate ETL/sync step.
+  through the same schema - no separate ETL/sync step.
 - **PRD divergence:** the PRD's target adds a TimescaleDB extension for fast
   time-series index computation; this repository uses plain Postgres tables.
 
 ### 2.6 Index Construction Engine
-- `index_math/jevons.py` — elementary route-level index (geometric mean of price
+- `index_math/jevons.py` - elementary route-level index (geometric mean of price
   relatives).
-- `index_math/laspeyres.py`, `index_math/fisher.py` — Laspeyres/Paasche/Fisher
+- `index_math/laspeyres.py`, `index_math/fisher.py` - Laspeyres/Paasche/Fisher
   corridor-weighted aggregation using `index_math/weights.py`'s DGCA traffic-share
   basket.
 - `index_math/engine.py::compute_daily_aggregate_indices` ties the above together per
   `pipeline/runner.py::compute_daily_index`, producing the `laspeyres`, `fisher`,
   confidence interval, and T+1/7/15/30/45 window values persisted to `DailyIndex`.
-- `index_math/chain_link.py` — splices `MonthlyIndex.mom_change_pct` into a real
+- `index_math/chain_link.py` - splices `MonthlyIndex.mom_change_pct` into a real
   chained series for `GET /api/index/monthly?formula=chained_laspeyres` (the default),
   plus an overlap-linking helper for a future basket-weight revision.
-- `pipeline/rollup.py::persist_weekly_rollup` — runs after every daily pipeline cycle
+- `pipeline/rollup.py::persist_weekly_rollup` - runs after every daily pipeline cycle
   (`pipeline/runner.py::persist_pipeline_outputs`) and upserts a trailing-7-day rolling
   average `WeeklyIndex` row for `week_ending = today`, so `GET /api/index/weekly` is a
   genuine daily-recomputed rolling average, not a once-a-week snapshot.

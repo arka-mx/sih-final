@@ -1,5 +1,5 @@
 // Server-only helper for calling the FastAPI backend (apix-api) from Next.js
-// Route Handlers. Never import this from a client component — it injects a
+// Route Handlers. Never import this from a client component - it injects a
 // server-side API key that must not reach the browser.
 
 const BACKEND_BASE_URL =

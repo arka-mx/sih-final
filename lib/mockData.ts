@@ -112,8 +112,8 @@ export const MOCK_DARK_PATTERN_FLAGS: DarkPatternFlagItem[] = [
     advanceDays: 7,
     patternType: 'SCARCITY_MESSAGING',
     severity: 'MEDIUM',
-    message: 'Listing copy "Selling fast — high demand on this route." uses scarcity/urgency framing.',
-    evidence: { listing_copy: 'Selling fast — high demand on this route.', matched_phrase: 'Selling fast', seat_availability_flag: 'FEW_SEATS_LEFT' },
+    message: 'Listing copy "Selling fast - high demand on this route." uses scarcity/urgency framing.',
+    evidence: { listing_copy: 'Selling fast - high demand on this route.', matched_phrase: 'Selling fast', seat_availability_flag: 'FEW_SEATS_LEFT' },
   },
   {
     scrapeId: 'MMT_a1b2c3d4',

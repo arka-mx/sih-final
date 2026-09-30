@@ -2,9 +2,11 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { SCRAPER_LOGS, ScraperLogItem } from '@/lib/mockData';
-import { Cpu, ShieldCheck, Play, CheckCircle as CheckCircle2, Warning as AlertTriangle, ArrowsClockwise as RefreshCw, Lock, Terminal, FileCode as FileCode2, Pulse as ActivitySquare } from '@phosphor-icons/react';
+import { ShieldCheck, Play, CheckCircle2, AlertTriangle, RefreshCw, Lock, Terminal } from './icons';
 import DarkPatternPanel from './DarkPatternPanel';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Callout } from './ui/callout';
+import { StatusTag } from './ui/status-tag';
 
 const ROUTES = [
   { value: 'DEL-BOM', label: 'DEL–BOM · Delhi ↔ Mumbai' },
@@ -150,12 +152,9 @@ export default function ScrapingEngineView() {
       {/* Top Banner & Trigger */}
       <div className="panel p-6 space-y-5">
         <div>
-          <h2 className="text-xl font-semibold text-ink-900 flex items-center gap-2">
-            <Cpu className="w-5 h-5 text-navy-700" />
-            Simulated Data Mode
-          </h2>
+          <h2 className="text-xl font-semibold text-ink-900">Simulated Data Mode</h2>
           <p className="text-xs text-ink-500 mt-1 max-w-lg">
-            Five deterministic source fixtures — no live HTTP requests, browser automation, or booking integrations.
+            Five deterministic source fixtures - no live HTTP requests, browser automation, or booking integrations.
           </p>
         </div>
 
@@ -163,7 +162,7 @@ export default function ScrapingEngineView() {
           <div className="space-y-1.5">
             <label className="text-[10.5px] font-semibold text-ink-400 uppercase tracking-wide">Corridor</label>
             <Select value={selectedRoute} onValueChange={(v) => v && setSelectedRoute(v)}>
-              <SelectTrigger className="h-9 w-60 text-xs font-mono">
+              <SelectTrigger className="h-9! w-60 text-xs font-mono">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent alignItemWithTrigger={false} sideOffset={6} className="p-1">
@@ -179,7 +178,7 @@ export default function ScrapingEngineView() {
           <div className="space-y-1.5">
             <label className="text-[10.5px] font-semibold text-ink-400 uppercase tracking-wide">Window</label>
             <Select value={String(selectedWindow)} onValueChange={(v) => v && setSelectedWindow(Number(v))}>
-              <SelectTrigger className="h-9 w-40 text-xs font-mono">
+              <SelectTrigger className="h-9! w-40 text-xs font-mono">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent alignItemWithTrigger={false} sideOffset={6} className="p-1">
@@ -195,7 +194,7 @@ export default function ScrapingEngineView() {
           <button
             onClick={handleTriggerScrape}
             disabled={isRunningScraper}
-            className="h-9 bg-navy-700 text-white hover:bg-navy-800 text-xs font-semibold px-4 rounded-lg flex items-center justify-center gap-2 transition-all shrink-0 disabled:opacity-50 cursor-pointer"
+            className="h-9 bg-navy-700 text-white hover:bg-navy-800 text-xs font-semibold px-4 rounded-lg flex items-center justify-center gap-2 transition-all shrink-0 disabled:opacity-50 cursor-pointer ml-auto"
           >
             {isRunningScraper ? (
               <>
@@ -214,42 +213,31 @@ export default function ScrapingEngineView() {
 
       {/* System Architecture Flow Diagram */}
       <div className="panel p-6 space-y-4">
-        <h3 className="text-sm font-semibold text-ink-900 flex items-center">
-          <FileCode2 className="w-4 h-4 mr-2 text-navy-700" />
-          Pipeline Architecture
-        </h3>
+        <h3 className="text-sm font-semibold text-ink-900">Pipeline Architecture</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3 text-center text-xs">
-          <div className="p-3 bg-navy-50 border border-navy-200 rounded-lg flex flex-col items-center justify-center space-y-1">
-            <span className="font-semibold text-navy-700">1. Fixture Layer</span>
-            <span className="text-[10px] text-ink-500">Deterministic Python providers</span>
-          </div>
-          <div className="p-3 bg-ink-50 border border-ink-100 rounded-lg flex flex-col items-center justify-center space-y-1">
-            <span className="font-semibold text-ink-900">2. Raw Data Lake</span>
-            <span className="text-[10px] text-ink-500">Raw JSON / Staging Store</span>
-          </div>
-          <div className="p-3 bg-ink-50 border border-ink-100 rounded-lg flex flex-col items-center justify-center space-y-1">
-            <span className="font-semibold text-ink-900">3. Cleaning &amp; IQR</span>
-            <span className="text-[10px] text-ink-500">Outlier detection &amp; tax split</span>
-          </div>
-          <div className="p-3 bg-ink-50 border border-ink-100 rounded-lg flex flex-col items-center justify-center space-y-1">
-            <span className="font-semibold text-ink-900">4. Index Engine</span>
-            <span className="text-[10px] text-ink-500">DGCA Weighted Laspeyres</span>
-          </div>
-          <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg flex flex-col items-center justify-center space-y-1">
-            <span className="font-semibold text-emerald-900">5. REST API &amp; UI</span>
-            <span className="text-[10px] text-emerald-700">NSO/RBI Consumption</span>
-          </div>
+          {[
+            { label: 'Fixture Layer', sub: 'Deterministic Python providers' },
+            { label: 'Raw Data Lake', sub: 'Raw JSON / Staging Store' },
+            { label: 'Cleaning & IQR', sub: 'Outlier detection & tax split' },
+            { label: 'Index Engine', sub: 'DGCA Weighted Laspeyres' },
+            { label: 'REST API & UI', sub: 'NSO/RBI Consumption' },
+          ].map((stage, idx) => (
+            <div key={stage.label} className="p-3 bg-ink-50 border border-ink-100 rounded-lg flex flex-col items-center justify-center gap-1.5">
+              <span className="w-5 h-5 rounded-full bg-ink-900 text-white text-[10px] font-semibold flex items-center justify-center font-tabular">
+                {idx + 1}
+              </span>
+              <span className="font-semibold text-ink-900">{stage.label}</span>
+              <span className="text-[10px] text-ink-500">{stage.sub}</span>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Selector / Schema-Change Health Check */}
       <div className="panel p-6 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <h3 className="text-sm font-semibold text-ink-900 flex items-center">
-            <ActivitySquare className="w-4 h-4 mr-2 text-navy-700" />
-            Source Health Check
-          </h3>
+          <h3 className="text-sm font-semibold text-ink-900">Source Health Check</h3>
           <button
             onClick={() => fetchSourceHealth(true)}
             disabled={isCheckingHealth}
@@ -261,19 +249,15 @@ export default function ScrapingEngineView() {
         </div>
 
         {sourceHealth && sourceHealth.status === 'degraded' && (
-          <div className="bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold rounded-lg p-3 flex items-start gap-2">
-            <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
-            <span>
-              Selector mismatch on {sourceHealth.selectorMissSources.length} source(s): {sourceHealth.selectorMissSources.join(', ')}.
-              The payload shape may have changed, so downstream cleaning could receive bad data.
-            </span>
-          </div>
+          <Callout tone="danger" icon={AlertTriangle}>
+            Selector mismatch on {sourceHealth.selectorMissSources.length} source(s): {sourceHealth.selectorMissSources.join(', ')}.
+            The payload shape may have changed, so downstream cleaning could receive bad data.
+          </Callout>
         )}
         {sourceHealth && sourceHealth.status === 'ok' && (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-lg p-3 flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
+          <Callout tone="success" icon={CheckCircle2}>
             All <span className="font-tabular">{sourceHealth.checkedSources}</span> source(s) passed the health check.
-          </div>
+          </Callout>
         )}
         {!sourceHealth && (
           <p className="text-xs text-ink-500">Checking source selector health...</p>
@@ -296,25 +280,13 @@ export default function ScrapingEngineView() {
                   <tr key={s.source_key} className="hover:bg-ink-50/60 transition-colors">
                     <td className="p-3 font-mono text-[11px] font-semibold text-navy-700">{s.source_key}</td>
                     <td className="p-3">
-                      {s.status === 'ok' && (
-                        <span className="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-md inline-flex items-center">
-                          <CheckCircle2 className="w-3 h-3 mr-1" /> OK
-                        </span>
-                      )}
-                      {s.status === 'selector_miss' && (
-                        <span className="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-md inline-flex items-center">
-                          <AlertTriangle className="w-3 h-3 mr-1" /> SELECTOR_MISS
-                        </span>
-                      )}
-                      {s.status === 'no_availability' && (
-                        <span className="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-md inline-flex items-center">
-                          <AlertTriangle className="w-3 h-3 mr-1" /> NO_AVAILABILITY
-                        </span>
-                      )}
+                      {s.status === 'ok' && <StatusTag tone="success" icon={CheckCircle2}>OK</StatusTag>}
+                      {s.status === 'selector_miss' && <StatusTag tone="danger" icon={AlertTriangle}>SELECTOR_MISS</StatusTag>}
+                      {s.status === 'no_availability' && <StatusTag tone="warning" icon={AlertTriangle}>NO_AVAILABILITY</StatusTag>}
                     </td>
                     <td className="p-3 font-semibold text-ink-900 font-tabular">{s.records_found}</td>
                     <td className="p-3 text-ink-500 font-tabular">{new Date(s.checked_at).toLocaleTimeString()}</td>
-                    <td className="p-3 text-[11px] text-ink-500">{s.detail ?? '—'}</td>
+                    <td className="p-3 text-[11px] text-ink-500">{s.detail ?? '-'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -325,7 +297,7 @@ export default function ScrapingEngineView() {
 
       {/* Ethical Compliance Principles Checklist */}
       <div className="space-y-2">
-        <label className="text-[10.5px] font-semibold text-ink-400 uppercase tracking-wide">Compliance Checklist</label>
+        <h4 className="text-xs font-semibold text-ink-900">Compliance checklist</h4>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div className="panel p-4 space-y-1.5">
             <div className="flex items-center space-x-1.5 text-xs font-semibold text-emerald-700">
@@ -340,7 +312,7 @@ export default function ScrapingEngineView() {
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>No Network Automation</span>
             </div>
-            <p className="text-[11px] text-ink-500">In-code fixtures only — no browser session or login flow.</p>
+            <p className="text-[11px] text-ink-500">In-code fixtures only - no browser session or login flow.</p>
           </div>
 
           <div className="panel p-4 space-y-1.5">
@@ -402,27 +374,15 @@ export default function ScrapingEngineView() {
                   <td className="p-3 font-mono text-[11px] font-semibold text-navy-700">{log.id}</td>
                   <td className="p-3 font-medium text-ink-900 font-mono text-[11px]">{log.source}</td>
                   <td className="p-3">
-                    <span className={`px-2 py-0.5 rounded-md text-[10px] font-semibold ${log.type === 'Airline' ? 'bg-navy-50 text-navy-700' : 'bg-indigo-50 text-indigo-700'}`}>
+                    <span className={`text-[10px] font-semibold ${log.type === 'Airline' ? 'text-navy-700' : 'text-indigo-700'}`}>
                       {log.type}
                     </span>
                   </td>
                   <td className="p-3 font-semibold font-mono text-[11px] text-ink-900">{log.route}</td>
                   <td className="p-3">
-                    {log.status === 'SUCCESS' && (
-                      <span className="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-md inline-flex items-center">
-                        <CheckCircle2 className="w-3 h-3 mr-1" /> SUCCESS
-                      </span>
-                    )}
-                    {log.status === 'RATE_LIMITED' && (
-                      <span className="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-md inline-flex items-center">
-                        <AlertTriangle className="w-3 h-3 mr-1" /> THROTTLED (429)
-                      </span>
-                    )}
-                    {log.status === 'BLOCKED_QUEUE' && (
-                      <span className="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-md inline-flex items-center">
-                        <Lock className="w-3 h-3 mr-1" /> FALLBACK QUEUE
-                      </span>
-                    )}
+                    {log.status === 'SUCCESS' && <StatusTag tone="success" icon={CheckCircle2}>SUCCESS</StatusTag>}
+                    {log.status === 'RATE_LIMITED' && <StatusTag tone="warning" icon={AlertTriangle}>THROTTLED (429)</StatusTag>}
+                    {log.status === 'BLOCKED_QUEUE' && <StatusTag tone="danger" icon={Lock}>FALLBACK QUEUE</StatusTag>}
                   </td>
                   <td className="p-3 font-semibold text-ink-900 font-tabular">{log.recordsScraped}</td>
                   <td className="p-3 text-ink-500 font-tabular">{log.responseTimeMs} ms</td>

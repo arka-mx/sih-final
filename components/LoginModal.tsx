@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, ShieldCheck, Key, Lock, UserCheck } from '@phosphor-icons/react';
+import { X, ShieldCheck, Key, Lock, UserCheck } from './icons';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -74,7 +74,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
               <div>
                 <label className="font-semibold text-ink-900 block mb-1.5">Official Govt Email (.gov.in / .rbi.org.in)</label>
                 <div className="relative">
-                  <UserCheck className="w-4 h-4 absolute left-3 top-3 text-ink-400" />
+                  <UserCheck className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
                   <input
                     type="email"
                     required
@@ -88,7 +88,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
               <div>
                 <label className="font-semibold text-ink-900 block mb-1.5">Password</label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 absolute left-3 top-3 text-ink-400" />
+                  <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
                   <input
                     type="password"
                     required
@@ -103,7 +103,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
             <div>
               <label className="font-semibold text-ink-900 block mb-1.5">Restricted API Secret Key</label>
               <div className="relative">
-                <Key className="w-4 h-4 absolute left-3 top-3 text-ink-400" />
+                <Key className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="apix_live_sec_..."

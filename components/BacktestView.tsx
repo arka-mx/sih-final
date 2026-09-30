@@ -17,7 +17,9 @@ import {
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { ShieldCheck, Trophy as Award, CheckCircle as CheckCircle2, FileText, Download, ArrowsClockwise as RefreshCw, Scales as Scale } from '@phosphor-icons/react';
+import { FileText, Download, RefreshCw, CaretDownIcon } from './icons';
+import { Callout } from './ui/callout';
+import { StatusTag } from './ui/status-tag';
 
 interface BacktestPoint {
   date: string;
@@ -51,9 +53,9 @@ export default function BacktestView() {
 
   if (DEMO_MODE) {
     return (
-      <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold px-4 py-3 rounded-lg">
+      <Callout tone="warning">
         Demo mode is enabled (NEXT_PUBLIC_DEMO_MODE=true). Disable it to view the live DGCA backtest.
-      </div>
+      </Callout>
     );
   }
 
@@ -90,92 +92,81 @@ export default function BacktestView() {
     <div className="space-y-6 animate-fadeIn">
       {/* Top Banner / Credibility Badge */}
       <div className="panel p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center space-x-2 text-xs font-semibold text-navy-700 uppercase tracking-wider mb-1">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>Official MoSPI CPI Ground Truth</span>
-          </div>
-          <h2 className="text-xl font-semibold text-ink-900">
-            MoSPI CPI Benchmark Validation & Statistical Backtest
-          </h2>
-          <p className="text-xs text-ink-500 mt-0.5">
-            Empirical correlation analysis between the APIx Real-Time Index and MoSPI&apos;s published CPI Group 07.3
-            (&quot;Passenger transport services&quot;) index &mdash; the nearest officially published proxy to airfares, since
-            MoSPI does not release an item-level Air Fare series outside its portal.
+        <div className="min-w-0">
+          <h2 className="text-xl font-semibold text-ink-900">MoSPI CPI Benchmark Validation</h2>
+          <p className="text-xs text-ink-500 mt-1 max-w-xl">
+            APIx correlated against MoSPI CPI Group 07.3 (&quot;Passenger transport services&quot;) &mdash; the closest
+            officially published proxy to airfares.
           </p>
         </div>
 
-        <div className="flex items-center space-x-2.5">
+        <div className="flex items-center gap-2.5 shrink-0">
           <button
             onClick={backtest.refetch}
             disabled={backtest.loading}
-            className="bg-navy-700 text-white hover:bg-navy-800 text-xs font-semibold px-3.5 py-2 rounded-lg flex items-center space-x-2 transition-all cursor-pointer disabled:opacity-50"
+            className="bg-navy-700 text-white hover:bg-navy-800 text-xs font-semibold px-3.5 py-2 rounded-lg flex items-center gap-2 transition-all cursor-pointer disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${backtest.loading ? 'animate-spin' : ''}`} />
-            <span>Re-verify Correlation</span>
+            <span>Re-verify</span>
           </button>
 
           <button
             onClick={handleExportJSON}
-            className="bg-white text-ink-700 hover:bg-ink-50 border border-ink-200 text-xs font-semibold px-3 py-2 rounded-lg flex items-center space-x-1.5 transition-all cursor-pointer"
+            className="bg-white text-ink-700 hover:bg-ink-50 border border-ink-200 text-xs font-semibold px-3 py-2 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer"
           >
             <Download className="w-3.5 h-3.5 text-ink-500" />
-            <span>Export Report</span>
+            <span>Export</span>
           </button>
         </div>
       </div>
 
-      {/* Target Metric Scorecard Banner */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <div className="panel p-4 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-500"></div>
-          <span className="text-[11px] text-ink-500 block font-medium">Pearson Correlation (r)</span>
-          <span className="text-2xl font-semibold text-emerald-600 font-tabular">{metrics?.pearson_r.toFixed(3) ?? '—'}</span>
-          <span className="text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md font-semibold mt-1 inline-block">
-            Target ≥ 0.80 {metrics?.target_met ? '(PASSED)' : ''}
-          </span>
-        </div>
-
-        <div className="panel p-4 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-blue-500"></div>
-          <span className="text-[11px] text-ink-500 block font-medium">MAPE (Tracking Error)</span>
-          <span className="text-2xl font-semibold text-navy-700 font-tabular">{metrics ? `${metrics.mape.toFixed(2)}%` : '—'}</span>
-          <span className="text-[10px] text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded-md font-semibold mt-1 inline-block">
-            Target ≤ 3.50%
-          </span>
-        </div>
-
-        <div className="panel p-4 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-indigo-500"></div>
-          <span className="text-[11px] text-ink-500 block font-medium">RMSE (Index Discrepancy)</span>
-          <span className="text-2xl font-semibold text-indigo-700 font-tabular">{metrics ? `${metrics.rmse.toFixed(2)} pts` : '—'}</span>
-        </div>
-
-        <div className="panel p-4 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-purple-500"></div>
-          <span className="text-[11px] text-ink-500 block font-medium">t-Statistic</span>
-          <span className="text-2xl font-semibold text-purple-700 font-tabular">{significance?.tStatistic ?? '—'}</span>
-          <span className="text-[10px] text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded-md font-medium mt-1 inline-block">
-            df = {significance?.degreesOfFreedom ?? '—'}
-          </span>
-        </div>
-
-        <div className="panel p-4 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-teal-500"></div>
-          <span className="text-[11px] text-ink-500 block font-medium">Evaluation Horizon</span>
-          <span className="text-2xl font-semibold text-teal-700 font-tabular">{period?.total_days ?? '—'} Months</span>
-          <span className="text-[10px] text-teal-700 bg-teal-50 px-1.5 py-0.5 rounded-md font-medium mt-1 inline-block font-tabular">
-            {period ? `${period.start} – ${period.end}` : '—'}
-          </span>
-        </div>
-
-        <div className="panel p-4 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-amber-500"></div>
-          <span className="text-[11px] text-ink-500 block font-medium">MoSPI Augmentation</span>
-          <span className="text-base font-semibold text-amber-700 mt-1 block">{metrics?.target_met ? 'READY' : 'REVIEW'}</span>
-          <span className="text-[10px] text-amber-800 bg-amber-50 px-1.5 py-0.5 rounded-md font-medium mt-1 inline-block">
-            CPI Sub-Group Feed
-          </span>
+      {/* Target Metric Scorecard */}
+      <div className="panel px-2 py-4 sm:px-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-y divide-ink-100 sm:divide-y-0 sm:divide-x">
+          {[
+            {
+              label: 'Pearson Correlation (r)',
+              value: metrics?.pearson_r.toFixed(3) ?? '-',
+              color: 'text-emerald-600',
+              sub: `Target ≥ 0.80${metrics?.target_met ? ' · passed' : ''}`,
+            },
+            {
+              label: 'MAPE (Tracking Error)',
+              value: metrics ? `${metrics.mape.toFixed(2)}%` : '-',
+              color: 'text-navy-700',
+              sub: 'Target ≤ 3.50%',
+            },
+            {
+              label: 'RMSE (Discrepancy)',
+              value: metrics ? `${metrics.rmse.toFixed(2)} pts` : '-',
+              color: 'text-indigo-700',
+              sub: null,
+            },
+            {
+              label: 't-Statistic',
+              value: significance?.tStatistic ?? '-',
+              color: 'text-purple-700',
+              sub: `df = ${significance?.degreesOfFreedom ?? '-'}`,
+            },
+            {
+              label: 'Evaluation Horizon',
+              value: `${period?.total_days ?? '-'} mo`,
+              color: 'text-teal-700',
+              sub: period ? `${period.start} – ${period.end}` : null,
+            },
+            {
+              label: 'MoSPI Augmentation',
+              value: metrics?.target_met ? 'Ready' : 'Review',
+              color: 'text-amber-700',
+              sub: 'CPI sub-group feed',
+            },
+          ].map((stat) => (
+            <div key={stat.label} className="px-3 py-3 sm:py-1 text-center">
+              <span className="text-[11px] text-ink-500 block font-medium">{stat.label}</span>
+              <span className={`text-xl font-semibold font-tabular ${stat.color}`}>{stat.value}</span>
+              {stat.sub && <span className="text-[10px] text-ink-400 block mt-0.5 font-tabular">{stat.sub}</span>}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -183,14 +174,9 @@ export default function BacktestView() {
       <div className="panel p-6 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-ink-100 pb-4">
           <div>
-            <div className="flex items-center space-x-2">
-              <h3 className="text-base font-semibold text-ink-900">
-                Dual-Series Trajectory: APIx Price Index vs. MoSPI CPI 07.3 Benchmark
-              </h3>
-              <span className="bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-md font-tabular">
-                r = {metrics?.pearson_r.toFixed(3) ?? '—'}
-              </span>
-            </div>
+            <h3 className="text-base font-semibold text-ink-900">
+              Dual-Series Trajectory: APIx vs. MoSPI CPI 07.3
+            </h3>
             <p className="text-xs text-ink-500">
               Left axis: APIx Index (Base 100) | Right axis: MoSPI CPI Group 07.3 &quot;Passenger transport services&quot; (Base 2024=100)
             </p>
@@ -278,7 +264,7 @@ export default function BacktestView() {
                             <span className="font-tabular font-bold text-ink-950 text-sm">{data.apixIndex.toFixed(2)}</span>
                           </div>
                           {data.ciLower != null && data.ciUpper != null && (
-                            <div className="bg-navy-50/70 p-2 rounded-lg border border-navy-100/80 text-[11px] space-y-0.5">
+                            <div className="border-t border-b border-ink-100 py-1 text-[11px] space-y-0.5">
                               <div className="flex items-center justify-between text-navy-800 font-medium">
                                 <span>95% Confidence Interval:</span>
                                 <span className="font-tabular font-semibold">[{data.ciLower.toFixed(2)} – {data.ciUpper.toFixed(2)}]</span>
@@ -392,15 +378,12 @@ export default function BacktestView() {
       </div>
 
       {/* Methodology & Statistical Defense Panel */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         <div className="panel p-6 space-y-4">
-          <div className="flex items-center space-x-2 text-xs font-semibold text-navy-700 uppercase tracking-wider">
-            <Scale className="w-4 h-4 text-navy-700" />
-            <span>Methodology &amp; Statistical Defense</span>
+          <div>
+            <h3 className="text-base font-semibold text-ink-900">Methodology &amp; Statistical Defense</h3>
+            <p className="text-xs text-ink-500 mt-0.5">Defensibility for MoSPI / RBI stakeholders</p>
           </div>
-          <h3 className="text-base font-semibold text-ink-900">
-            Defensibility for MoSPI / RBI Stakeholders
-          </h3>
 
           <div className="space-y-3">
             {[
@@ -410,7 +393,7 @@ export default function BacktestView() {
               },
               {
                 q: `Is ${period?.total_days ?? 30} days of backtest statistically significant?`,
-                a: `With N=${significance?.n ?? '—'} paired observations across DGCA-weighted high-volume corridors, the calculated t-statistic is t = ${significance?.tStatistic ?? '—'} (degrees of freedom = ${significance?.degreesOfFreedom ?? '—'}).`,
+                a: `With N=${significance?.n ?? '-'} paired observations across DGCA-weighted high-volume corridors, the calculated t-statistic is t = ${significance?.tStatistic ?? '-'} (degrees of freedom = ${significance?.degreesOfFreedom ?? '-'}).`,
               },
               {
                 q: 'How does APIx isolate real price changes from scraper bugs?',
@@ -420,74 +403,75 @@ export default function BacktestView() {
                 q: 'How are passenger traffic weights assigned to corridors?',
                 a: 'We mirror official MoSPI CPI expenditure weighting logic by using DGCA published annual passenger volume shares, normalized to unit sum.',
               },
-            ].map((faq, idx) => (
-              <div key={idx} className="border border-ink-100 rounded-lg p-3.5 transition-all bg-ink-50/50">
-                <button
-                  onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
-                  className="w-full text-left font-semibold text-xs text-ink-900 flex justify-between items-center cursor-pointer"
+            ].map((faq, idx) => {
+              const isOpen = activeFaq === idx;
+              return (
+                <div
+                  key={idx}
+                  className={`group rounded-xl border transition-colors duration-200 ${
+                    isOpen
+                      ? 'border-navy-200 bg-white shadow-panel'
+                      : 'border-ink-100 bg-ink-50/50 hover:border-ink-200 hover:bg-ink-50'
+                  }`}
                 >
-                  <span>{faq.q}</span>
-                  <span className="text-navy-700 text-base ml-2">{activeFaq === idx ? '−' : '+'}</span>
-                </button>
-                {activeFaq === idx && (
-                  <p className="text-xs text-ink-700 mt-2.5 leading-relaxed border-t border-ink-100 pt-2">{faq.a}</p>
-                )}
-              </div>
-            ))}
+                  <button
+                    onClick={() => setActiveFaq(isOpen ? null : idx)}
+                    aria-expanded={isOpen}
+                    className="w-full text-left font-semibold text-xs text-ink-900 flex justify-between items-center gap-3 cursor-pointer px-3.5 py-3"
+                  >
+                    <span className={isOpen ? 'text-navy-800' : ''}>{faq.q}</span>
+                    <span
+                      className={`shrink-0 flex items-center justify-center w-5 h-5 rounded-full transition-all duration-300 ease-out ${
+                        isOpen ? 'bg-navy-700 rotate-180' : 'bg-ink-100 group-hover:bg-ink-200'
+                      }`}
+                    >
+                      <CaretDownIcon className={`w-3 h-3 ${isOpen ? 'text-white' : 'text-ink-500'}`} weight="fill" />
+                    </span>
+                  </button>
+                  <div
+                    className="grid transition-[grid-template-rows] duration-300 ease-out"
+                    style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="text-xs text-ink-700 leading-relaxed border-t border-ink-100 mx-3.5 pt-2.5 pb-3.5">
+                        {faq.a}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
         {/* Audit Certificate Card */}
-        <div className="bg-navy-50 border border-navy-100 p-6 rounded-xl flex flex-col justify-between space-y-4">
+        <div className="panel p-6 space-y-4">
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-semibold text-navy-700 uppercase tracking-wider bg-white px-2 py-0.5 rounded-md border border-navy-100">
-                MoSPI DIID Audit Certificate
-              </span>
-              <Award className="w-5 h-5 text-navy-700" />
-            </div>
-
-            <h3 className="text-lg font-semibold text-ink-900">Empirical Validation Summary</h3>
-            <p className="text-xs text-ink-700 mt-1 leading-relaxed">
-              Benchmarked against MoSPI&apos;s published CPI Group 07.3 (&quot;Passenger transport services&quot;) index for{' '}
-              {period?.total_days ?? '—'} months &mdash; the closest officially released proxy, pending MoSPI&apos;s
-              item-level Air Fare series (portal-only, not yet exported).
-            </p>
-
-            <div className="mt-4 space-y-2 text-xs">
-              <div className="flex justify-between items-center py-1.5 border-b border-ink-100">
-                <span className="text-ink-500">Correlation Target</span>
-                <span className={`font-semibold flex items-center gap-1 font-tabular ${metrics?.target_met ? 'text-emerald-700' : 'text-amber-700'}`}>
-                  <CheckCircle2 className="w-3.5 h-3.5" /> {metrics ? `r = ${metrics.pearson_r.toFixed(3)} vs req. 0.80` : '—'}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-1.5 border-b border-ink-100">
-                <span className="text-ink-500">Mean Absolute Error</span>
-                <span className="font-semibold text-emerald-700 flex items-center gap-1 font-tabular">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> {metrics ? `MAPE = ${metrics.mape.toFixed(2)}% vs req. ≤ 3.5%` : '—'}
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-1.5 border-b border-ink-100">
-                <span className="text-ink-500">Lead-Time Windows</span>
-                <span className="font-semibold text-ink-900">T+1, T+7, T+15, T+30, T+45</span>
-              </div>
-              <div className="flex justify-between items-center py-1.5">
-                <span className="text-ink-500">Cryptographic Auditing</span>
-                <span className="font-semibold text-ink-900">SHA-256 Hashes Linked to Raw Scrapes</span>
-              </div>
-            </div>
+            <h3 className="text-base font-semibold text-ink-900">MoSPI DIID Audit Certificate</h3>
           </div>
 
-          <div className="bg-white p-3 rounded-lg border border-ink-100 flex items-center justify-between text-xs">
-            <div>
-              <span className="text-ink-500 block text-[10px]">Statistical Status</span>
-              <strong className={`font-semibold ${metrics?.target_met ? 'text-emerald-700' : 'text-amber-700'}`}>
-                {metrics?.target_met ? 'BENCHMARK CERTIFIED' : 'UNDER REVIEW'}
-              </strong>
+          <div className="space-y-2 text-xs">
+            <div className="flex justify-between items-center py-1.5 border-b border-ink-100">
+              <span className="text-ink-500">Correlation Target</span>
+              <span className={`font-semibold font-tabular ${metrics?.target_met ? 'text-emerald-700' : 'text-amber-700'}`}>
+                {metrics ? `r = ${metrics.pearson_r.toFixed(3)} vs req. 0.80` : '-'}
+              </span>
             </div>
-            <div className="text-right">
-              <span className="text-ink-500 block text-[10px]">Verification Endpoint</span>
-              <code className="text-navy-700 text-[11px] font-mono">GET /api/backtest/dgca-comparison</code>
+            <div className="flex justify-between items-center py-1.5 border-b border-ink-100">
+              <span className="text-ink-500">Mean Absolute Error</span>
+              <span className="font-semibold text-emerald-700 font-tabular">
+                {metrics ? `MAPE = ${metrics.mape.toFixed(2)}% vs req. ≤ 3.5%` : '-'}
+              </span>
+            </div>
+            <div className="flex justify-between items-center py-1.5 border-b border-ink-100">
+              <span className="text-ink-500">Cryptographic Auditing</span>
+              <span className="font-semibold text-ink-900">SHA-256 linked to raw scrapes</span>
+            </div>
+            <div className="flex justify-between items-center pt-2.5">
+              <span className="text-ink-500">Statistical Status</span>
+              <strong className={`font-semibold ${metrics?.target_met ? 'text-emerald-700' : 'text-amber-700'}`}>
+                {metrics?.target_met ? 'Benchmark Certified' : 'Under Review'}
+              </strong>
             </div>
           </div>
         </div>
@@ -528,9 +512,7 @@ export default function BacktestView() {
                   <td className="py-2 px-4 font-semibold text-emerald-700 font-tabular">{row.variancePct.toFixed(2)}%</td>
                   <td className="py-2 px-4 text-ink-500 font-tabular">{row.trackingResidual.toFixed(1)} pts</td>
                   <td className="py-2 px-4">
-                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">
-                      <CheckCircle2 className="w-3 h-3" /> Valid
-                    </span>
+                    <StatusTag tone="success">Valid</StatusTag>
                   </td>
                 </tr>
               ))}

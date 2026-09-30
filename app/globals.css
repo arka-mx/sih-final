@@ -5,20 +5,20 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Brand navy — anchored to the existing MoSPI identity blue (navy-700) */
-  --color-navy-50: #eef3fa;
-  --color-navy-100: #dce7f4;
-  --color-navy-200: #b3cbe8;
-  --color-navy-300: #85abd8;
-  --color-navy-400: #4e83c0;
-  --color-navy-500: #2a63a3;
-  --color-navy-600: #124c8a;
-  --color-navy-700: #003f87;
-  --color-navy-800: #002d62;
-  --color-navy-900: #001d40;
-  --color-navy-950: #001028;
+  /* Brand blue - sampled from the Vayu logo mark */
+  --color-navy-50: #eef6fd;
+  --color-navy-100: #dbedfb;
+  --color-navy-200: #aed7f6;
+  --color-navy-300: #74bcf0;
+  --color-navy-400: #38a4ea;
+  --color-navy-500: #1f7fdb;
+  --color-navy-600: #1a63c4;
+  --color-navy-700: #1d4fb0;
+  --color-navy-800: #163a86;
+  --color-navy-900: #112a61;
+  --color-navy-950: #0b1a3d;
 
-  /* Neutrals — cool slate, used for all text/border/surface work */
+  /* Neutrals - cool slate, used for all text/border/surface work */
   --color-ink-950: #0b1220;
   --color-ink-900: #10192b;
   --color-ink-700: #33415a;
@@ -33,7 +33,7 @@
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
 
-  /* Restrained shadow scale — never go past this */
+  /* Restrained shadow scale - never go past this */
   --shadow-panel: 0 1px 2px 0 rgb(16 25 43 / 0.04), 0 1px 1px 0 rgb(16 25 43 / 0.03);
   --shadow-raised: 0 2px 8px -2px rgb(16 25 43 / 0.10), 0 1px 2px -1px rgb(16 25 43 / 0.06);
   --shadow-overlay: 0 16px 40px -12px rgb(11 18 32 / 0.28);
@@ -42,13 +42,6 @@
      elements (status dots) use rounded-full, which is unaffected by this scale. */
   --radius-none: 0;
   --radius-xs: 0;
-  --radius-sm: 0;
-  --radius-md: 0;
-  --radius-lg: 0;
-  --radius-xl: 0;
-  --radius-2xl: 0;
-  --radius-3xl: 0;
-  --radius-4xl: 0;
 }
 
 @layer base {
@@ -80,12 +73,6 @@
 }
 
 @layer utilities {
-  /* Tailwind's bare `rounded` utility is a hardcoded 0.25rem, not tied to the
-     --radius-* scale above — close that one gap in the square-corner system. */
-  .rounded {
-    border-radius: 0;
-  }
-
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }

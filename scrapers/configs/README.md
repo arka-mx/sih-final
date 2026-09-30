@@ -3,7 +3,7 @@
 Each YAML file here fully describes one fare source. Adding a new
 airline/OTA source is: copy an existing file, edit the values, save it under
 a new `<source_key>.yaml` name. No Python subclass, registry edit, or
-redeploy-time code change is needed — `scrapers/registry.py` discovers every
+redeploy-time code change is needed - `scrapers/registry.py` discovers every
 file in this directory automatically and `scrapers/config_scraper.py` drives
 the scrape generically from its contents.
 

@@ -28,7 +28,7 @@ function average(values: number[]): number | null {
 
 // Used by MarketAnalysisView: route x booking-window fare heatmap, lead-time
 // elasticity curve, airline price/market-share comparison, and a
-// window-spread volatility approximation — all aggregated from real fare
+// window-spread volatility approximation - all aggregated from real fare
 // records via GET /api/routes/{pair}/fares (there is no single backend
 // endpoint for these views, so this route fans out and aggregates).
 export async function GET() {

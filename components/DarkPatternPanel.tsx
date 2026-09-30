@@ -5,7 +5,9 @@ import { DarkPatternFlagItem, MOCK_DARK_PATTERN_FLAGS } from '@/lib/mockData';
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { ShieldWarning as ShieldAlert, Eye, TrendUp as TrendingUp, ArrowsClockwise as RefreshCw } from '@phosphor-icons/react';
+import { ShieldAlert, Eye, TrendingUp, RefreshCw } from './icons';
+import { StatusTag } from './ui/status-tag';
+import type { StatusTone } from './ui/status-tag';
 
 interface DarkPatternApiResponse {
   routePair: string;
@@ -15,10 +17,10 @@ interface DarkPatternApiResponse {
   methodologyNote: string;
 }
 
-const SEVERITY_STYLES: Record<string, string> = {
-  HIGH: 'bg-rose-50 text-rose-700 border-rose-200',
-  MEDIUM: 'bg-amber-50 text-amber-700 border-amber-200',
-  LOW: 'bg-ink-100 text-ink-600 border-ink-200',
+const SEVERITY_TONE: Record<string, StatusTone> = {
+  HIGH: 'danger',
+  MEDIUM: 'warning',
+  LOW: 'neutral',
 };
 
 const PATTERN_ICON: Record<string, React.ReactNode> = {
@@ -37,13 +39,9 @@ export default function DarkPatternPanel() {
     <div className="panel p-6 space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-ink-100 pb-4">
         <div>
-          <div className="flex items-center gap-2 text-[11px] font-semibold text-navy-700 uppercase tracking-wider mb-1">
-            <ShieldAlert className="w-3.5 h-3.5" />
-            <span>Consumer Protection</span>
-          </div>
           <h3 className="text-sm font-semibold text-ink-900">Dark Pattern Detector</h3>
           <p className="text-[11px] text-ink-500 mt-0.5 leading-relaxed">
-            Flags artificial-scarcity copy and repeat-view price escalation on the simulated OTA fixture (DEL-BOM, T+7).
+            Consumer protection &middot; flags artificial-scarcity copy and repeat-view price escalation on the simulated OTA fixture (DEL-BOM, T+7).
           </p>
         </div>
         {!DEMO_MODE && (
@@ -96,9 +94,7 @@ export default function DarkPatternPanel() {
                         </span>
                       </td>
                       <td className="p-3">
-                        <span className={`px-2 py-0.5 rounded-md border text-[10px] font-semibold ${SEVERITY_STYLES[f.severity] ?? SEVERITY_STYLES.LOW}`}>
-                          {f.severity}
-                        </span>
+                        <StatusTag tone={SEVERITY_TONE[f.severity] ?? 'neutral'}>{f.severity}</StatusTag>
                       </td>
                       <td className="p-3 text-[11px] text-ink-500">{f.message}</td>
                     </tr>
