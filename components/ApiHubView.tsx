@@ -196,58 +196,62 @@ export default function ApiHubView() {
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Header */}
-      <div className="panel p-6 space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-ink-900">Airfare Price Index API</h2>
-          <div className="flex items-center space-x-2">
+      <div className="panel p-6 space-y-5">
+        {/* Title row */}
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="space-y-1 min-w-0">
+            <h2 className="text-xl font-semibold text-ink-900">Airfare Price Index API</h2>
+            <p className="text-xs text-ink-500">
+              FastAPI REST endpoints for MoSPI/NSO and RBI integration.
+            </p>
+          </div>
+          <div className="shrink-0 flex items-center gap-1 bg-ink-50 border border-ink-100 rounded-lg p-1">
             <a
               href={`${apiBaseUrl}/docs`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-navy-50 hover:bg-navy-100 text-navy-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors cursor-pointer"
+              className="text-navy-700 text-xs font-semibold px-3 py-1.5 rounded-md flex items-center gap-1.5 cursor-pointer"
             >
-              <span>Swagger UI (/docs)</span>
+              <span>Swagger UI</span>
               <ExternalLink className="w-3 h-3" />
             </a>
             <a
               href={`${apiBaseUrl}/redoc`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-ink-50 hover:bg-ink-100 text-ink-700 text-xs font-semibold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition-colors cursor-pointer"
+              className="text-ink-600 text-xs font-semibold px-3 py-1.5 rounded-md flex items-center gap-1.5 cursor-pointer"
             >
-              <span>ReDoc (/redoc)</span>
+              <span>ReDoc</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>
         </div>
 
-        <p className="text-xs text-ink-500">
-          FastAPI REST endpoints for MoSPI/NSO and RBI integration.
-        </p>
+        {/* Connection settings */}
+        <div className="rounded-xl border border-ink-100 bg-ink-50/60 p-4 space-y-3">
+          <div className="flex flex-col lg:flex-row lg:items-end gap-4">
+            <div className="flex-1 min-w-0">
+              <label className="block text-[11px] font-semibold text-ink-500 mb-1.5">
+                Base URL
+              </label>
+              <input
+                type="text"
+                value={apiBaseUrl}
+                onChange={(e) => setApiBaseUrl(e.target.value)}
+                className="w-full text-xs font-mono px-3 py-1.5 rounded-lg border border-ink-200 bg-white focus:outline-none focus:border-navy-700"
+                placeholder="http://localhost:8000"
+              />
+            </div>
 
-        {/* API Base URL and Credentials Bar */}
-        <div className="pt-2 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-ink-100">
-          <div>
-            <label className="block text-[11px] font-semibold text-ink-500 mb-1">
-              Base URL
-            </label>
-            <input
-              type="text"
-              value={apiBaseUrl}
-              onChange={(e) => setApiBaseUrl(e.target.value)}
-              className="w-full text-xs font-mono px-3 py-1.5 rounded-lg border border-ink-200 focus:outline-none focus:border-navy-700"
-              placeholder="http://localhost:8000"
-            />
-          </div>
-
-          <div>
-            <label className="block text-[11px] font-semibold text-ink-500 mb-1">API Key Persona</label>
-            {isDev ? (
-              <div className="space-y-1.5">
-                <p className="text-[10px] text-ink-400 font-medium">
-                  Demo mode - keys are local-only and rotate in production.
-                </p>
-                <div className="flex space-x-2">
+            <div className="lg:w-auto">
+              <div className="flex items-baseline gap-2 mb-1.5">
+                <label className="text-[11px] font-semibold text-ink-500">API Key Persona</label>
+                {isDev && (
+                  <span className="text-[10px] text-ink-400">Demo mode · local-only</span>
+                )}
+              </div>
+              {isDev ? (
+                <div className="flex gap-1.5">
                   {(
                     [
                       { id: 'none', label: 'Public' },
@@ -260,36 +264,34 @@ export default function ApiHubView() {
                       key={role.id}
                       type="button"
                       onClick={() => setSelectedRole(role.id)}
-                      className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors ${
+                      className={`text-xs px-2.5 py-1.5 rounded-lg border font-semibold cursor-pointer transition-colors whitespace-nowrap ${
                         selectedRole === role.id
                           ? 'bg-ink-900 text-white border-ink-900'
-                          : 'bg-ink-50 text-ink-700 hover:bg-ink-100 border-ink-200'
+                          : 'bg-white text-ink-700 hover:bg-ink-100 border-ink-200'
                       }`}
                     >
                       {role.label}
                     </button>
                   ))}
                 </div>
-              </div>
-            ) : (
-              <div className="text-xs text-ink-500 bg-ink-50 border border-ink-100 px-3 py-2 rounded-lg">
-                Custom API key required for authorized access. Persona presets are disabled in production.
-              </div>
-            )}
+              ) : (
+                <div className="text-xs text-ink-500 bg-white border border-ink-100 px-3 py-2 rounded-lg">
+                  Custom API key required for authorized access. Persona presets are disabled in production.
+                </div>
+              )}
+            </div>
           </div>
-        </div>
 
-        {selectedRole === 'custom' && (
-          <div className="pt-2">
+          {selectedRole === 'custom' && (
             <input
               type="text"
               placeholder="Enter custom API Key"
               value={customKey}
               onChange={(e) => setCustomKey(e.target.value)}
-              className="w-full text-xs font-mono px-3 py-1.5 rounded-lg border border-purple-300 focus:outline-none focus:border-purple-600"
+              className="w-full text-xs font-mono px-3 py-1.5 rounded-lg border border-purple-300 bg-white focus:outline-none focus:border-purple-600"
             />
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Endpoint List & Live Runner */}

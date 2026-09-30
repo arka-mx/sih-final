@@ -25,9 +25,9 @@
   --color-ink-500: #5b6b85;
   --color-ink-400: #7c8aa3;
   --color-ink-300: #a6b1c4;
-  --color-ink-200: #d3d9e4;
-  --color-ink-100: #e7ebf1;
-  --color-ink-50: #f4f6f9;
+  --color-ink-200: #e5e9ee;
+  --color-ink-100: #f2f4f7;
+  --color-ink-50: #fbfcfd;
 
   /* Typography */
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;

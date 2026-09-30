@@ -44,7 +44,7 @@ interface BacktestApiResponse {
 export default function BacktestView() {
   const [dataHorizon, setDataHorizon] = useState<'30' | '14' | '7'>('30');
   const [chartMode, setChartMode] = useState<'overlay' | 'residuals' | 'variance'>('overlay');
-  const [activeFaq, setActiveFaq] = useState<number | null>(0);
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   const backtest = useApiData<BacktestApiResponse>(
     DEMO_MODE ? null : `/api/backtest?days=${dataHorizon}`,
@@ -378,7 +378,7 @@ export default function BacktestView() {
       </div>
 
       {/* Methodology & Statistical Defense Panel */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <div className="grid grid-cols-1 gap-6 items-start">
         <div className="panel p-6 space-y-4">
           <div>
             <h3 className="text-base font-semibold text-ink-900">Methodology &amp; Statistical Defense</h3>

@@ -60,10 +60,10 @@ interface AnomalyResponse {
   methodologyNote: string;
 }
 
-const ANOMALY_CAUSE_STYLES: Record<string, { icon: typeof Calendar; accent: string; iconColor: string }> = {
-  FESTIVAL_CALENDAR_MATCH: { icon: Calendar, accent: 'border-l-amber-500', iconColor: 'text-amber-600' },
-  ATF_FUEL_PRICE_REVISION: { icon: Fuel, accent: 'border-l-rose-500', iconColor: 'text-rose-600' },
-  UNEXPLAINED_STATISTICAL_VOLATILITY: { icon: Flame, accent: 'border-l-navy-500', iconColor: 'text-navy-600' },
+const ANOMALY_CAUSE_STYLES: Record<string, { icon: typeof Calendar; chipBg: string; iconColor: string }> = {
+  FESTIVAL_CALENDAR_MATCH: { icon: Calendar, chipBg: 'bg-amber-50', iconColor: 'text-amber-600' },
+  ATF_FUEL_PRICE_REVISION: { icon: Fuel, chipBg: 'bg-rose-50', iconColor: 'text-rose-600' },
+  UNEXPLAINED_STATISTICAL_VOLATILITY: { icon: Flame, chipBg: 'bg-navy-50', iconColor: 'text-navy-600' },
 };
 
 interface HomeViewProps {
@@ -310,9 +310,9 @@ export default function HomeView() {
 
         {/* Anomaly Explainability Panel */}
         <div className="border-t border-ink-100 pt-5">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
             <h4 className="text-xs font-semibold text-ink-900">Anomaly explainability &amp; spike tagger</h4>
-            <span className="text-[11px] text-ink-400 font-mono">
+            <span className="text-[10px] text-ink-400 font-mono bg-ink-50 border border-ink-100 rounded-md px-2 py-1">
               {anomalies.data
                 ? `${anomalies.data.windowStart} → ${anomalies.data.windowEnd} · z > ${anomalies.data.zThreshold}`
                 : 'pipeline/anomaly_tagger.py'}
@@ -335,27 +335,36 @@ export default function HomeView() {
           {!anomalies.loading && !anomalies.error && anomalies.data && anomalies.data.spikes.length > 0 && (
             <div className="space-y-3">
               {anomalies.data.spikes.map((spike) => (
-                <div key={spike.date} className="border border-ink-100 rounded-xl p-3.5">
-                  <div className="flex items-center justify-between mb-2.5">
+                <div key={spike.date} className="border border-ink-100 rounded-xl overflow-hidden">
+                  <div className="flex items-center justify-between gap-3 px-3.5 py-2.5 bg-ink-50 border-b border-ink-100">
                     <span className="text-xs font-semibold text-ink-900 font-tabular">
-                      {spike.date} &middot; Index {spike.indexValue.toFixed(2)}
+                      {spike.date} <span className="font-normal text-ink-400">&middot;</span> Index {spike.indexValue.toFixed(2)}
                     </span>
-                    <span className={`text-xs font-semibold font-tabular ${spike.dayChangePct >= 0 ? 'text-amber-700' : 'text-emerald-700'}`}>
+                    <span
+                      className={`shrink-0 text-[11px] font-semibold font-tabular px-2 py-0.5 rounded-md ${
+                        spike.dayChangePct >= 0 ? 'bg-amber-50 text-amber-700' : 'bg-emerald-50 text-emerald-700'
+                      }`}
+                    >
                       {spike.dayChangePct >= 0 ? '+' : ''}{spike.dayChangePct.toFixed(2)}% (z={spike.zScore.toFixed(2)})
                     </span>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                  <div className="p-3.5 space-y-3">
                     {spike.tags.map((tag, idx) => {
                       const style = ANOMALY_CAUSE_STYLES[tag.cause] ?? ANOMALY_CAUSE_STYLES.UNEXPLAINED_STATISTICAL_VOLATILITY;
                       const TagIcon = style.icon;
                       return (
-                        <div key={idx} className={`border-l-2 ${style.accent} pl-2.5 py-0.5 flex items-start gap-2.5 text-xs`}>
-                          <TagIcon className={`w-4 h-4 shrink-0 mt-0.5 ${style.iconColor}`} />
-                          <div>
-                            <span className="font-semibold text-ink-900">
-                              {tag.label} <span className="font-normal text-ink-500">({tag.confidence})</span>
-                            </span>
-                            <p className="text-[11px] mt-1 leading-snug text-ink-500">{tag.detail}</p>
+                        <div key={idx} className="flex items-start gap-2.5">
+                          <span className={`shrink-0 flex items-center justify-center w-6 h-6 rounded-md ${style.chipBg}`}>
+                            <TagIcon className={`w-3.5 h-3.5 ${style.iconColor}`} />
+                          </span>
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="text-xs font-semibold text-ink-900">{tag.label}</span>
+                              <span className="text-[9px] font-semibold uppercase tracking-wide text-ink-400 bg-ink-50 border border-ink-100 rounded px-1.5 py-0.5">
+                                {tag.confidence}
+                              </span>
+                            </div>
+                            <p className="text-[11px] mt-1 leading-relaxed text-ink-500">{tag.detail}</p>
                           </div>
                         </div>
                       );
@@ -367,7 +376,9 @@ export default function HomeView() {
           )}
 
           {anomalies.data && (
-            <p className="text-[10px] text-ink-400 mt-3 leading-snug">{anomalies.data.methodologyNote}</p>
+            <p className="text-[10px] text-ink-400 mt-3 pt-3 border-t border-ink-100 leading-relaxed">
+              {anomalies.data.methodologyNote}
+            </p>
           )}
         </div>
       </div>
