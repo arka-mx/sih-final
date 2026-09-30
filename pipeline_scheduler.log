@@ -1480,3 +1480,122 @@ socket.gaierror: [Errno 11001] getaddrinfo failed
 2026-09-30 14:00:34,721 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Repeat-view price escalation: QP-1402 (DEL-PNQ) history=[3696.0, 3811.5, 3850.0] pct_change=4.17%
 2026-09-30 14:00:34,721 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Repeat-view price escalation: SG-497 (BOM-GOI) history=[3061.44, 3157.11, 3189.0] pct_change=4.17%
 2026-09-30 14:00:40,991 [INFO] apscheduler.executors.default: Job "APIx scrape/clean/index cycle - T+15 (trigger: cron[hour='2,14', minute='0'], next run at: 2026-10-01 02:00:00 IST)" executed successfully
+2026-09-30 16:00:00,106 [INFO] apscheduler.executors.default: Running job "APIx scrape/clean/index cycle - T+1 (trigger: cron[hour='0,4,8,12,16,20', minute='0'], next run at: 2026-09-30 20:00:00 IST)" (scheduled at 2026-09-30 16:00:00+05:30)
+2026-09-30 16:00:00,172 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 16:00:00,193 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 16:00:00,726 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+7)
+2026-09-30 16:00:00,742 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 16:00:00,835 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+7)
+2026-09-30 16:00:01,024 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+1)
+2026-09-30 16:00:01,029 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+1)
+2026-09-30 16:00:01,029 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 16:00:01,029 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 16:00:01,040 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 16:00:01,043 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+1)
+2026-09-30 16:00:01,047 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+1)
+2026-09-30 16:00:01,050 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 16:00:01,054 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 16:00:01,058 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 16:00:01,062 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+1)
+2026-09-30 16:00:01,065 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+1)
+2026-09-30 16:00:01,069 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 16:00:01,073 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 16:00:01,076 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 16:00:01,079 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-CCU (T+1)
+2026-09-30 16:00:01,083 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 4 records for DEL-CCU (T+1)
+2026-09-30 16:00:01,084 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-CCU
+2026-09-30 16:00:01,084 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-CCU
+2026-09-30 16:00:01,084 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-CCU
+2026-09-30 16:00:01,088 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for DEL-HYD (T+1)
+2026-09-30 16:00:01,092 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-HYD (T+1)
+2026-09-30 16:00:01,092 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-HYD
+2026-09-30 16:00:01,092 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-HYD
+2026-09-30 16:00:01,092 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-HYD
+2026-09-30 16:00:01,094 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BLR-HYD (T+1)
+2026-09-30 16:00:01,094 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BLR-HYD (T+1)
+2026-09-30 16:00:01,094 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for BLR-HYD
+2026-09-30 16:00:01,094 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for BLR-HYD
+2026-09-30 16:00:01,094 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for BLR-HYD
+2026-09-30 16:00:01,103 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for MAA-DEL (T+1)
+2026-09-30 16:00:01,103 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for MAA-DEL (T+1)
+2026-09-30 16:00:01,103 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for MAA-DEL
+2026-09-30 16:00:01,103 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for MAA-DEL
+2026-09-30 16:00:01,103 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for MAA-DEL
+2026-09-30 16:00:01,103 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for CCU-BLR (T+1)
+2026-09-30 16:00:01,113 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for CCU-BLR (T+1)
+2026-09-30 16:00:01,113 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for CCU-BLR
+2026-09-30 16:00:01,113 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for CCU-BLR
+2026-09-30 16:00:01,113 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for CCU-BLR
+2026-09-30 16:00:01,118 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-PNQ (T+1)
+2026-09-30 16:00:01,118 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 4 records for DEL-PNQ (T+1)
+2026-09-30 16:00:01,118 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-PNQ
+2026-09-30 16:00:01,124 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-PNQ
+2026-09-30 16:00:01,124 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-PNQ
+2026-09-30 16:00:01,124 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-GOI (T+1)
+2026-09-30 16:00:01,130 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 4 records for BOM-GOI (T+1)
+2026-09-30 16:00:01,130 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for BOM-GOI
+2026-09-30 16:00:01,130 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for BOM-GOI
+2026-09-30 16:00:01,130 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for BOM-GOI
+2026-09-30 16:00:01,134 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for DEL-PAT (T+1)
+2026-09-30 16:00:01,134 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 2 records for DEL-PAT (T+1)
+2026-09-30 16:00:01,134 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-PAT
+2026-09-30 16:00:01,140 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-PAT
+2026-09-30 16:00:01,140 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-PAT
+2026-09-30 16:00:01,140 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for DEL-GAU (T+1)
+2026-09-30 16:00:01,144 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 2 records for DEL-GAU (T+1)
+2026-09-30 16:00:01,144 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-GAU
+2026-09-30 16:00:01,144 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-GAU
+2026-09-30 16:00:01,144 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-GAU
+2026-09-30 16:00:01,152 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for DEL-IXR (T+1)
+2026-09-30 16:00:01,155 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 2 records for DEL-IXR (T+1)
+2026-09-30 16:00:01,155 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-IXR
+2026-09-30 16:00:01,155 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-IXR
+2026-09-30 16:00:01,155 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-IXR
+2026-09-30 16:00:01,159 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for BOM-PAT (T+1)
+2026-09-30 16:00:01,161 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 2 records for BOM-PAT (T+1)
+2026-09-30 16:00:01,163 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for BOM-PAT
+2026-09-30 16:00:01,163 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for BOM-PAT
+2026-09-30 16:00:01,163 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for BOM-PAT
+2026-09-30 16:00:01,167 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for CCU-GAU (T+1)
+2026-09-30 16:00:01,171 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 2 records for CCU-GAU (T+1)
+2026-09-30 16:00:01,171 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for CCU-GAU
+2026-09-30 16:00:01,171 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for CCU-GAU
+2026-09-30 16:00:01,173 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for CCU-GAU
+2026-09-30 16:00:01,181 [WARNING] pipeline.outlier_detection: Outlier flagged on BLR-HYD (T+1): AI-544 fare=6037.5 [IQR_HIGH_OUTLIER (\u20b96037.5 > upper bound \u20b95659.75)]
+2026-09-30 16:00:01,181 [INFO] pipeline.outlier_detection: Pipeline Quality Audit Complete: 93 raw -> 91 CPI eligible (1 dups, 1 outliers, 0 sold-out, Quality=97.85%)
+2026-09-30 16:00:35,191 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-205 (DEL-BOM): Direct=\u20b97232.5 vs MMT=\u20b97631.5 => Markup=\u20b9399.0
+2026-09-30 16:00:35,191 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-503 (DEL-BOM): Direct=\u20b97920.0 vs MMT=\u20b98319.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,191 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-2131 (DEL-BLR): Direct=\u20b96535.0 vs MMT=\u20b96934.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,191 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-456 (BOM-BLR): Direct=\u20b95837.5 vs MMT=\u20b96236.5 => Markup=\u20b9399.0
+2026-09-30 16:00:35,191 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-201 (DEL-CCU): Direct=\u20b95242.5 vs MMT=\u20b95641.5 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-253 (DEL-CCU): Direct=\u20b95540.0 vs MMT=\u20b95939.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-733 (DEL-HYD): Direct=\u20b97540.0 vs MMT=\u20b97939.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-358 (BLR-HYD): Direct=\u20b94227.5 vs MMT=\u20b94626.5 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-442 (BLR-HYD): Direct=\u20b94525.0 vs MMT=\u20b94924.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-2041 (MAA-DEL): Direct=\u20b96945.0 vs MMT=\u20b97344.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-2207 (MAA-DEL): Direct=\u20b97437.5 vs MMT=\u20b97836.5 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-891 (CCU-BLR): Direct=\u20b97900.0 vs MMT=\u20b98299.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-2125 (DEL-PNQ): Direct=\u20b96032.5 vs MMT=\u20b96431.5 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-6512 (DEL-PNQ): Direct=\u20b96525.0 vs MMT=\u20b96924.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-512 (BOM-GOI): Direct=\u20b94720.0 vs MMT=\u20b95119.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-6014 (BOM-GOI): Direct=\u20b95315.0 vs MMT=\u20b95714.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-2077 (DEL-PAT): Direct=\u20b96240.0 vs MMT=\u20b96639.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-6202 (DEL-GAU): Direct=\u20b98535.0 vs MMT=\u20b98934.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,192 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-2205 (DEL-IXR): Direct=\u20b96455.0 vs MMT=\u20b96854.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,196 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-6501 (BOM-PAT): Direct=\u20b98670.0 vs MMT=\u20b99069.0 => Markup=\u20b9399.0
+2026-09-30 16:00:35,196 [INFO] pipeline.decompose: [DECOMPOSE] Matched 6E-6701 (CCU-GAU): Direct=\u20b95767.5 vs MMT=\u20b96166.5 => Markup=\u20b9399.0
+2026-09-30 16:00:35,196 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Scarcity copy/flag mismatch: AI-805 (DEL-BOM) copy='Hurry! Only 3 seats left at this price.' flag=AVAILABLE
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Scarcity copy/flag mismatch: QP-1331 (DEL-BLR) copy='Hurry! Only 3 seats left at this price.' flag=AVAILABLE
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Scarcity copy/flag mismatch: SG-419 (BOM-BLR) copy='Hurry! Only 3 seats left at this price.' flag=AVAILABLE
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Scarcity copy/flag mismatch: AI-764 (DEL-CCU) copy='Hurry! Only 3 seats left at this price.' flag=AVAILABLE
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Scarcity copy/flag mismatch: QP-1442 (DEL-HYD) copy='Hurry! Only 3 seats left at this price.' flag=AVAILABLE
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Scarcity copy/flag mismatch: AI-544 (BLR-HYD) copy='Hurry! Only 3 seats left at this price.' flag=AVAILABLE
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Scarcity copy/flag mismatch: AI-440 (MAA-DEL) copy='Hurry! Only 3 seats left at this price.' flag=AVAILABLE
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Scarcity copy/flag mismatch: AI-771 (CCU-BLR) copy='Hurry! Only 3 seats left at this price.' flag=AVAILABLE
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Scarcity copy/flag mismatch: AI-851 (DEL-PNQ) copy='Hurry! Only 3 seats left at this price.' flag=AVAILABLE
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Scarcity copy/flag mismatch: AI-661 (BOM-GOI) copy='Hurry! Only 3 seats left at this price.' flag=AVAILABLE
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Repeat-view price escalation: QP-1102 (DEL-BOM) history=[7003.2, 7222.05, 7295.0] pct_change=4.17%
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Repeat-view price escalation: SG-281 (DEL-CCU) history=[5228.64, 5392.03, 5446.5] pct_change=4.17%
+2026-09-30 16:00:35,207 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Repeat-view price escalation: QP-1402 (DEL-PNQ) history=[5940.0, 6125.62, 6187.5] pct_change=4.17%
+2026-09-30 16:00:35,212 [INFO] pipeline.dark_pattern_detector: [DARK_PATTERN] Repeat-view price escalation: SG-497 (BOM-GOI) history=[4815.84, 4966.34, 5016.5] pct_change=4.17%
+2026-09-30 16:00:44,156 [INFO] apscheduler.executors.default: Job "APIx scrape/clean/index cycle - T+1 (trigger: cron[hour='0,4,8,12,16,20', minute='0'], next run at: 2026-09-30 20:00:00 IST)" executed successfully

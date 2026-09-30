@@ -31,7 +31,7 @@ services:
     dockerfilePath: ./apix-api/Dockerfile
     dockerContext: .
     dockerCommand: python -m pipeline.scheduler
-    plan: starter
+    plan: free
     envVars:
       - key: APP_ENV
         value: production
