@@ -5,7 +5,7 @@ services:
     dockerfilePath: ./apix-api/Dockerfile
     dockerContext: .
     plan: starter
-    healthCheckPath: /docs
+    healthCheckPath: /api/health
     envVars:
       - key: APP_ENV
         value: production

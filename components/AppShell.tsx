@@ -10,11 +10,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const [userRole, setUserRole] = useState<'analyst' | 'public'>('public');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  React.useEffect(() => {
+    setLastUpdated(new Date());
+  }, []);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
+      setLastUpdated(new Date());
     }, 800);
   };
 
@@ -29,6 +35,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           onRefresh={handleRefresh}
           isRefreshing={isRefreshing}
           onOpenMobileNav={() => setIsMobileNavOpen(true)}
+          lastUpdated={lastUpdated}
         />
 
         {/* Main Content Area */}
