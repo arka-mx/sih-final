@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono, Source_Serif_4 } from "next/font/google";
+import { Inter, IBM_Plex_Mono, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
+import { cn } from "@/lib/utils";
 
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -33,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${plexSans.variable} ${plexMono.variable} ${sourceSerif.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", inter.variable, plexMono.variable, sourceSerif.variable, "font-sans")}
     >
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>

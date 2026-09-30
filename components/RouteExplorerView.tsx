@@ -2,11 +2,11 @@
 
 import React, { useMemo, useState } from 'react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
-import { AIRLINE_COMPARISON, ELASTICITY_DATA } from '@/lib/mockData';
+import { AIRLINE_COMPARISON, ELASTICITY_DATA, POPULAR_ROUTES } from '@/lib/mockData';
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { Download, Filter, Share2, Check, Calendar, PlaneTakeoff, PlaneLanding } from 'lucide-react';
+import { Download, Funnel as Filter, ShareNetwork as Share2, Check, Calendar, AirplaneTakeoff as PlaneTakeoff } from '@phosphor-icons/react';
 
 interface ApiFareRecord {
   id: string;
@@ -22,6 +22,28 @@ interface FaresApiResponse {
   fares: ApiFareRecord[];
 }
 
+interface RouteMetaItem {
+  pair: string;
+  origin: string;
+  originName: string;
+  destination: string;
+  destinationName: string;
+}
+
+interface RouteMetadataResponse {
+  routes: RouteMetaItem[];
+}
+
+// Fallback list used until the live route basket loads (or in demo mode) —
+// keeps the picker limited to routes that actually exist in the DGCA basket,
+// instead of letting origin/destination be chosen independently, which let
+// users land on unmonitored pairs like BOM-DEL or CCU-HYD that 404.
+const FALLBACK_ROUTES: RouteMetaItem[] = POPULAR_ROUTES.map((r) => {
+  const [origin, destination] = r.code.split('-');
+  const [originName, destinationName] = r.name.split(' ↔ ');
+  return { pair: r.code, origin, originName, destination, destinationName };
+});
+
 const WINDOWS = ['T+1', 'T+7', 'T+15', 'T+30', 'T+45'] as const;
 const WINDOW_LABELS: Record<string, string> = {
   'T+1': '1 Day (Last Minute)',
@@ -32,12 +54,19 @@ const WINDOW_LABELS: Record<string, string> = {
 };
 
 export default function RouteExplorerView() {
-  const [fromCity, setFromCity] = useState('DEL');
-  const [toCity, setToCity] = useState('BOM');
+  const routeMeta = useApiData<RouteMetadataResponse>(DEMO_MODE ? null : '/api/metadata/routes', []);
+  const availableRoutes = routeMeta.data?.routes.length ? routeMeta.data.routes : FALLBACK_ROUTES;
+
+  const [pair, setPair] = useState('DEL-BOM');
   const [windowFilter, setWindowFilter] = useState<'T+1' | 'T+7' | 'T+15' | 'T+30' | 'T+45'>('T+7');
   const [linkCopied, setLinkCopied] = useState(false);
 
-  const pair = `${fromCity}-${toCity}`;
+  // The default selection ('DEL-BOM') is present in both the fallback list
+  // and every real route basket, so no reconciliation effect is needed —
+  // just fall back to the first available route if a stale pair ever isn't found.
+  const selectedRoute = availableRoutes.find((r) => r.pair === pair) ?? availableRoutes[0];
+  const fromCity = selectedRoute?.origin ?? pair.split('-')[0];
+  const toCity = selectedRoute?.destination ?? pair.split('-')[1];
 
   const handleShareLink = () => {
     const url = new URL(window.location.href);
@@ -139,40 +168,26 @@ export default function RouteExplorerView() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label className="text-xs font-semibold text-ink-900 block mb-1">Origin City:</label>
+          <div className="md:col-span-2">
+            <label className="text-xs font-semibold text-ink-900 block mb-1">Route (DGCA-monitored basket):</label>
             <div className="relative">
               <PlaneTakeoff className="w-4 h-4 absolute left-3 top-3 text-ink-500" />
               <select
-                value={fromCity}
-                onChange={(e) => setFromCity(e.target.value)}
+                value={pair}
+                onChange={(e) => setPair(e.target.value)}
                 className="w-full pl-9 pr-3 py-2 text-xs border border-ink-200 rounded-lg bg-white focus:outline-none focus:border-navy-700 focus:ring-1 focus:ring-navy-700"
               >
-                <option value="DEL">Delhi (DEL)</option>
-                <option value="BOM">Mumbai (BOM)</option>
-                <option value="BLR">Bengaluru (BLR)</option>
-                <option value="CCU">Kolkata (CCU)</option>
-                <option value="MAA">Chennai (MAA)</option>
+                {availableRoutes.map((r) => (
+                  <option key={r.pair} value={r.pair}>
+                    {r.originName} ({r.origin}) → {r.destinationName} ({r.destination})
+                  </option>
+                ))}
               </select>
             </div>
-          </div>
-
-          <div>
-            <label className="text-xs font-semibold text-ink-900 block mb-1">Destination City:</label>
-            <div className="relative">
-              <PlaneLanding className="w-4 h-4 absolute left-3 top-3 text-ink-500" />
-              <select
-                value={toCity}
-                onChange={(e) => setToCity(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-ink-200 rounded-lg bg-white focus:outline-none focus:border-navy-700 focus:ring-1 focus:ring-navy-700"
-              >
-                <option value="BOM">Mumbai (BOM)</option>
-                <option value="DEL">Delhi (DEL)</option>
-                <option value="BLR">Bengaluru (BLR)</option>
-                <option value="HYD">Hyderabad (HYD)</option>
-                <option value="GOI">Goa (GOI)</option>
-              </select>
-            </div>
+            <p className="text-[11px] text-ink-500 mt-1">
+              Limited to the {availableRoutes.length} routes actually tracked in the DGCA-weighted basket — other
+              city pairs aren&apos;t scraped yet.
+            </p>
           </div>
 
           <div>

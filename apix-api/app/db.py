@@ -29,11 +29,21 @@ if str(PROJECT_ROOT) not in sys.path:
 from index_math.engine import compute_daily_aggregate_indices, BASE_PERIOD_ROUTE_FARES
 from index_math.weights import DGCA_ROUTE_TRAFFIC_SHARE
 
-# Create engine
+# Create engine. Supabase's Postgres requires TLS, and its pooler/direct
+# connections get dropped after a period of idleness — pool_pre_ping
+# validates a connection before handing it out instead of surfacing a stale
+# "connection is closed" InterfaceError on the next query.
+_connect_args = {}
+if settings.DATABASE_URL.startswith("postgresql"):
+    _connect_args["ssl"] = "require"
+
 engine = create_async_engine(
     settings.DATABASE_URL,
     echo=False,
     future=True,
+    pool_pre_ping=True,
+    pool_recycle=300,
+    connect_args=_connect_args,
 )
 
 AsyncSessionLocal = async_sessionmaker(
@@ -57,11 +67,12 @@ async def init_db():
     """Create the PostgreSQL schema and seed data."""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-        # Legacy builds seeded unprovenanced, fabricated backtest values. Remove
-        # them before requiring a dataset reference on every benchmark record.
-        await conn.execute(text("ALTER TABLE backtest_records ADD COLUMN IF NOT EXISTS dataset_id VARCHAR(36)"))
-        await conn.execute(text("DELETE FROM backtest_records WHERE dataset_id IS NULL"))
-        await conn.execute(text("ALTER TABLE backtest_records ALTER COLUMN dataset_id SET NOT NULL"))
+        if engine.dialect.name == "postgresql":
+            # Legacy builds seeded unprovenanced, fabricated backtest values. Remove
+            # them before requiring a dataset reference on every benchmark record.
+            await conn.execute(text("ALTER TABLE backtest_records ADD COLUMN IF NOT EXISTS dataset_id VARCHAR(36)"))
+            await conn.execute(text("DELETE FROM backtest_records WHERE dataset_id IS NULL"))
+            await conn.execute(text("ALTER TABLE backtest_records ALTER COLUMN dataset_id SET NOT NULL"))
 
     async with AsyncSessionLocal() as session:
         # Check if routes already exist

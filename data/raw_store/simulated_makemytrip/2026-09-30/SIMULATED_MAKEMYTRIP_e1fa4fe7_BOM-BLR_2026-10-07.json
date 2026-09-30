@@ -1,0 +1,40 @@
+{
+  "source": "simulated_makemytrip",
+  "provider_label": "Simulated MakeMyTrip OTA fixture",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_MAKEMYTRIP_e1fa4fe7",
+  "origin": "BOM",
+  "dest": "BLR",
+  "departure_date": "2026-10-07",
+  "advance_days": 7,
+  "flights_data": [
+    {
+      "carrier": "IndiGo",
+      "flight_no": "6E-456",
+      "dep": "08:30",
+      "arr": "10:15",
+      "base": 2750,
+      "tax": 750,
+      "fee": 399
+    },
+    {
+      "carrier": "Air India",
+      "flight_no": "AI-639",
+      "dep": "12:15",
+      "arr": "14:00",
+      "base": 3400,
+      "tax": 830,
+      "fee": 425
+    },
+    {
+      "carrier": "SpiceJet",
+      "flight_no": "SG-419",
+      "dep": "16:40",
+      "arr": "18:25",
+      "base": 2600,
+      "tax": 720,
+      "fee": 399
+    }
+  ]
+}

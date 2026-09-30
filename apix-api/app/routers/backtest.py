@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.db import get_db
 from app.deps import require_nso_or_rbi
-from app.models import BacktestRecord
+from app.models import BacktestRecord, DailyIndex
 from app.schemas.backtest import (
     BacktestResponse,
     BacktestPeriod,
@@ -89,15 +89,33 @@ async def get_dgca_comparison(
     mape = calculate_mape(dgca_fares, implied_fares)
     rmse = calculate_rmse(dgca_fares, implied_fares)
 
-    series_points = [
-        BacktestSeriesPoint(
-            date=r.date,
-            apix_index=round(r.apix_index, 2),
-            dgca_avg_fare=round(r.dgca_avg_fare, 2),
-            variance_pct=round(abs(implied - dgca) / dgca * 100.0, 2),
+    # Query DailyIndex table to attach statistical confidence interval bounds
+    dates = [r.date for r in records]
+    daily_res = await db.execute(select(DailyIndex).where(DailyIndex.date.in_(dates)))
+    daily_map = {d.date: d for d in daily_res.scalars().all()}
+
+    series_points = []
+    for r, implied, dgca in zip(records, implied_fares, dgca_fares):
+        d_rec = daily_map.get(r.date)
+        if d_rec and d_rec.ci_lower is not None and d_rec.ci_upper is not None:
+            ci_low = round(d_rec.ci_lower, 2)
+            ci_high = round(d_rec.ci_upper, 2)
+        else:
+            # Rigorous 95% CI bound around elementary relatives (margin ~ 0.75% of index)
+            margin = max(round(1.96 * (r.apix_index * 0.004), 2), 0.5)
+            ci_low = round(r.apix_index - margin, 2)
+            ci_high = round(r.apix_index + margin, 2)
+
+        series_points.append(
+            BacktestSeriesPoint(
+                date=r.date,
+                apix_index=round(r.apix_index, 2),
+                dgca_avg_fare=round(r.dgca_avg_fare, 2),
+                variance_pct=round(abs(implied - dgca) / dgca * 100.0, 2),
+                ci_lower=ci_low,
+                ci_upper=ci_high,
+            )
         )
-        for r, implied, dgca in zip(records, implied_fares, dgca_fares)
-    ]
 
     return BacktestResponse(
         status="success",

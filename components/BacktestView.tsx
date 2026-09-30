@@ -5,6 +5,7 @@ import {
   ResponsiveContainer,
   ComposedChart,
   Line,
+  Area,
   Bar,
   XAxis,
   YAxis,
@@ -16,15 +17,7 @@ import {
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import {
-  ShieldCheck,
-  Award,
-  CheckCircle2,
-  FileText,
-  Download,
-  RefreshCw,
-  Scale,
-} from 'lucide-react';
+import { ShieldCheck, Trophy as Award, CheckCircle as CheckCircle2, FileText, Download, ArrowsClockwise as RefreshCw, Scales as Scale } from '@phosphor-icons/react';
 
 interface BacktestPoint {
   date: string;
@@ -33,6 +26,9 @@ interface BacktestPoint {
   impliedFare: number;
   variancePct: number;
   trackingResidual: number;
+  ciLower?: number;
+  ciUpper?: number;
+  ciRange?: [number, number];
 }
 
 interface BacktestApiResponse {
@@ -97,13 +93,15 @@ export default function BacktestView() {
         <div>
           <div className="flex items-center space-x-2 text-xs font-semibold text-navy-700 uppercase tracking-wider mb-1">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>Official DGCA Ground Truth</span>
+            <span>Official MoSPI CPI Ground Truth</span>
           </div>
           <h2 className="text-xl font-semibold text-ink-900">
-            DGCA Benchmark Validation & Statistical Backtest
+            MoSPI CPI Benchmark Validation & Statistical Backtest
           </h2>
           <p className="text-xs text-ink-500 mt-0.5">
-            Empirical correlation analysis between APIx Real-Time Index and DGCA published domestic average airfare data.
+            Empirical correlation analysis between the APIx Real-Time Index and MoSPI&apos;s published CPI Group 07.3
+            (&quot;Passenger transport services&quot;) index &mdash; the nearest officially published proxy to airfares, since
+            MoSPI does not release an item-level Air Fare series outside its portal.
           </p>
         </div>
 
@@ -149,8 +147,8 @@ export default function BacktestView() {
 
         <div className="panel p-4 text-center relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-1 bg-indigo-500"></div>
-          <span className="text-[11px] text-ink-500 block font-medium">RMSE (Fare Discrepancy)</span>
-          <span className="text-2xl font-semibold text-indigo-700 font-tabular">{metrics ? `₹${metrics.rmse.toFixed(2)}` : '—'}</span>
+          <span className="text-[11px] text-ink-500 block font-medium">RMSE (Index Discrepancy)</span>
+          <span className="text-2xl font-semibold text-indigo-700 font-tabular">{metrics ? `${metrics.rmse.toFixed(2)} pts` : '—'}</span>
         </div>
 
         <div className="panel p-4 text-center relative overflow-hidden">
@@ -165,7 +163,7 @@ export default function BacktestView() {
         <div className="panel p-4 text-center relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-1 bg-teal-500"></div>
           <span className="text-[11px] text-ink-500 block font-medium">Evaluation Horizon</span>
-          <span className="text-2xl font-semibold text-teal-700 font-tabular">{period?.total_days ?? '—'} Days</span>
+          <span className="text-2xl font-semibold text-teal-700 font-tabular">{period?.total_days ?? '—'} Months</span>
           <span className="text-[10px] text-teal-700 bg-teal-50 px-1.5 py-0.5 rounded-md font-medium mt-1 inline-block font-tabular">
             {period ? `${period.start} – ${period.end}` : '—'}
           </span>
@@ -187,14 +185,14 @@ export default function BacktestView() {
           <div>
             <div className="flex items-center space-x-2">
               <h3 className="text-base font-semibold text-ink-900">
-                Dual-Series Trajectory: APIx Price Index vs. DGCA Benchmark Average
+                Dual-Series Trajectory: APIx Price Index vs. MoSPI CPI 07.3 Benchmark
               </h3>
               <span className="bg-emerald-100 text-emerald-800 text-[10px] font-semibold px-2 py-0.5 rounded-md font-tabular">
                 r = {metrics?.pearson_r.toFixed(3) ?? '—'}
               </span>
             </div>
             <p className="text-xs text-ink-500">
-              Left axis: APIx Index (Base 100) | Right axis: DGCA Domestic Average Fare (INR)
+              Left axis: APIx Index (Base 100) | Right axis: MoSPI CPI Group 07.3 &quot;Passenger transport services&quot; (Base 2024=100)
             </p>
           </div>
 
@@ -247,6 +245,12 @@ export default function BacktestView() {
           {chartMode === 'overlay' && (
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={chartData} margin={{ top: 15, right: 25, left: 0, bottom: 20 }}>
+                <defs>
+                  <linearGradient id="backtestCiGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#003f87" stopOpacity={0.16} />
+                    <stop offset="95%" stopColor="#003f87" stopOpacity={0.03} />
+                  </linearGradient>
+                </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e7ebf1" />
                 <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#7c8aa3' }} tickMargin={8} />
                 <YAxis
@@ -260,28 +264,41 @@ export default function BacktestView() {
                   orientation="right"
                   domain={['auto', 'auto']}
                   tick={{ fontSize: 11, fill: '#d97706' }}
-                  tickFormatter={(val) => `₹${val}`}
-                  label={{ value: 'DGCA Avg Fare (₹)', angle: 90, position: 'insideRight', offset: 12, fill: '#d97706', fontSize: 11 }}
+                  label={{ value: 'MoSPI CPI 07.3 (Base 2024=100)', angle: 90, position: 'insideRight', offset: 12, fill: '#d97706', fontSize: 11 }}
                 />
                 <Tooltip
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       const data = payload[0].payload as BacktestPoint;
                       return (
-                        <div className="bg-white p-3 rounded-lg shadow-raised border border-ink-100 text-xs space-y-1 z-50">
+                        <div className="bg-white p-3.5 rounded-xl shadow-raised border border-ink-100 text-xs space-y-1.5 z-50">
                           <p className="font-semibold text-ink-900 border-b border-ink-100 pb-1">{label}</p>
-                          <p className="text-navy-700 font-semibold">
-                            APIx Index: <strong className="text-sm font-tabular">{data.apixIndex.toFixed(2)}</strong>
-                          </p>
-                          <p className="text-amber-600 font-semibold">
-                            DGCA Published Fare: <strong className="font-tabular">₹{data.dgcaAvgFare.toFixed(2)}</strong>
-                          </p>
-                          <p className="text-ink-700">
-                            Index Implied Fare: <strong className="font-tabular">₹{data.impliedFare.toFixed(2)}</strong>
-                          </p>
+                          <div className="flex items-center justify-between gap-4">
+                            <span className="text-navy-700 font-semibold">APIx Index:</span>
+                            <span className="font-tabular font-bold text-ink-950 text-sm">{data.apixIndex.toFixed(2)}</span>
+                          </div>
+                          {data.ciLower != null && data.ciUpper != null && (
+                            <div className="bg-navy-50/70 p-2 rounded-lg border border-navy-100/80 text-[11px] space-y-0.5">
+                              <div className="flex items-center justify-between text-navy-800 font-medium">
+                                <span>95% Confidence Interval:</span>
+                                <span className="font-tabular font-semibold">[{data.ciLower.toFixed(2)} – {data.ciUpper.toFixed(2)}]</span>
+                              </div>
+                              <div className="text-[10px] text-ink-500">
+                                Bounds margin: ±{((data.ciUpper - data.ciLower) / 2).toFixed(2)} index pts (z = 1.96)
+                              </div>
+                            </div>
+                          )}
+                          <div className="flex items-center justify-between gap-4 text-amber-700 font-medium">
+                            <span>MoSPI CPI 07.3 Benchmark:</span>
+                            <span className="font-tabular font-semibold">{data.dgcaAvgFare.toFixed(2)}</span>
+                          </div>
+                          <div className="flex items-center justify-between gap-4 text-ink-600">
+                            <span>Index Implied Value:</span>
+                            <span className="font-tabular font-semibold">{data.impliedFare.toFixed(2)}</span>
+                          </div>
                           <div className="border-t border-ink-100 pt-1 text-[11px] flex justify-between gap-4">
                             <span>Variance: <strong className="text-emerald-700 font-tabular">{data.variancePct.toFixed(2)}%</strong></span>
-                            <span>Residual: <strong className="font-tabular">₹{data.trackingResidual.toFixed(1)}</strong></span>
+                            <span>Residual: <strong className="font-tabular">{data.trackingResidual.toFixed(1)} pts</strong></span>
                           </div>
                         </div>
                       );
@@ -290,6 +307,17 @@ export default function BacktestView() {
                   }}
                 />
                 <Legend verticalAlign="top" align="right" wrapperStyle={{ fontSize: '11px', paddingBottom: '8px' }} />
+                <Area
+                  yAxisId="left"
+                  type="monotone"
+                  dataKey="ciRange"
+                  stroke="#93c5fd"
+                  strokeWidth={1}
+                  strokeDasharray="2 2"
+                  fill="url(#backtestCiGradient)"
+                  name="APIx 95% Confidence Interval (±1.96 SE)"
+                  isAnimationActive={false}
+                />
                 <Line
                   yAxisId="left"
                   type="monotone"
@@ -304,7 +332,7 @@ export default function BacktestView() {
                   yAxisId="right"
                   type="monotone"
                   dataKey="dgcaAvgFare"
-                  name="DGCA Average Fare ₹ (Right)"
+                  name="MoSPI CPI 07.3 (Right)"
                   stroke="#d97706"
                   strokeWidth={2}
                   strokeDasharray="4 4"
@@ -352,12 +380,11 @@ export default function BacktestView() {
                 <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#7c8aa3' }} tickMargin={8} />
                 <YAxis
                   tick={{ fontSize: 11, fill: '#33415a' }}
-                  tickFormatter={(val) => `₹${val}`}
-                  label={{ value: 'Implied vs Actual Residual (₹)', angle: -90, position: 'insideLeft', offset: 12, fill: '#33415a', fontSize: 11 }}
+                  label={{ value: 'Implied vs Actual Residual (index pts)', angle: -90, position: 'insideLeft', offset: 12, fill: '#33415a', fontSize: 11 }}
                 />
                 <Tooltip />
                 <ReferenceLine y={0} stroke="#7c8aa3" />
-                <Bar dataKey="trackingResidual" name="Residual (Implied - DGCA Fare)" fill="#6366f1" radius={[2, 2, 0, 0]} />
+                <Bar dataKey="trackingResidual" name="Residual (Implied - MoSPI CPI 07.3)" fill="#6366f1" radius={[2, 2, 0, 0]} />
               </ComposedChart>
             </ResponsiveContainer>
           )}
@@ -422,8 +449,9 @@ export default function BacktestView() {
 
             <h3 className="text-lg font-semibold text-ink-900">Empirical Validation Summary</h3>
             <p className="text-xs text-ink-700 mt-1 leading-relaxed">
-              Benchmarked against Ministry of Civil Aviation / DGCA domestic monthly traffic data for{' '}
-              {period?.total_days ?? '—'} consecutive calendar days.
+              Benchmarked against MoSPI&apos;s published CPI Group 07.3 (&quot;Passenger transport services&quot;) index for{' '}
+              {period?.total_days ?? '—'} months &mdash; the closest officially released proxy, pending MoSPI&apos;s
+              item-level Air Fare series (portal-only, not yet exported).
             </p>
 
             <div className="mt-4 space-y-2 text-xs">
@@ -471,7 +499,7 @@ export default function BacktestView() {
           <div>
             <h4 className="text-sm font-semibold text-ink-900">Complete Empirical Observations Log</h4>
             <p className="text-[11px] text-ink-500">
-              Paired comparison between APIx Daily Index and DGCA Average Domestic Airfares
+              Paired comparison between the APIx Monthly Index and MoSPI CPI Group 07.3
             </p>
           </div>
           <span className="text-xs text-ink-500 font-medium">Showing {chartData.length} observation dates</span>
@@ -481,10 +509,10 @@ export default function BacktestView() {
           <table className="w-full text-left text-xs">
             <thead className="bg-ink-50 text-ink-700 uppercase tracking-wider sticky top-0 border-b border-ink-100 font-semibold text-[10px]">
               <tr>
-                <th className="py-2.5 px-4">Observation Date</th>
+                <th className="py-2.5 px-4">Observation Month</th>
                 <th className="py-2.5 px-4">APIx Index (Base 100)</th>
-                <th className="py-2.5 px-4">DGCA Published Fare</th>
-                <th className="py-2.5 px-4">Implied Index Fare</th>
+                <th className="py-2.5 px-4">MoSPI CPI 07.3</th>
+                <th className="py-2.5 px-4">Implied Index Value</th>
                 <th className="py-2.5 px-4">Variance (%)</th>
                 <th className="py-2.5 px-4">Tracking Residual</th>
                 <th className="py-2.5 px-4">Validation Status</th>
@@ -495,10 +523,10 @@ export default function BacktestView() {
                 <tr key={row.date} className="hover:bg-ink-50/60 transition-colors">
                   <td className="py-2 px-4 font-medium text-ink-900 font-tabular">{row.date}</td>
                   <td className="py-2 px-4 font-semibold text-navy-700 font-tabular">{row.apixIndex.toFixed(2)}</td>
-                  <td className="py-2 px-4 text-amber-600 font-semibold font-tabular">₹{row.dgcaAvgFare.toFixed(2)}</td>
-                  <td className="py-2 px-4 text-ink-700 font-tabular">₹{row.impliedFare.toFixed(2)}</td>
+                  <td className="py-2 px-4 text-amber-600 font-semibold font-tabular">{row.dgcaAvgFare.toFixed(2)}</td>
+                  <td className="py-2 px-4 text-ink-700 font-tabular">{row.impliedFare.toFixed(2)}</td>
                   <td className="py-2 px-4 font-semibold text-emerald-700 font-tabular">{row.variancePct.toFixed(2)}%</td>
-                  <td className="py-2 px-4 text-ink-500 font-tabular">₹{row.trackingResidual.toFixed(1)}</td>
+                  <td className="py-2 px-4 text-ink-500 font-tabular">{row.trackingResidual.toFixed(1)} pts</td>
                   <td className="py-2 px-4">
                     <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800">
                       <CheckCircle2 className="w-3 h-3" /> Valid

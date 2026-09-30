@@ -6,7 +6,7 @@ import { HEATMAP_DATA, ELASTICITY_DATA } from '@/lib/mockData';
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { Grid, Sparkles, Info, Activity, AlertTriangle, Calculator, Scale, BookOpen, Layers } from 'lucide-react';
+import { GridFour as Grid, Sparkle as Sparkles, Info, Pulse as Activity, Warning as AlertTriangle, Stack as Layers } from '@phosphor-icons/react';
 
 const WINDOWS = ['T+1', 'T+7', 'T+15', 'T+30', 'T+45'] as const;
 
@@ -48,6 +48,8 @@ interface DailyIndexLatest {
     date: string;
     laspeyres: number;
     fisher: number;
+    ci_lower?: number;
+    ci_upper?: number;
     sectors: { pair: string; index: number; weight: number }[];
   } | null;
 }
@@ -127,81 +129,6 @@ export default function MarketAnalysisView() {
 
             {(DEMO_MODE || (!dailyIndex.loading && !dailyIndex.error)) && (
               <>
-                {/* Header Banner */}
-                <div className="bg-navy-50 border border-navy-200 rounded-lg p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
-                  <div>
-                    <div className="flex items-center space-x-2 text-xs font-semibold text-navy-700 uppercase tracking-wider mb-1">
-                      <Scale className="w-4 h-4 text-navy-700" />
-                      <span>MoSPI / NSO Index Number Methodology</span>
-                    </div>
-                    <h3 className="text-base font-semibold text-ink-900">Laspeyres vs. Fisher Ideal Index Comparison</h3>
-                    <p className="text-ink-700 mt-1 leading-relaxed">
-                      Demonstrates compliance with <strong>Consumer Price Index (CPI)</strong> item-basket standards.
-                      MoSPI mandates <strong>Modified Laspeyres</strong> (fixed base-period quantity weights) for operational CPI publishing,
-                      while <strong>Fisher Ideal Index</strong> is calculated alongside as an academic robustness check to quantify substitution bias.
-                    </p>
-                  </div>
-
-                  <div className="shrink-0 bg-white p-3 rounded-lg border border-ink-100 space-y-1">
-                    <span className="text-[11px] text-ink-500 block font-medium">Latest Reading Date</span>
-                    <span className="text-xs font-semibold text-navy-700 flex items-center font-tabular">
-                      <BookOpen className="w-3.5 h-3.5 mr-1 text-navy-700" />
-                      {DEMO_MODE ? 'Sample Data' : dailyIndex.data?.latest?.date ?? '—'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Side-by-Side Index Formula Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div className="panel border-2 border-navy-200 p-5 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 bg-navy-700 text-white text-[10px] font-semibold px-3 py-1 rounded-bl-lg">
-                      MoSPI&apos;s CPI Method
-                    </div>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Calculator className="w-4 h-4 text-navy-700" />
-                      <h4 className="font-semibold text-sm text-ink-900">Modified Laspeyres Index ($I_L$)</h4>
-                    </div>
-                    <div className="bg-ink-50 border border-ink-200 rounded-lg p-3 font-mono text-xs text-ink-900 my-3">
-                      I_L = ∑ [ W_r × ( P_1,r / P_0,r ) ]
-                    </div>
-                    <div className="space-y-2 text-xs text-ink-700">
-                      <p>• <strong>Weighting:</strong> Fixed base-period passenger share ($W_r$) from DGCA domestic statistics.</p>
-                      <p>
-                        • <strong>Current Reading:</strong>{' '}
-                        <strong className="text-lg text-navy-700 font-semibold ml-1 font-tabular">
-                          {dailyIndex.data?.latest?.laspeyres.toFixed(2) ?? '—'}
-                        </strong>{' '}
-                        (Base 100)
-                      </p>
-                      <p>• <strong>Why MoSPI uses this:</strong> Prevents index volatility caused by rapid short-term changes in passenger traffic, ensuring consistent monthly CPI releases.</p>
-                    </div>
-                  </div>
-
-                  <div className="panel border-2 border-emerald-200 p-5 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 bg-emerald-600 text-white text-[10px] font-semibold px-3 py-1 rounded-bl-lg">
-                      Robustness Check
-                    </div>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Scale className="w-4 h-4 text-emerald-600" />
-                      <h4 className="font-semibold text-sm text-ink-900">Fisher Ideal Index ($I_F$)</h4>
-                    </div>
-                    <div className="bg-ink-50 border border-ink-200 rounded-lg p-3 font-mono text-xs text-ink-900 my-3">
-                      I_F = √( I_Laspeyres × I_Paasche )
-                    </div>
-                    <div className="space-y-2 text-xs text-ink-700">
-                      <p>• <strong>Weighting:</strong> Geometric mean combining both base-period and current-period flight volumes.</p>
-                      <p>
-                        • <strong>Current Reading:</strong>{' '}
-                        <strong className="text-lg text-emerald-700 font-semibold ml-1 font-tabular">
-                          {dailyIndex.data?.latest?.fisher.toFixed(2) ?? '—'}
-                        </strong>{' '}
-                        (Base 100)
-                      </p>
-                      <p>• <strong>Why we include this:</strong> Acts as an econometric check. A small divergence from Laspeyres indicates minimal substitution bias in domestic aviation.</p>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Route Weighting Basket Derivation Table */}
                 <div className="panel p-5 space-y-3">
                   <h4 className="font-semibold text-sm text-ink-900 flex items-center">

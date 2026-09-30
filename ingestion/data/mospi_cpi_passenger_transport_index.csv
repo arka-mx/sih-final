@@ -1,0 +1,4 @@
+period,cpi_index,apix_index,source_item_code,source_note
+May 2026,104.36,111.80,07.3,APIx MonthlyIndex chained_laspeyres (app/db.py seed)
+June 2026,105.01,112.50,07.3,APIx MonthlyIndex chained_laspeyres (app/db.py seed)
+July 2026,105.39,113.10,07.3,APIx MonthlyIndex chained_laspeyres (app/db.py seed)

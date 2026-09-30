@@ -1,0 +1,22 @@
+{
+  "source": "simulated_cleartrip",
+  "provider_label": "Simulated Cleartrip OTA",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_CLEARTRIP_ad7f0598",
+  "origin": "DEL",
+  "dest": "BOM",
+  "departure_date": "2026-10-15",
+  "advance_days": 15,
+  "flights_data": [
+    {
+      "carrier": "IndiGo",
+      "flight_no": "6E-503",
+      "dep": "09:30",
+      "arr": "11:45",
+      "base": 3800,
+      "tax": 890,
+      "fee": 279
+    }
+  ]
+}

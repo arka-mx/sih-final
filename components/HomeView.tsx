@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
+import { ResponsiveContainer, ComposedChart, Line, Area, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
 import { POPULAR_ROUTES, INITIAL_INDEX_DATA } from '@/lib/mockData';
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { ArrowUpRight, TrendingUp, CheckCircle2, FileText, ArrowRight, ShieldCheck, Info, AlertCircle, Flame, Calendar, Fuel } from 'lucide-react';
+import { ArrowUpRight, TrendUp as TrendingUp, CheckCircle as CheckCircle2, FileText, ArrowRight, ShieldCheck, Info, WarningCircle as AlertCircle, Flame, Calendar, GasPump as Fuel } from '@phosphor-icons/react';
 import { TabType } from './Header';
 
 interface TrendPoint {
@@ -14,6 +14,9 @@ interface TrendPoint {
   apixIndex: number;
   dgcaAvgFare: number;
   variancePct: number;
+  ciLower?: number;
+  ciUpper?: number;
+  ciRange?: [number, number];
 }
 
 interface TrendResponse {
@@ -176,12 +179,18 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
       <div className="panel p-6 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-ink-100 pb-4">
           <div>
-            <h3 className="text-base font-semibold text-ink-900 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-navy-700" />
-              APIx vs. Official DGCA Benchmark
-            </h3>
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="text-base font-semibold text-ink-900 flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-navy-700" />
+                APIx vs. Official DGCA Benchmark
+              </h3>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-navy-50 text-navy-700 border border-navy-200">
+                <span className="w-1.5 h-1.5 rounded-full bg-navy-600 animate-pulse"></span>
+                95% CI Bounded (±1.96 SE)
+              </span>
+            </div>
             <p className="text-xs text-ink-500 mt-0.5">
-              Daily scraped index vs. DGCA average fare &middot; {range.toUpperCase()} window{range === '1y' ? ' (max 90 days)' : ''}
+              Daily scraped index with statistical confidence bands vs. DGCA average fare &middot; {range.toUpperCase()} window{range === '1y' ? ' (max 90 days)' : ''}
             </p>
           </div>
 
@@ -205,14 +214,62 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3 h-[320px]">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+              <ComposedChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="homeCiBandGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#003f87" stopOpacity={0.16} />
+                    <stop offset="95%" stopColor="#003f87" stopOpacity={0.03} />
+                  </linearGradient>
+                </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eef0f4" />
                 <XAxis dataKey="date" stroke="#7c8aa3" fontSize={11} tickLine={false} axisLine={{ stroke: '#e7ebf1' }} />
                 <YAxis yAxisId="left" domain={['auto', 'auto']} stroke="#7c8aa3" fontSize={11} tickLine={false} axisLine={{ stroke: '#e7ebf1' }} />
                 <Tooltip
-                  contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e7ebf1', borderRadius: '10px', fontSize: '12px', boxShadow: '0 4px 16px -4px rgb(11 18 32 / 0.12)' }}
+                  content={({ active, payload, label }) => {
+                    if (active && payload && payload.length) {
+                      const data = payload[0].payload as TrendPoint;
+                      return (
+                        <div className="bg-white p-3 rounded-xl shadow-raised border border-ink-100 text-xs space-y-1.5 z-50">
+                          <p className="font-semibold text-ink-900 border-b border-ink-100 pb-1">{label}</p>
+                          <div className="flex items-center justify-between gap-4">
+                            <span className="text-navy-700 font-semibold">APIx Index:</span>
+                            <span className="font-tabular font-bold text-ink-950 text-sm">{data.apixIndex.toFixed(2)}</span>
+                          </div>
+                          {data.ciLower != null && data.ciUpper != null && (
+                            <div className="bg-navy-50/70 p-2 rounded-lg border border-navy-100/80 text-[11px] space-y-0.5">
+                              <div className="flex items-center justify-between text-navy-800 font-medium">
+                                <span>95% Confidence Interval:</span>
+                                <span className="font-tabular font-semibold">[{data.ciLower.toFixed(2)} – {data.ciUpper.toFixed(2)}]</span>
+                              </div>
+                              <div className="text-[10px] text-ink-500">
+                                Margin of error: ±{( (data.ciUpper - data.ciLower) / 2 ).toFixed(2)} pts (z = 1.96)
+                              </div>
+                            </div>
+                          )}
+                          {data.dgcaAvgFare != null && (
+                            <div className="flex items-center justify-between gap-4 pt-0.5 border-t border-ink-100 text-ink-600">
+                              <span>DGCA Avg Fare:</span>
+                              <span className="font-tabular font-semibold text-amber-700">₹{Math.round(data.dgcaAvgFare).toLocaleString()}</span>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
                 />
                 <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '12px' }} />
+                <Area
+                  yAxisId="left"
+                  type="monotone"
+                  dataKey="ciRange"
+                  stroke="#60a5fa"
+                  strokeWidth={1}
+                  strokeDasharray="3 3"
+                  fill="url(#homeCiBandGradient)"
+                  name="95% Confidence Interval (±1.96 SE)"
+                  isAnimationActive={false}
+                />
                 <Line
                   yAxisId="left"
                   type="monotone"
@@ -223,7 +280,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
                   activeDot={{ r: 5 }}
                   name="APIx Scraped Index (Daily)"
                 />
-              </LineChart>
+              </ComposedChart>
             </ResponsiveContainer>
           </div>
 
@@ -422,15 +479,22 @@ function HomeViewDemo({ onNavigate }: HomeViewProps) {
       </div>
       <div className="panel p-6 h-[320px]">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={INITIAL_INDEX_DATA}>
+          <ComposedChart data={INITIAL_INDEX_DATA}>
+            <defs>
+              <linearGradient id="demoCiBandGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#003f87" stopOpacity={0.14} />
+                <stop offset="95%" stopColor="#003f87" stopOpacity={0.03} />
+              </linearGradient>
+            </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#eef0f4" />
             <XAxis dataKey="date" stroke="#7c8aa3" fontSize={11} tickLine={false} axisLine={{ stroke: '#e7ebf1' }} />
             <YAxis domain={['auto', 'auto']} stroke="#7c8aa3" fontSize={11} tickLine={false} axisLine={{ stroke: '#e7ebf1' }} />
             <Tooltip />
             <Legend />
+            <Area type="monotone" dataKey="ciRange" stroke="#60a5fa" strokeWidth={1} strokeDasharray="3 3" fill="url(#demoCiBandGradient)" name="95% Confidence Interval (±1.96 SE)" isAnimationActive={false} />
             <Line type="monotone" dataKey="apixValue" stroke="#003f87" strokeWidth={2.5} name="APIx Scraped Index" />
             <Line type="monotone" dataKey="dgcaBenchmark" stroke="#4e83c0" strokeDasharray="5 5" name="DGCA Benchmark" />
-          </LineChart>
+          </ComposedChart>
         </ResponsiveContainer>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -13,6 +13,8 @@ class BacktestSeriesPoint(BaseModel):
     apix_index: float = Field(..., examples=[98.2])
     dgca_avg_fare: float = Field(..., examples=[4380.0])
     variance_pct: float = Field(..., examples=[0.91])
+    ci_lower: Optional[float] = Field(None, examples=[97.40], description="Lower bound of 95% confidence interval")
+    ci_upper: Optional[float] = Field(None, examples=[99.00], description="Upper bound of 95% confidence interval")
 
 
 class BacktestMetrics(BaseModel):

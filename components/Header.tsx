@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { RefreshCw, User, ShieldCheck, Activity, Database, LineChart, Cpu, Code2, Sparkles } from 'lucide-react';
+import React from 'react';
+import { ArrowsClockwise as RefreshCw, User, ShieldCheck, Pulse as Activity, Database, ChartLine as LineChart, Cpu, Code as Code2, Sparkle as Sparkles } from '@phosphor-icons/react';
 
 export type TabType = 'home' | 'routes' | 'analysis' | 'backtest' | 'scrapers' | 'cleaning' | 'data' | 'api';
 
