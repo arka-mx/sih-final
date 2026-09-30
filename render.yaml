@@ -4,18 +4,13 @@ services:
     runtime: docker
     dockerfilePath: ./apix-api/Dockerfile
     dockerContext: .
-    plan: starter
+    plan: free
     healthCheckPath: /api/health
     envVars:
       - key: APP_ENV
         value: production
       - key: DATABASE_URL
         sync: false
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: apix-redis
-          property: connectionString
       - key: APIX_RAW_STORE_DIR
         value: /app/data/raw_store
       - key: API_KEYS
@@ -39,12 +34,3 @@ services:
         sync: false
       - key: APIX_RAW_STORE_DIR
         value: /app/data/raw_store
-    disk:
-      name: raw-store
-      mountPath: /app/data/raw_store
-      sizeGB: 1
-
-  - type: redis
-    name: apix-redis
-    plan: starter
-    ipAllowList: []
