@@ -29,12 +29,22 @@ if str(PROJECT_ROOT) not in sys.path:
 from index_math.engine import compute_daily_aggregate_indices, BASE_PERIOD_ROUTE_FARES
 from index_math.weights import DGCA_ROUTE_TRAFFIC_SHARE
 
+# Normalize the driver regardless of how DATABASE_URL was pasted in (Supabase's
+# dashboard copy button gives a plain "postgresql://" URI with no driver,
+# which SQLAlchemy resolves to the sync psycopg dialect and crashes under
+# create_async_engine). Force the asyncpg dialect on any postgres URL.
+_database_url = settings.DATABASE_URL
+if _database_url.startswith("postgresql://"):
+    _database_url = "postgresql+asyncpg://" + _database_url[len("postgresql://"):]
+elif _database_url.startswith("postgresql+psycopg://") or _database_url.startswith("postgresql+psycopg2://"):
+    _database_url = "postgresql+asyncpg://" + _database_url.split("://", 1)[1]
+
 # Create engine. Supabase's Postgres requires TLS, and its pooler/direct
 # connections get dropped after a period of idleness - pool_pre_ping
 # validates a connection before handing it out instead of surfacing a stale
 # "connection is closed" InterfaceError on the next query.
 _connect_args = {}
-if settings.DATABASE_URL.startswith("postgresql"):
+if _database_url.startswith("postgresql"):
     _connect_args["ssl"] = "require"
     # Supabase's connection pooler (Supavisor/PgBouncer, port 6543) runs in
     # transaction mode, which is incompatible with asyncpg's server-side
@@ -43,7 +53,7 @@ if settings.DATABASE_URL.startswith("postgresql"):
     _connect_args["statement_cache_size"] = 0
 
 engine = create_async_engine(
-    settings.DATABASE_URL,
+    _database_url,
     echo=False,
     future=True,
     pool_pre_ping=True,
