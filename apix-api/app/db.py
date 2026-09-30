@@ -36,6 +36,11 @@ from index_math.weights import DGCA_ROUTE_TRAFFIC_SHARE
 _connect_args = {}
 if settings.DATABASE_URL.startswith("postgresql"):
     _connect_args["ssl"] = "require"
+    # Supabase's connection pooler (Supavisor/PgBouncer, port 6543) runs in
+    # transaction mode, which is incompatible with asyncpg's server-side
+    # prepared statements -- disable them or concurrent requests intermittently
+    # fail with "prepared statement ... already exists".
+    _connect_args["statement_cache_size"] = 0
 
 engine = create_async_engine(
     settings.DATABASE_URL,
