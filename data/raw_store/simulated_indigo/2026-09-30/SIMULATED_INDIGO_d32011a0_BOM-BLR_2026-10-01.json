@@ -1,0 +1,37 @@
+{
+  "source": "simulated_indigo",
+  "provider_label": "Simulated IndiGo direct channel",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_INDIGO_d32011a0",
+  "origin": "BOM",
+  "dest": "BLR",
+  "departure_date": "2026-10-01",
+  "advance_days": 1,
+  "flights_data": [
+    {
+      "flight_no": "6E-456",
+      "carrier": "IndiGo",
+      "dep": "08:30",
+      "arr": "10:15",
+      "base": 2750,
+      "tax": 750
+    },
+    {
+      "flight_no": "6E-789",
+      "carrier": "IndiGo",
+      "dep": "13:00",
+      "arr": "14:45",
+      "base": 2900,
+      "tax": 770
+    },
+    {
+      "flight_no": "6E-312",
+      "carrier": "IndiGo",
+      "dep": "20:15",
+      "arr": "22:00",
+      "base": 3200,
+      "tax": 810
+    }
+  ]
+}

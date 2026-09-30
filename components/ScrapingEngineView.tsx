@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { SCRAPER_LOGS, ScraperLogItem } from '@/lib/mockData';
-import { Cpu, ShieldCheck, Play, CheckCircle2, AlertTriangle, RefreshCw, Lock, Terminal, FileCode2, ActivitySquare } from 'lucide-react';
+import { Cpu, ShieldCheck, Play, CheckCircle as CheckCircle2, Warning as AlertTriangle, ArrowsClockwise as RefreshCw, Lock, Terminal, FileCode as FileCode2, Pulse as ActivitySquare } from '@phosphor-icons/react';
 import DarkPatternPanel from './DarkPatternPanel';
 
 interface SourceHealthStatus {

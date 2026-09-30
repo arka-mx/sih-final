@@ -5,7 +5,7 @@ import { CleanedFareItem, MOCK_CLEANED_FARES, MOCK_PIPELINE_AUDIT, PipelineAudit
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { Sparkles, CheckCircle2, Play, Ban, RefreshCw, Layers } from 'lucide-react';
+import { Sparkle as Sparkles, CheckCircle as CheckCircle2, Play, Prohibit as Ban, ArrowsClockwise as RefreshCw, Stack as Layers } from '@phosphor-icons/react';
 
 interface PipelineCleanApiResponse {
   auditSummary: PipelineAuditSummary;

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Loader2, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Spinner as Loader2, Warning as AlertTriangle, ArrowsClockwise as RefreshCw } from '@phosphor-icons/react';
 
 export function LoadingPanel({ label = 'Loading live data from APIx backend...' }: { label?: string }) {
   return (

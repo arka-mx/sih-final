@@ -5,7 +5,7 @@ import { MOCK_RAW_FARES } from '@/lib/mockData';
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { Search, Download, Copy, Check, X, Filter } from 'lucide-react';
+import { MagnifyingGlass as Search, Download, Copy, Check, X, Funnel as Filter } from '@phosphor-icons/react';
 
 interface ApiFareRecord {
   id: string;

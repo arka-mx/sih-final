@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, ShieldCheck, Key, Lock, UserCheck } from 'lucide-react';
+import { X, ShieldCheck, Key, Lock, UserCheck } from '@phosphor-icons/react';
 
 interface LoginModalProps {
   isOpen: boolean;

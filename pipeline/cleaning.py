@@ -54,7 +54,10 @@ def clean_currency_amount(val: Union[str, int, float, None]) -> float:
         return round(float(val), 2)
     
     val_str = str(val).strip()
-    # Strip currency signs (₹, Rs, INR) and non-numeric characters except dot
+    # Strip currency words like "Rs.", "Rs", "INR" first so period after Rs doesn't become decimal point
+    val_str = re.sub(r"(?i)\b(?:rs|inr)\b\.?", "", val_str)
+    # Remove commas
+    val_str = val_str.replace(",", "")
     cleaned = re.sub(r"[^0-9.]", "", val_str)
     try:
         parsed = float(cleaned)
@@ -90,7 +93,7 @@ def normalize_availability_status(status: Optional[str]) -> Tuple[str, bool]:
     clean = status.strip().upper()
     if any(kw in clean for kw in ("CANCEL", "CANCELLED", "CANCELED")):
         return "CANCELLED", False
-    if any(kw in clean for kw in ("SOLD OUT", "SOLDOUT", "NO SEATS", "FULL", "UNAVAILABLE")):
+    if any(kw in clean for kw in ("SOLD OUT", "SOLDOUT", "SOLD_OUT", "SOLD-OUT", "NO SEATS", "FULL", "UNAVAILABLE")):
         return "SOLD_OUT", False
     if any(kw in clean for kw in ("FEW", "LEFT", "LAST", "SEATS LEFT")):
         return "FEW_SEATS_LEFT", True
