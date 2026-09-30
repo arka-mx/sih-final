@@ -6,7 +6,16 @@ import { HEATMAP_DATA, ELASTICITY_DATA } from '@/lib/mockData';
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { GridFour as Grid, Sparkle as Sparkles, Info, Pulse as Activity, Warning as AlertTriangle, Stack as Layers } from '@phosphor-icons/react';
+import {
+  GridFour as Grid,
+  Sparkle as Sparkles,
+  Info,
+  Pulse as Activity,
+  Warning as AlertTriangle,
+  Stack as Layers,
+  Scales,
+  ChartLineUp as Elasticity,
+} from '@phosphor-icons/react';
 
 const WINDOWS = ['T+1', 'T+7', 'T+15', 'T+30', 'T+45'] as const;
 
@@ -79,6 +88,14 @@ export default function MarketAnalysisView() {
     return 'bg-navy-100 text-navy-800 font-medium';
   };
 
+  const SECTIONS = [
+    { id: 'statistical-rigor', label: 'Index Rigor', icon: Layers },
+    { id: 'cross-source', label: 'Cross-Source Audit', icon: Scales },
+    { id: 'heatmap', label: 'Route Heatmap', icon: Grid },
+    { id: 'elasticity', label: 'Elasticity', icon: Elasticity },
+    { id: 'volatility', label: 'Volatility', icon: Activity },
+  ] as const;
+
   return (
     <div className="space-y-6 animate-fadeIn">
       {DEMO_MODE && (
@@ -90,35 +107,29 @@ export default function MarketAnalysisView() {
 
       {/* Tab Header */}
       <div className="panel p-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-ink-100 pb-4">
-          <div>
-            <h2 className="text-lg font-semibold text-ink-900">Market Analysis & Statistical Intelligence</h2>
-            <p className="text-xs text-ink-500">
-              Index number theory (Laspeyres vs Fisher), cross-source fee decomposition, elasticity, and corridor heatmaps
-            </p>
-          </div>
+        <div>
+          <h2 className="text-lg font-semibold text-ink-900">Market Analysis</h2>
+          <p className="text-xs text-ink-500">Fare index methodology, elasticity, and corridor analytics</p>
+        </div>
 
-          <div className="flex flex-wrap gap-1 bg-ink-50 border border-ink-100 rounded-lg p-1">
-            {[
-              { id: 'statistical-rigor', label: 'Laspeyres vs Fisher (Rigor)' },
-              { id: 'cross-source', label: 'IndiGo vs MMT Diff' },
-              { id: 'heatmap', label: 'Route Heatmap' },
-              { id: 'elasticity', label: 'Price Elasticity' },
-              { id: 'volatility', label: 'Volatility Index' },
-            ].map((t) => (
+        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar border-b border-ink-100 -mx-6 px-6">
+          {SECTIONS.map((t) => {
+            const Icon = t.icon;
+            const isActive = activeTab === t.id;
+            return (
               <button
                 key={t.id}
                 onClick={() => setActiveTab(t.id as typeof activeTab)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-                  activeTab === t.id
-                    ? 'bg-white text-navy-800 shadow-panel'
-                    : 'text-ink-500 hover:text-ink-900'
+                className={`relative shrink-0 flex items-center gap-1.5 px-3 py-2.5 text-[12.5px] font-medium whitespace-nowrap cursor-pointer transition-colors ${
+                  isActive ? 'text-navy-800' : 'text-ink-500 hover:text-ink-800'
                 }`}
               >
-                {t.label}
+                <Icon weight={isActive ? 'fill' : 'regular'} className="w-3.75 h-3.75" />
+                <span className={isActive ? 'font-semibold' : ''}>{t.label}</span>
+                {isActive && <span className="absolute left-0 right-0 -bottom-px h-0.5 bg-navy-700" />}
               </button>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
         {/* STATISTICAL RIGOR PANEL: Laspeyres vs. Fisher Ideal Index */}
@@ -133,10 +144,10 @@ export default function MarketAnalysisView() {
                 <div className="panel p-5 space-y-3">
                   <h4 className="font-semibold text-sm text-ink-900 flex items-center">
                     <Layers className="w-4 h-4 mr-2 text-navy-700" />
-                    Corridor Sector Contributions (Live)
+                    Corridor Sector Contributions
                   </h4>
                   <p className="text-xs text-ink-500">
-                    Top DGCA-weighted corridors and their contribution to today&apos;s Fisher index reading.
+                    Weighted contribution of each DGCA corridor to today&apos;s Fisher index.
                   </p>
 
                   <div className="overflow-x-auto border border-ink-100 rounded-xl">
@@ -188,12 +199,12 @@ export default function MarketAnalysisView() {
             <div className="bg-navy-50 border border-navy-200 rounded-lg p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
               <div>
                 <span className="font-semibold text-navy-700 text-sm flex items-center">
-                  <Sparkles className="w-4 h-4 mr-1.5 text-navy-700" />
-                  OTA Convenience-Fee Decomposition & Cross-Source Outlier Audit
+                  <Scales className="w-4 h-4 mr-1.5 text-navy-700" />
+                  Cross-Source Fee Audit: Direct vs. OTA
                 </span>
                 <p className="text-ink-700 mt-1">
-                  Comparing matching deterministic fixtures for a direct-channel scenario and an OTA scenario.
-                  Proves consumer markup and audits price consistency before CPI basket inclusion.
+                  Compares direct-carrier and OTA fixtures for the same flight to isolate consumer markup before
+                  CPI basket inclusion.
                 </p>
               </div>
               <div className="shrink-0 flex items-center gap-2">
@@ -334,7 +345,7 @@ export default function MarketAnalysisView() {
         {/* ELASTICITY SECTION */}
         {activeTab === 'elasticity' && (
           <div className="space-y-4 pt-2">
-            <h3 className="text-sm font-semibold text-ink-900">Booking Window Lead-Time Elasticity Curve</h3>
+            <h3 className="text-sm font-semibold text-ink-900">Lead-Time Elasticity Curve</h3>
 
             {!DEMO_MODE && trends.loading && <LoadingPanel label="Computing elasticity curve across DGCA basket..." />}
             {!DEMO_MODE && trends.error && <ErrorPanel message={trends.error} onRetry={trends.refetch} />}
@@ -384,7 +395,7 @@ export default function MarketAnalysisView() {
               <div>
                 <h3 className="text-sm font-semibold text-ink-900 flex items-center">
                   <Activity className="w-4 h-4 mr-1.5 text-navy-700" />
-                  Corridor Price Volatility (Booking-Window Fare Spread)
+                  Corridor Price Volatility
                 </h3>
                 <p className="text-xs text-ink-500">
                   Coefficient of variation across each corridor&apos;s T+1..T+45 average fares. Higher values indicate

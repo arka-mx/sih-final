@@ -223,20 +223,16 @@ export default function ApiHubView() {
           </div>
         </div>
 
-        <h2 className="text-xl font-semibold text-ink-900">
-          MoSPI & RBI Real-Time Airfare Price Index API
-        </h2>
+        <h2 className="text-xl font-semibold text-ink-900">Airfare Price Index API</h2>
         <p className="text-xs text-ink-500">
-          High-frequency FastAPI endpoints designed for integration into MoSPI National
-          Statistical Office (NSO) Consumer Price Index (CPI) and the Reserve Bank of India (RBI)
-          Monetary Policy Department.
+          REST endpoints for MoSPI/NSO and RBI integration.
         </p>
 
         {/* API Base URL and Credentials Bar */}
         <div className="pt-2 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-ink-100">
           <div>
             <label className="block text-[11px] font-semibold text-ink-500 mb-1">
-              FastAPI Service Base URL
+              Base URL
             </label>
             <input
               type="text"
@@ -250,7 +246,7 @@ export default function ApiHubView() {
           <div>
             <label className="block text-[11px] font-semibold text-ink-500 mb-1 flex items-center space-x-1">
               <Key className="w-3 h-3 text-navy-700" />
-              <span>Authentication Persona (X-API-Key)</span>
+              <span>API Key Persona</span>
             </label>
             {isDev ? (
               <div className="space-y-1.5">
@@ -267,7 +263,7 @@ export default function ApiHubView() {
                         : 'bg-ink-50 text-ink-700 hover:bg-ink-100 border-ink-200'
                     }`}
                   >
-                    Public (No Key)
+                    Public
                   </button>
                   <button
                     type="button"
@@ -300,7 +296,7 @@ export default function ApiHubView() {
                         : 'bg-purple-50 text-purple-800 hover:bg-purple-100 border-purple-200'
                     }`}
                   >
-                    Custom Key
+                    Custom
                   </button>
                 </div>
               </div>
@@ -330,9 +326,9 @@ export default function ApiHubView() {
         {/* Endpoints List */}
         <div className="panel p-6 space-y-4">
           <div className="flex items-center justify-between border-b border-ink-100 pb-2">
-            <h3 className="text-sm font-semibold text-ink-900">REST Endpoints</h3>
-            <span className="text-[10px] bg-ink-100 text-ink-700 font-semibold px-2 py-0.5 rounded-md">
-              {AVAILABLE_ENDPOINTS.length} Endpoints
+            <h3 className="text-sm font-semibold text-ink-900">Endpoints</h3>
+            <span className="text-[10px] bg-ink-100 text-ink-700 font-semibold px-2 py-0.5 rounded-md font-tabular">
+              {AVAILABLE_ENDPOINTS.length}
             </span>
           </div>
 
@@ -442,7 +438,7 @@ export default function ApiHubView() {
                 </span>
               </div>
               <div>
-                <span className="text-[10px] text-ink-500 block">Rate Limiter Backend</span>
+                <span className="text-[10px] text-ink-500 block">Limiter Backend</span>
                 <span className="font-mono font-semibold text-ink-700">
                   {rateLimitInfo.backend || '—'}
                 </span>
@@ -456,7 +452,7 @@ export default function ApiHubView() {
                   <Terminal className="w-3.5 h-3.5 mr-1" />
                   {httpStatus
                     ? `HTTP ${httpStatus} • application/json`
-                    : 'Waiting for live request execution...'}
+                    : 'Awaiting request...'}
                 </span>
                 {apiResponse && (
                   <button
@@ -475,8 +471,8 @@ export default function ApiHubView() {
 
               <pre className="whitespace-pre-wrap text-[11px] leading-relaxed text-ink-100">
                 {apiResponse ||
-                  `// Select an endpoint and persona above, then click "Send Live Request"\n// Base URL: ${apiBaseUrl}\n// Active API Key: ${
-                    getEffectiveApiKey() || '(None - Public Mode)'
+                  `// Select an endpoint above, then Send Live Request\n// Base URL: ${apiBaseUrl}\n// API Key: ${
+                    getEffectiveApiKey() || '(none — public mode)'
                   }`}
               </pre>
             </div>

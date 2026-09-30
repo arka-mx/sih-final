@@ -6,6 +6,7 @@ import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
 import { MagnifyingGlass as Search, Download, Copy, Check, X, Funnel as Filter } from '@phosphor-icons/react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface ApiFareRecord {
   id: string;
@@ -131,30 +132,32 @@ export default function DataExplorerView() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-ink-500" />
-            <select
-              value={selectedRoute}
-              onChange={(e) => setSelectedRoute(e.target.value)}
-              className="px-3 py-2 text-xs border border-ink-200 rounded-lg bg-white focus:outline-none focus:border-navy-700"
-            >
-              {ROUTE_OPTIONS.map((r) => (
-                <option key={r} value={r}>
-                  {r === 'ALL' ? 'All Routes' : r}
-                </option>
-              ))}
-            </select>
+            <Filter className="w-4 h-4 text-ink-500 shrink-0" />
+            <Select value={selectedRoute} onValueChange={(v) => v && setSelectedRoute(v)}>
+              <SelectTrigger className="h-9 w-36 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false} sideOffset={6} className="p-1">
+                {ROUTE_OPTIONS.map((r) => (
+                  <SelectItem key={r} value={r} className="text-xs py-2 px-2.5 rounded-md">
+                    {r === 'ALL' ? 'All Routes' : r}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-            <select
-              value={selectedAirline}
-              onChange={(e) => setSelectedAirline(e.target.value)}
-              className="px-3 py-2 text-xs border border-ink-200 rounded-lg bg-white focus:outline-none focus:border-navy-700"
-            >
-              {AIRLINE_OPTIONS.map((a) => (
-                <option key={a} value={a}>
-                  {a === 'ALL' ? 'All Airlines' : a}
-                </option>
-              ))}
-            </select>
+            <Select value={selectedAirline} onValueChange={(v) => v && setSelectedAirline(v)}>
+              <SelectTrigger className="h-9 w-36 text-xs">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false} sideOffset={6} className="p-1">
+                {AIRLINE_OPTIONS.map((a) => (
+                  <SelectItem key={a} value={a} className="text-xs py-2 px-2.5 rounded-md">
+                    {a === 'ALL' ? 'All Airlines' : a}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
             {(selectedRoute !== 'ALL' || selectedAirline !== 'ALL' || searchTerm) && (
               <button

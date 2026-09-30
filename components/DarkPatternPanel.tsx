@@ -41,9 +41,9 @@ export default function DarkPatternPanel() {
             <ShieldAlert className="w-3.5 h-3.5" />
             <span>Consumer Protection</span>
           </div>
-          <h3 className="text-sm font-semibold text-ink-900">Fare-Manipulation / Dark Pattern Detector</h3>
+          <h3 className="text-sm font-semibold text-ink-900">Dark Pattern Detector</h3>
           <p className="text-[11px] text-ink-500 mt-0.5 leading-relaxed">
-            Flags artificial-scarcity listing copy and fare-cookie repeat-view price escalation on the simulated OTA fixture (DEL-BOM, T+7).
+            Flags artificial-scarcity copy and repeat-view price escalation on the simulated OTA fixture (DEL-BOM, T+7).
           </p>
         </div>
         {!DEMO_MODE && (

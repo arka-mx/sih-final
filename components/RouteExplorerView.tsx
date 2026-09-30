@@ -7,6 +7,7 @@ import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
 import { Download, Funnel as Filter, ShareNetwork as Share2, Check, Calendar, AirplaneTakeoff as PlaneTakeoff } from '@phosphor-icons/react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface ApiFareRecord {
   id: string;
@@ -46,11 +47,11 @@ const FALLBACK_ROUTES: RouteMetaItem[] = POPULAR_ROUTES.map((r) => {
 
 const WINDOWS = ['T+1', 'T+7', 'T+15', 'T+30', 'T+45'] as const;
 const WINDOW_LABELS: Record<string, string> = {
-  'T+1': '1 Day (Last Minute)',
-  'T+7': '7 Days Advance',
-  'T+15': '15 Days Advance',
-  'T+30': '30 Days Advance',
-  'T+45': '45 Days Advance',
+  'T+1': 'Last Minute',
+  'T+7': '7 Days Out',
+  'T+15': '15 Days Out',
+  'T+30': '30 Days Out',
+  'T+45': '45 Days Out',
 };
 
 export default function RouteExplorerView() {
@@ -161,65 +162,64 @@ export default function RouteExplorerView() {
       )}
 
       {/* Route Filter Controls */}
-      <div className="panel p-6 space-y-4">
-        <div className="flex items-center gap-2 text-navy-700 font-semibold text-sm">
-          <Filter className="w-4 h-4" />
-          <span>Route & Booking Window Explorer</span>
+      <div className="panel p-6 space-y-5">
+        <div className="flex items-center gap-2 text-ink-900 font-semibold text-sm">
+          <Filter className="w-4 h-4 text-navy-700" />
+          <span>Route Explorer</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="md:col-span-2">
-            <label className="text-xs font-semibold text-ink-900 block mb-1">Route (DGCA-monitored basket):</label>
-            <div className="relative">
-              <PlaneTakeoff className="w-4 h-4 absolute left-3 top-3 text-ink-500" />
-              <select
-                value={pair}
-                onChange={(e) => setPair(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs border border-ink-200 rounded-lg bg-white focus:outline-none focus:border-navy-700 focus:ring-1 focus:ring-navy-700"
-              >
+          <div className="md:col-span-2 space-y-1.5">
+            <label className="text-[10.5px] font-semibold text-ink-400 uppercase tracking-wide">Route</label>
+            <Select value={pair} onValueChange={(value) => value && setPair(value)}>
+              <SelectTrigger className="w-full h-10 rounded-lg border-ink-200 text-xs [&_svg]:text-ink-400">
+                <PlaneTakeoff className="w-4 h-4 text-ink-500 shrink-0" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false} sideOffset={6} className="p-1">
                 {availableRoutes.map((r) => (
-                  <option key={r.pair} value={r.pair}>
+                  <SelectItem key={r.pair} value={r.pair} className="text-xs py-2 px-2.5 rounded-md">
                     {r.originName} ({r.origin}) → {r.destinationName} ({r.destination})
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-            </div>
-            <p className="text-[11px] text-ink-500 mt-1">
-              Limited to the {availableRoutes.length} routes actually tracked in the DGCA-weighted basket — other
-              city pairs aren&apos;t scraped yet.
-            </p>
+              </SelectContent>
+            </Select>
           </div>
 
-          <div>
-            <label className="text-xs font-semibold text-ink-900 block mb-1">Departure Date:</label>
+          <div className="space-y-1.5">
+            <label className="text-[10.5px] font-semibold text-ink-400 uppercase tracking-wide">Departure Date</label>
             <div className="relative">
-              <Calendar className="w-4 h-4 absolute left-3 top-3 text-ink-500" />
+              <Calendar className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-ink-500 pointer-events-none" />
               <input
                 type="date"
                 defaultValue="2026-09-14"
-                className="w-full pl-9 pr-3 py-2 text-xs border border-ink-200 rounded-lg bg-white focus:outline-none focus:border-navy-700"
+                className="w-full h-10 pl-9 pr-3 text-xs border border-ink-200 rounded-lg bg-white focus:outline-none focus:border-navy-700"
               />
             </div>
           </div>
         </div>
 
-        {/* Advance Purchase Buttons */}
-        <div className="pt-2 border-t border-ink-100">
-          <span className="text-xs font-semibold text-ink-900 block mb-2">Advance Purchase Window (Lead Time):</span>
-          <div className="flex flex-wrap gap-1 bg-ink-50 border border-ink-100 rounded-lg p-1 w-fit">
-            {WINDOWS.map((win) => (
-              <button
-                key={win}
-                onClick={() => setWindowFilter(win)}
-                className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-                  windowFilter === win
-                    ? 'bg-white text-navy-800 shadow-panel'
-                    : 'text-ink-500 hover:text-ink-900'
-                }`}
-              >
-                {WINDOW_LABELS[win]}
-              </button>
-            ))}
+        {/* Booking Window Toggle */}
+        <div className="pt-4 border-t border-ink-100">
+          <label className="text-[10.5px] font-semibold text-ink-400 uppercase tracking-wide block mb-1">
+            Booking Window
+          </label>
+          <div className="flex items-center gap-1 overflow-x-auto no-scrollbar border-b border-ink-100">
+            {WINDOWS.map((win) => {
+              const isActive = windowFilter === win;
+              return (
+                <button
+                  key={win}
+                  onClick={() => setWindowFilter(win)}
+                  className={`relative shrink-0 px-3 py-2 text-xs font-medium whitespace-nowrap cursor-pointer transition-colors ${
+                    isActive ? 'text-navy-800' : 'text-ink-500 hover:text-ink-800'
+                  }`}
+                >
+                  <span className={isActive ? 'font-semibold' : ''}>{WINDOW_LABELS[win]}</span>
+                  {isActive && <span className="absolute left-0 right-0 -bottom-px h-0.5 bg-navy-700" />}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

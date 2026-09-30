@@ -7,7 +7,7 @@ import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
 import { ArrowUpRight, TrendUp as TrendingUp, CheckCircle as CheckCircle2, FileText, ArrowRight, ShieldCheck, Info, WarningCircle as AlertCircle, Flame, Calendar, GasPump as Fuel } from '@phosphor-icons/react';
-import { TabType } from './Header';
+import { TabType } from './Sidebar';
 
 interface TrendPoint {
   date: string;
@@ -131,7 +131,7 @@ export default function HomeView({ onNavigate }: HomeViewProps) {
             <ShieldCheck className="w-4 h-4" />
             <span>National CPI Augmentation Baseline</span>
           </div>
-          <h2 className="font-serif text-4xl sm:text-5xl font-semibold text-ink-950 tracking-tight font-tabular">
+          <h2 className="font-sans text-4xl sm:text-5xl font-semibold text-ink-950 tracking-tighter font-tabular">
             {latestIndex?.toFixed(2) ?? '—'}
             {typeof momChange === 'number' && (
               <span
@@ -474,7 +474,7 @@ function HomeViewDemo({ onNavigate }: HomeViewProps) {
         <Info className="w-3.5 h-3.5" /> Demo mode — showing static sample data, not live APIx backend results.
       </div>
       <div className="panel p-6 sm:p-8 space-y-2">
-        <h2 className="font-serif text-4xl font-semibold text-ink-950 font-tabular">102.45</h2>
+        <h2 className="font-sans text-4xl font-semibold text-ink-950 tracking-tighter font-tabular">102.45</h2>
         <p className="text-xs text-ink-500">Airfare Price Index (APIx) &middot; Base Period = 100 (Jan 2025)</p>
       </div>
       <div className="panel p-6 h-[320px]">

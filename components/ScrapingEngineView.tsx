@@ -4,6 +4,26 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { SCRAPER_LOGS, ScraperLogItem } from '@/lib/mockData';
 import { Cpu, ShieldCheck, Play, CheckCircle as CheckCircle2, Warning as AlertTriangle, ArrowsClockwise as RefreshCw, Lock, Terminal, FileCode as FileCode2, Pulse as ActivitySquare } from '@phosphor-icons/react';
 import DarkPatternPanel from './DarkPatternPanel';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+const ROUTES = [
+  { value: 'DEL-BOM', label: 'DEL–BOM · Delhi ↔ Mumbai' },
+  { value: 'DEL-BLR', label: 'DEL–BLR · Delhi ↔ Bengaluru' },
+  { value: 'BOM-BLR', label: 'BOM–BLR · Mumbai ↔ Bengaluru' },
+  { value: 'DEL-CCU', label: 'DEL–CCU · Delhi ↔ Kolkata' },
+  { value: 'BLR-HYD', label: 'BLR–HYD · Bengaluru ↔ Hyderabad' },
+  { value: 'MAA-DEL', label: 'MAA–DEL · Chennai ↔ Delhi' },
+  { value: 'DEL-PNQ', label: 'DEL–PNQ · Delhi ↔ Pune' },
+  { value: 'BOM-GOI', label: 'BOM–GOI · Mumbai ↔ Goa' },
+];
+
+const SCRAPE_WINDOWS = [
+  { value: '1', label: 'T+1 · Surge' },
+  { value: '7', label: 'T+7 · Weekly' },
+  { value: '15', label: 'T+15 · Base' },
+  { value: '30', label: 'T+30 · Advance' },
+  { value: '45', label: 'T+45 · Early' },
+];
 
 interface SourceHealthStatus {
   source_key: string;
@@ -128,66 +148,64 @@ export default function ScrapingEngineView() {
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Top Banner & Trigger */}
-      <div className="panel p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="panel p-6 space-y-5">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-semibold text-navy-700 uppercase tracking-wider mb-1">
-            <Cpu className="w-4 h-4 text-navy-700" />
-            <span>Multi-Source Fixture Engine</span>
-          </div>
-          <h2 className="text-xl font-semibold text-ink-900">Simulated Data Mode &amp; Pipeline Monitor</h2>
-          <p className="text-xs text-ink-500 mt-0.5">
-            Five deterministic source fixtures. No HTTP, browser automation, scraping framework, or booking integration.
+          <h2 className="text-xl font-semibold text-ink-900 flex items-center gap-2">
+            <Cpu className="w-5 h-5 text-navy-700" />
+            Simulated Data Mode
+          </h2>
+          <p className="text-xs text-ink-500 mt-1 max-w-lg">
+            Five deterministic source fixtures — no live HTTP requests, browser automation, or booking integrations.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center space-x-2 text-xs">
-            <label className="text-ink-500 font-semibold">Corridor:</label>
-            <select
-              value={selectedRoute}
-              onChange={(e) => setSelectedRoute(e.target.value)}
-              className="bg-white border border-ink-200 rounded-lg px-2.5 py-1.5 font-mono text-navy-700 font-semibold text-xs cursor-pointer"
-            >
-              <option value="DEL-BOM">DEL-BOM (Delhi ↔ Mumbai)</option>
-              <option value="DEL-BLR">DEL-BLR (Delhi ↔ Bengaluru)</option>
-              <option value="BOM-BLR">BOM-BLR (Mumbai ↔ Bengaluru)</option>
-              <option value="DEL-CCU">DEL-CCU (Delhi ↔ Kolkata)</option>
-              <option value="BLR-HYD">BLR-HYD (Bengaluru ↔ Hyderabad)</option>
-              <option value="MAA-DEL">MAA-DEL (Chennai ↔ Delhi)</option>
-              <option value="DEL-PNQ">DEL-PNQ (Delhi ↔ Pune)</option>
-              <option value="BOM-GOI">BOM-GOI (Mumbai ↔ Goa)</option>
-            </select>
+        <div className="flex flex-wrap items-end gap-3 pt-4 border-t border-ink-100">
+          <div className="space-y-1.5">
+            <label className="text-[10.5px] font-semibold text-ink-400 uppercase tracking-wide">Corridor</label>
+            <Select value={selectedRoute} onValueChange={(v) => v && setSelectedRoute(v)}>
+              <SelectTrigger className="h-9 w-60 text-xs font-mono">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false} sideOffset={6} className="p-1">
+                {ROUTES.map((r) => (
+                  <SelectItem key={r.value} value={r.value} className="text-xs font-mono py-2 px-2.5 rounded-md">
+                    {r.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          <div className="flex items-center space-x-2 text-xs">
-            <label className="text-ink-500 font-semibold">Window:</label>
-            <select
-              value={selectedWindow}
-              onChange={(e) => setSelectedWindow(Number(e.target.value))}
-              className="bg-white border border-ink-200 rounded-lg px-2.5 py-1.5 font-mono text-navy-700 font-semibold text-xs cursor-pointer"
-            >
-              <option value={1}>T+1 (Surge)</option>
-              <option value={7}>T+7 (Weekly)</option>
-              <option value={15}>T+15 (Base)</option>
-              <option value={30}>T+30 (Advance)</option>
-              <option value={45}>T+45 (Early)</option>
-            </select>
+          <div className="space-y-1.5">
+            <label className="text-[10.5px] font-semibold text-ink-400 uppercase tracking-wide">Window</label>
+            <Select value={String(selectedWindow)} onValueChange={(v) => v && setSelectedWindow(Number(v))}>
+              <SelectTrigger className="h-9 w-40 text-xs font-mono">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false} sideOffset={6} className="p-1">
+                {SCRAPE_WINDOWS.map((w) => (
+                  <SelectItem key={w.value} value={w.value} className="text-xs font-mono py-2 px-2.5 rounded-md">
+                    {w.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           <button
             onClick={handleTriggerScrape}
             disabled={isRunningScraper}
-            className="bg-navy-700 text-white hover:bg-navy-800 text-xs font-semibold px-4 py-2 rounded-lg flex items-center justify-center space-x-2 transition-all shrink-0 disabled:opacity-50 cursor-pointer"
+            className="h-9 bg-navy-700 text-white hover:bg-navy-800 text-xs font-semibold px-4 rounded-lg flex items-center justify-center gap-2 transition-all shrink-0 disabled:opacity-50 cursor-pointer"
           >
             {isRunningScraper ? (
               <>
                 <RefreshCw className="w-4 h-4 animate-spin" />
-                <span>Generating Fixture Records...</span>
+                <span>Generating...</span>
               </>
             ) : (
               <>
                 <Play className="w-4 h-4 fill-current" />
-                <span>Run Simulated Source Batch</span>
+                <span>Run Simulated Batch</span>
               </>
             )}
           </button>
@@ -198,7 +216,7 @@ export default function ScrapingEngineView() {
       <div className="panel p-6 space-y-4">
         <h3 className="text-sm font-semibold text-ink-900 flex items-center">
           <FileCode2 className="w-4 h-4 mr-2 text-navy-700" />
-          High-Level Pipeline Architecture (Scrape → Index → API)
+          Pipeline Architecture
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3 text-center text-xs">
@@ -230,7 +248,7 @@ export default function ScrapingEngineView() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h3 className="text-sm font-semibold text-ink-900 flex items-center">
             <ActivitySquare className="w-4 h-4 mr-2 text-navy-700" />
-            Selector / Schema-Change Health Check
+            Source Health Check
           </h3>
           <button
             onClick={() => fetchSourceHealth(true)}
@@ -246,15 +264,15 @@ export default function ScrapingEngineView() {
           <div className="bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold rounded-lg p-3 flex items-start gap-2">
             <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
             <span>
-              SELECTOR_MISS on {sourceHealth.selectorMissSources.length} source(s): {sourceHealth.selectorMissSources.join(', ')}.
-              Expected fields are missing or invalid — the source&apos;s payload shape may have changed, and downstream cleaning may be receiving bad data.
+              Selector mismatch on {sourceHealth.selectorMissSources.length} source(s): {sourceHealth.selectorMissSources.join(', ')}.
+              The payload shape may have changed, so downstream cleaning could receive bad data.
             </span>
           </div>
         )}
         {sourceHealth && sourceHealth.status === 'ok' && (
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-lg p-3 flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 shrink-0" />
-            All <span className="font-tabular">{sourceHealth.checkedSources}</span> source(s) passed the selector/field health probe.
+            All <span className="font-tabular">{sourceHealth.checkedSources}</span> source(s) passed the health check.
           </div>
         )}
         {!sourceHealth && (
@@ -306,45 +324,40 @@ export default function ScrapingEngineView() {
       </div>
 
       {/* Ethical Compliance Principles Checklist */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="panel p-4 space-y-1.5">
-          <div className="flex items-center space-x-1.5 text-xs font-semibold text-emerald-700">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-            <span>Live Scraping Disabled</span>
+      <div className="space-y-2">
+        <label className="text-[10.5px] font-semibold text-ink-400 uppercase tracking-wide">Compliance Checklist</label>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="panel p-4 space-y-1.5">
+            <div className="flex items-center space-x-1.5 text-xs font-semibold text-emerald-700">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>Live Scraping Disabled</span>
+            </div>
+            <p className="text-[11px] text-ink-500">No external domain is contacted.</p>
           </div>
-          <p className="text-[11px] text-ink-500">
-            No external domain is contacted, so there is no robots.txt result to claim.
-          </p>
-        </div>
 
-        <div className="panel p-4 space-y-1.5">
-          <div className="flex items-center space-x-1.5 text-xs font-semibold text-emerald-700">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>No Network Automation</span>
+          <div className="panel p-4 space-y-1.5">
+            <div className="flex items-center space-x-1.5 text-xs font-semibold text-emerald-700">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
+              <span>No Network Automation</span>
+            </div>
+            <p className="text-[11px] text-ink-500">In-code fixtures only — no browser session or login flow.</p>
           </div>
-          <p className="text-[11px] text-ink-500">
-            The current providers use in-code fixtures only; no browser session, CAPTCHA flow, or login is present.
-          </p>
-        </div>
 
-        <div className="panel p-4 space-y-1.5">
-          <div className="flex items-center space-x-1.5 text-xs font-semibold text-navy-700">
-            <Lock className="w-4 h-4 text-navy-700" />
-            <span>Zero PII Collection</span>
+          <div className="panel p-4 space-y-1.5">
+            <div className="flex items-center space-x-1.5 text-xs font-semibold text-navy-700">
+              <Lock className="w-4 h-4 text-navy-700" />
+              <span>Zero PII Collection</span>
+            </div>
+            <p className="text-[11px] text-ink-500">No user input or external account access.</p>
           </div>
-          <p className="text-[11px] text-ink-500">
-            Fixture generation has no user input collection or external account access.
-          </p>
-        </div>
 
-        <div className="panel p-4 space-y-1.5">
-          <div className="flex items-center space-x-1.5 text-xs font-semibold text-navy-700">
-            <Terminal className="w-4 h-4 text-navy-700" />
-            <span>No Proxy Pool</span>
+          <div className="panel p-4 space-y-1.5">
+            <div className="flex items-center space-x-1.5 text-xs font-semibold text-navy-700">
+              <Terminal className="w-4 h-4 text-navy-700" />
+              <span>No Proxy Pool</span>
+            </div>
+            <p className="text-[11px] text-ink-500">Not needed in simulated data mode.</p>
           </div>
-          <p className="text-[11px] text-ink-500">
-            Proxies are unnecessary in simulated data mode. Any future live integration needs its own review.
-          </p>
         </div>
       </div>
 

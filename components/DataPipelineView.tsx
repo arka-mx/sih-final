@@ -41,13 +41,12 @@ export default function DataPipelineView() {
       {/* Header Banner */}
       <div className="panel p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-semibold text-navy-700 uppercase tracking-wider mb-1">
-            <Sparkles className="w-4 h-4 text-navy-700" />
-            <span>Automated Data Quality &amp; Statistical Normalization</span>
-          </div>
-          <h2 className="text-xl font-semibold text-ink-900">Data Cleaning, IQR Outlier Detection &amp; Imputation</h2>
-          <p className="text-xs text-ink-500 mt-0.5">
-            Parses raw scrape payloads, normalizes currency, eliminates duplicate sessions, and filters CPI index eligibility.
+          <h2 className="text-xl font-semibold text-ink-900 flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-navy-700" />
+            Data Cleaning &amp; Outlier Detection
+          </h2>
+          <p className="text-xs text-ink-500 mt-1 max-w-lg">
+            Normalizes currency, removes duplicate sessions, and filters CPI index eligibility from raw scrape payloads.
           </p>
         </div>
 
@@ -110,7 +109,7 @@ export default function DataPipelineView() {
       <div className="panel p-6 space-y-4">
         <h3 className="text-sm font-semibold text-ink-900 flex items-center">
           <Layers className="w-4 h-4 mr-2 text-navy-700" />
-          5-Stage Normalization Pipeline Architecture
+          Normalization Pipeline
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
@@ -153,30 +152,32 @@ export default function DataPipelineView() {
 
       {/* Filter Tabs & Cleaned Records Table */}
       <div className="panel p-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-ink-100 pb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <h3 className="text-base font-semibold text-ink-900">Cleaned &amp; Audited Fare Records</h3>
+        </div>
 
-          <div className="flex flex-wrap items-center gap-1 bg-ink-50 rounded-lg p-1 border border-ink-100 text-xs">
-            {[
-              { id: 'ALL', label: 'All Records' },
-              { id: 'ELIGIBLE', label: 'CPI Eligible Only' },
-              { id: 'OUTLIERS', label: 'Outliers (IQR / Z)' },
-              { id: 'DUPLICATES', label: 'Duplicates' },
-              { id: 'IMPUTED', label: 'Imputed' },
-            ].map((f) => (
+        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar border-b border-ink-100">
+          {[
+            { id: 'ALL', label: 'All' },
+            { id: 'ELIGIBLE', label: 'CPI Eligible' },
+            { id: 'OUTLIERS', label: 'Outliers' },
+            { id: 'DUPLICATES', label: 'Duplicates' },
+            { id: 'IMPUTED', label: 'Imputed' },
+          ].map((f) => {
+            const isActive = filterState === f.id;
+            return (
               <button
                 key={f.id}
                 onClick={() => setFilterState(f.id as 'ALL' | 'ELIGIBLE' | 'OUTLIERS' | 'DUPLICATES' | 'IMPUTED')}
-                className={`px-3 py-1.5 rounded-md font-semibold transition-colors cursor-pointer ${
-                  filterState === f.id
-                    ? 'bg-white text-navy-800 shadow-panel'
-                    : 'text-ink-500 hover:text-ink-900'
+                className={`relative shrink-0 px-3 py-2.5 text-xs font-medium whitespace-nowrap cursor-pointer transition-colors ${
+                  isActive ? 'text-navy-800' : 'text-ink-500 hover:text-ink-800'
                 }`}
               >
-                {f.label}
+                <span className={isActive ? 'font-semibold' : ''}>{f.label}</span>
+                {isActive && <span className="absolute left-0 right-0 -bottom-px h-0.5 bg-navy-700" />}
               </button>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
         <div className="overflow-x-auto border border-ink-100 rounded-xl">
