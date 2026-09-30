@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { RefreshCw, User, ShieldCheck, Activity, Database, LineChart, Cpu, Code2, Sparkles } from 'lucide-react';
 
 export type TabType = 'home' | 'routes' | 'analysis' | 'backtest' | 'scrapers' | 'cleaning' | 'data' | 'api';
@@ -33,6 +33,30 @@ export default function Header({
   onRefresh,
   isRefreshing,
 }: HeaderProps) {
+  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const navRef = useRef<HTMLElement | null>(null);
+  const [indicator, setIndicator] = useState<{ left: number; width: number } | null>(null);
+
+  const measure = () => {
+    const el = tabRefs.current[activeTab];
+    const nav = navRef.current;
+    if (!el || !nav) return;
+    const elRect = el.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+    setIndicator({ left: elRect.left - navRect.left + nav.scrollLeft, width: elRect.width });
+  };
+
+  useLayoutEffect(() => {
+    measure();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab]);
+
+  useEffect(() => {
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <header className="w-full bg-white border-b border-ink-100 sticky top-0 z-50">
       {/* Top Government Banner */}
@@ -114,32 +138,52 @@ export default function Header({
       </div>
 
       {/* Navigation Tabs Bar */}
-      <div className="border-t border-ink-100">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-1 overflow-x-auto no-scrollbar">
+      <div className="bg-ink-50/60 border-t border-ink-100">
+        <nav
+          ref={navRef}
+          className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-0.5 overflow-x-auto no-scrollbar"
+        >
           {NAV_ITEMS.map((tab) => {
             const IconComponent = tab.icon;
             const isActive = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
+                ref={(el) => {
+                  tabRefs.current[tab.id] = el;
+                }}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative py-3 px-3 text-[13px] font-medium flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
-                  isActive ? 'text-navy-800' : 'text-ink-500 hover:text-ink-900'
+                className={`group relative py-2.5 px-3 my-1.5 text-[12.5px] font-medium flex items-center gap-1.5 whitespace-nowrap tracking-tight cursor-pointer transition-colors duration-150 ${
+                  isActive ? 'text-navy-800' : 'text-ink-500 hover:text-ink-800'
                 }`}
               >
-                <IconComponent className={`w-3.5 h-3.5 ${isActive ? 'text-navy-700' : 'text-ink-400'}`} />
+                <IconComponent
+                  strokeWidth={2}
+                  className={`w-3.5 h-3.5 transition-colors duration-150 ${
+                    isActive ? 'text-navy-700' : 'text-ink-400 group-hover:text-ink-600'
+                  }`}
+                />
                 <span className={isActive ? 'font-semibold' : ''}>{tab.label}</span>
                 {tab.badge && (
-                  <span className="text-[10px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">
+                  <span
+                    className={`text-[9.5px] font-mono font-semibold px-1 py-px tracking-tight ${
+                      isActive ? 'text-emerald-700 bg-emerald-50' : 'text-ink-400 bg-ink-100'
+                    }`}
+                  >
                     {tab.badge}
                   </span>
-                )}
-                {isActive && (
-                  <span className="absolute left-0 right-0 -bottom-px h-0.5 bg-navy-700" />
                 )}
               </button>
             );
           })}
+
+          {/* Sliding active indicator */}
+          {indicator && (
+            <span
+              className="absolute bottom-0 h-0.5 bg-navy-700 transition-all duration-300 ease-out"
+              style={{ left: indicator.left, width: indicator.width }}
+            />
+          )}
         </nav>
       </div>
     </header>

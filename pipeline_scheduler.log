@@ -15,3 +15,448 @@
 2026-09-30 02:29:06,157 [INFO] apscheduler.scheduler: Added job "APIx scrape/clean/index cycle - T+30" to job store "default"
 2026-09-30 02:29:06,157 [INFO] apscheduler.scheduler: Added job "APIx scrape/clean/index cycle - T+45" to job store "default"
 2026-09-30 02:29:06,157 [INFO] apscheduler.scheduler: Scheduler started
+2026-09-30 07:40:20,849 [WARNING] apscheduler.executors.default: Run time of job "APIx scrape/clean/index cycle - T+30 (trigger: cron[hour='3', minute='0'], next run at: 2026-09-30 03:00:00 IST)" was missed by 4:40:20.848964
+2026-09-30 07:40:20,852 [WARNING] apscheduler.executors.default: Run time of job "APIx scrape/clean/index cycle - T+45 (trigger: cron[hour='3', minute='0'], next run at: 2026-09-30 03:00:00 IST)" was missed by 4:40:20.852244
+2026-09-30 07:40:20,856 [WARNING] apscheduler.executors.default: Run time of job "APIx scrape/clean/index cycle - T+1 (trigger: cron[hour='0,4,8,12,16,20', minute='0'], next run at: 2026-09-30 08:00:00 IST)" was missed by 3:40:20.856639
+2026-09-30 08:00:00,012 [INFO] apscheduler.executors.default: Running job "APIx scrape/clean/index cycle - T+1 (trigger: cron[hour='0,4,8,12,16,20', minute='0'], next run at: 2026-09-30 12:00:00 IST)" (scheduled at 2026-09-30 08:00:00+05:30)
+2026-09-30 08:00:00,043 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 08:00:00,062 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 08:00:00,139 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+7)
+2026-09-30 08:00:00,156 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 08:00:00,240 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+7)
+2026-09-30 08:00:00,432 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+1)
+2026-09-30 08:00:00,442 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+1)
+2026-09-30 08:00:00,445 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 08:00:00,447 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 08:00:00,449 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 08:00:00,449 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+1)
+2026-09-30 08:00:00,452 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+1)
+2026-09-30 08:00:00,454 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 08:00:00,458 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 08:00:00,458 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 08:00:00,458 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+1)
+2026-09-30 08:00:00,465 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+1)
+2026-09-30 08:00:00,465 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 08:00:00,465 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 08:00:00,474 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 08:00:00,475 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-CCU (T+1)
+2026-09-30 08:00:00,477 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 4 records for DEL-CCU (T+1)
+2026-09-30 08:00:00,479 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-CCU
+2026-09-30 08:00:00,479 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-CCU
+2026-09-30 08:00:00,479 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-CCU
+2026-09-30 08:00:00,479 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for DEL-HYD (T+1)
+2026-09-30 08:00:00,479 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-HYD (T+1)
+2026-09-30 08:00:00,479 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-HYD
+2026-09-30 08:00:00,479 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-HYD
+2026-09-30 08:00:00,479 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-HYD
+2026-09-30 08:00:00,485 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BLR-HYD (T+1)
+2026-09-30 08:00:00,488 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BLR-HYD (T+1)
+2026-09-30 08:00:00,488 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for BLR-HYD
+2026-09-30 08:00:00,488 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for BLR-HYD
+2026-09-30 08:00:00,489 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for BLR-HYD
+2026-09-30 08:00:00,491 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for MAA-DEL (T+1)
+2026-09-30 08:00:00,495 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for MAA-DEL (T+1)
+2026-09-30 08:00:00,495 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for MAA-DEL
+2026-09-30 08:00:00,495 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for MAA-DEL
+2026-09-30 08:00:00,495 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for MAA-DEL
+2026-09-30 08:00:00,498 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for CCU-BLR (T+1)
+2026-09-30 08:00:00,498 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for CCU-BLR (T+1)
+2026-09-30 08:00:00,498 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for CCU-BLR
+2026-09-30 08:00:00,498 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for CCU-BLR
+2026-09-30 08:00:00,498 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for CCU-BLR
+2026-09-30 08:00:00,508 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-PNQ (T+1)
+2026-09-30 08:00:00,511 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 4 records for DEL-PNQ (T+1)
+2026-09-30 08:00:00,511 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-PNQ
+2026-09-30 08:00:00,511 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-PNQ
+2026-09-30 08:00:00,511 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-PNQ
+2026-09-30 08:00:00,513 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-GOI (T+1)
+2026-09-30 08:00:00,516 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 4 records for BOM-GOI (T+1)
+2026-09-30 08:00:00,516 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for BOM-GOI
+2026-09-30 08:00:00,516 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for BOM-GOI
+2026-09-30 08:00:00,516 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for BOM-GOI
+2026-09-30 08:00:00,518 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for DEL-PAT (T+1)
+2026-09-30 08:00:00,522 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 2 records for DEL-PAT (T+1)
+2026-09-30 08:00:00,522 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-PAT
+2026-09-30 08:00:00,522 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-PAT
+2026-09-30 08:00:00,522 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-PAT
+2026-09-30 08:00:00,522 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for DEL-GAU (T+1)
+2026-09-30 08:00:00,522 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 2 records for DEL-GAU (T+1)
+2026-09-30 08:00:00,522 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-GAU
+2026-09-30 08:00:00,522 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-GAU
+2026-09-30 08:00:00,522 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-GAU
+2026-09-30 08:00:00,528 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for DEL-IXR (T+1)
+2026-09-30 08:00:00,528 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 2 records for DEL-IXR (T+1)
+2026-09-30 08:00:00,528 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for DEL-IXR
+2026-09-30 08:00:00,528 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for DEL-IXR
+2026-09-30 08:00:00,528 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for DEL-IXR
+2026-09-30 08:00:00,528 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for BOM-PAT (T+1)
+2026-09-30 08:00:00,535 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 2 records for BOM-PAT (T+1)
+2026-09-30 08:00:00,535 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for BOM-PAT
+2026-09-30 08:00:00,535 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for BOM-PAT
+2026-09-30 08:00:00,535 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for BOM-PAT
+2026-09-30 08:00:00,538 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 2 records for CCU-GAU (T+1)
+2026-09-30 08:00:00,539 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 2 records for CCU-GAU (T+1)
+2026-09-30 08:00:00,541 [WARNING] scrapers.config_scraper: [simulated_air_india] no_availability: No fixture for CCU-GAU
+2026-09-30 08:00:00,541 [WARNING] scrapers.config_scraper: [simulated_cleartrip] no_availability: No fixture for CCU-GAU
+2026-09-30 08:00:00,541 [WARNING] scrapers.config_scraper: [simulated_ixigo] no_availability: No fixture for CCU-GAU
+2026-09-30 08:00:00,547 [WARNING] pipeline.outlier_detection: Outlier flagged on BLR-HYD (T+1): AI-544 fare=6037.5 [IQR_HIGH_OUTLIER (\u20b96037.5 > upper bound \u20b95659.75)]
+2026-09-30 08:00:00,547 [INFO] pipeline.outlier_detection: Pipeline Quality Audit Complete: 93 raw -> 91 CPI eligible (1 dups, 1 outliers, 0 sold-out, Quality=97.85%)
+2026-09-30 08:00:00,703 [ERROR] APIx.PipelineRunner: [T+1] Pipeline cycle failed: [Errno 11001] getaddrinfo failed
+Traceback (most recent call last):
+  File "E:\sih-final\pipeline\runner.py", line 369, in run_scheduled_cycle
+    result = execute_pipeline_cycle(routes=routes, windows=windows)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\sih-final\pipeline\runner.py", line 309, in execute_pipeline_cycle
+    asyncio.run(persist_pipeline_outputs(filtered_records, index_payload))
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "E:\sih-final\pipeline\runner.py", line 209, in persist_pipeline_outputs
+    await init_db()
+  File "E:\sih-final\apix-api\app\db.py", line 58, in init_db
+    async with engine.begin() as conn:
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 1063, in begin
+    async with conn:
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\ext\asyncio\base.py", line 121, in __aenter__
+    return await self.start(is_ctxmanager=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 273, in start
+    await greenlet_spawn(self.sync_engine.connect)
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\base.py", line 3276, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\base.py", line 3300, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 674, in __init__
+    self.__connect()
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\create.py", line 643, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\default.py", line 620, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 937, in connect
+    await_only(creator_fn(*arg, **kw)),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 131, in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connection.py", line 2443, in connect
+    return await connect_utils._connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1249, in _connect
+    raise last_error or exceptions.TargetServerAttributeNotMatched(
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1218, in _connect
+    conn = await _connect_addr(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1054, in _connect_addr
+    return await __connect_addr(params, True, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1099, in __connect_addr
+    tr, pr = await connector
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 969, in _create_ssl_connection
+    tr, pr = await loop.create_connection(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 1080, in create_connection
+    infos = await self._ensure_resolved(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 1456, in _ensure_resolved
+    return await loop.getaddrinfo(host, port, family=family, type=type,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 901, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\socket.py", line 964, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+2026-09-30 08:00:00,720 [ERROR] apscheduler.executors.default: Job "APIx scrape/clean/index cycle - T+1 (trigger: cron[hour='0,4,8,12,16,20', minute='0'], next run at: 2026-09-30 12:00:00 IST)" raised an exception
+Traceback (most recent call last):
+  File "E:\sih-final\pipeline\runner.py", line 369, in run_scheduled_cycle
+    result = execute_pipeline_cycle(routes=routes, windows=windows)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\sih-final\pipeline\runner.py", line 309, in execute_pipeline_cycle
+    asyncio.run(persist_pipeline_outputs(filtered_records, index_payload))
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "E:\sih-final\pipeline\runner.py", line 209, in persist_pipeline_outputs
+    await init_db()
+  File "E:\sih-final\apix-api\app\db.py", line 58, in init_db
+    async with engine.begin() as conn:
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 1063, in begin
+    async with conn:
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\ext\asyncio\base.py", line 121, in __aenter__
+    return await self.start(is_ctxmanager=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 273, in start
+    await greenlet_spawn(self.sync_engine.connect)
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\base.py", line 3276, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\base.py", line 3300, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 674, in __init__
+    self.__connect()
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\create.py", line 643, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\default.py", line 620, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 937, in connect
+    await_only(creator_fn(*arg, **kw)),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 131, in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connection.py", line 2443, in connect
+    return await connect_utils._connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1249, in _connect
+    raise last_error or exceptions.TargetServerAttributeNotMatched(
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1218, in _connect
+    conn = await _connect_addr(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1054, in _connect_addr
+    return await __connect_addr(params, True, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1099, in __connect_addr
+    tr, pr = await connector
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 969, in _create_ssl_connection
+    tr, pr = await loop.create_connection(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 1080, in create_connection
+    infos = await self._ensure_resolved(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 1456, in _ensure_resolved
+    return await loop.getaddrinfo(host, port, family=family, type=type,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 901, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\socket.py", line 964, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\apscheduler\executors\base.py", line 131, in run_job
+    retval = job.func(*job.args, **job.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\sih-final\pipeline\scheduler.py", line 70, in _job
+    run_scheduled_cycle(job_label=f"T+{window}", routes=DEFAULT_ROUTES, windows=[window])
+  File "E:\sih-final\pipeline\runner.py", line 373, in run_scheduled_cycle
+    asyncio.run(_record_job_run(job_label, windows, started_at, finished_at, "failure", error_message=str(exc)))
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "E:\sih-final\pipeline\runner.py", line 342, in _record_job_run
+    await init_db()
+  File "E:\sih-final\apix-api\app\db.py", line 58, in init_db
+    async with engine.begin() as conn:
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 1063, in begin
+    async with conn:
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\ext\asyncio\base.py", line 121, in __aenter__
+    return await self.start(is_ctxmanager=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 273, in start
+    await greenlet_spawn(self.sync_engine.connect)
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\base.py", line 3276, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\base.py", line 146, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\base.py", line 3300, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 449, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 1263, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 712, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\impl.py", line 179, in _do_get
+    with util.safe_reraise():
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\impl.py", line 177, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 390, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 674, in __init__
+    self.__connect()
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\pool\base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\create.py", line 643, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\engine\default.py", line 620, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 937, in connect
+    await_only(creator_fn(*arg, **kw)),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 131, in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connection.py", line 2443, in connect
+    return await connect_utils._connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1249, in _connect
+    raise last_error or exceptions.TargetServerAttributeNotMatched(
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1218, in _connect
+    conn = await _connect_addr(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1054, in _connect_addr
+    return await __connect_addr(params, True, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 1099, in __connect_addr
+    tr, pr = await connector
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\site-packages\asyncpg\connect_utils.py", line 969, in _create_ssl_connection
+    tr, pr = await loop.create_connection(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 1080, in create_connection
+    infos = await self._ensure_resolved(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 1456, in _ensure_resolved
+    return await loop.getaddrinfo(host, port, family=family, type=type,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\asyncio\base_events.py", line 901, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ayantik Sarkar\anaconda3\Lib\socket.py", line 964, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
