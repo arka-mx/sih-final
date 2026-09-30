@@ -1,0 +1,22 @@
+{
+  "source": "simulated_cleartrip",
+  "provider_label": "Simulated Cleartrip OTA",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_CLEARTRIP_e5d77735",
+  "origin": "DEL",
+  "dest": "BLR",
+  "departure_date": "2026-10-30",
+  "advance_days": 30,
+  "flights_data": [
+    {
+      "carrier": "Akasa Air",
+      "flight_no": "QP-1331",
+      "dep": "15:20",
+      "arr": "18:10",
+      "base": 2980,
+      "tax": 790,
+      "fee": 249
+    }
+  ]
+}

@@ -1,17 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import {
-  Code2,
-  Play,
-  Copy,
-  Check,
-  Terminal,
-  ExternalLink,
-  ShieldCheck,
-  Key,
-  Info,
-} from 'lucide-react';
+import { Code as Code2, Play, Copy, Check, Terminal, ArrowSquareOut as ExternalLink, ShieldCheck, Key, Info } from '@phosphor-icons/react';
 
 interface EndpointConfig {
   path: string;

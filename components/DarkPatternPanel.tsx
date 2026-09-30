@@ -5,7 +5,7 @@ import { DarkPatternFlagItem, MOCK_DARK_PATTERN_FLAGS } from '@/lib/mockData';
 import { DEMO_MODE } from '@/lib/demoMode';
 import { useApiData } from '@/lib/useApiData';
 import { LoadingPanel, ErrorPanel } from './ApiStateBanner';
-import { ShieldAlert, Eye, TrendingUp, RefreshCw } from 'lucide-react';
+import { ShieldWarning as ShieldAlert, Eye, TrendUp as TrendingUp, ArrowsClockwise as RefreshCw } from '@phosphor-icons/react';
 
 interface DarkPatternApiResponse {
   routePair: string;

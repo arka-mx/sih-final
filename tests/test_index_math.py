@@ -22,7 +22,7 @@ def test_jevons_elementary_index_known_calculation():
     base_prices = [3000.0, 4000.0, 5000.0]
     current_prices = [3300.0, 4200.0, 5250.0]
     idx = jevons_elementary_index(current_prices, base_prices)
-    assert abs(idx - 106.6429) < 0.001
+    assert abs(idx - 106.6409) < 0.001
 
 def test_laspeyres_aggregate_index_known_calculation():
     """

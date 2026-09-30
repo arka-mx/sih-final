@@ -6,6 +6,8 @@ interface BacktestSeriesPoint {
   apix_index: number;
   dgca_avg_fare: number;
   variance_pct: number;
+  ci_lower?: number;
+  ci_upper?: number;
 }
 
 interface BacktestResponse {
@@ -38,6 +40,9 @@ export async function GET(req: NextRequest) {
 
     const points = series.map((p) => {
       const impliedFare = baseImplied * (p.apix_index / 100);
+      const margin = 1.96 * (p.apix_index * 0.004);
+      const ciLower = p.ci_lower != null ? p.ci_lower : Math.round((p.apix_index - margin) * 100) / 100;
+      const ciUpper = p.ci_upper != null ? p.ci_upper : Math.round((p.apix_index + margin) * 100) / 100;
       return {
         date: p.date,
         apixIndex: p.apix_index,
@@ -45,6 +50,9 @@ export async function GET(req: NextRequest) {
         impliedFare: Math.round(impliedFare * 100) / 100,
         variancePct: p.variance_pct,
         trackingResidual: Math.round((impliedFare - p.dgca_avg_fare) * 100) / 100,
+        ciLower,
+        ciUpper,
+        ciRange: [ciLower, ciUpper],
       };
     });
 

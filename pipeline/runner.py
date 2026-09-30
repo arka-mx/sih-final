@@ -273,8 +273,15 @@ def execute_pipeline_cycle(
             len(unhealthy), {k: v.detail for k, v in unhealthy.items()},
         )
 
-    indigo_scraper = get_simulated_scraper("simulated_indigo")
-    mmt_scraper = get_simulated_scraper("simulated_makemytrip")
+    prefer_live = os.environ.get("APIX_LIVE_SCRAPING", "").lower() in {"1", "true"}
+    if prefer_live:
+        from scrapers.registry import get_live_scraper
+        indigo_scraper = get_live_scraper("indigo_direct", prefer_live=True)
+        mmt_scraper = get_live_scraper("makemytrip", prefer_live=True)
+        logger.info("APIX_LIVE_SCRAPING is active: running live IndiGo and MakeMyTrip scrapers with resilient fallback.")
+    else:
+        indigo_scraper = get_simulated_scraper("simulated_indigo")
+        mmt_scraper = get_simulated_scraper("simulated_makemytrip")
     additional_scrapers = [
         get_simulated_scraper(key)
         for key in DEFAULT_SIMULATED_SOURCE_KEYS

@@ -1,0 +1,22 @@
+{
+  "source": "simulated_ixigo",
+  "provider_label": "Simulated ixigo OTA",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_IXIGO_bc3c8d45",
+  "origin": "DEL",
+  "dest": "BOM",
+  "departure_date": "2026-10-15",
+  "advance_days": 15,
+  "flights_data": [
+    {
+      "carrier": "Akasa Air",
+      "flight_no": "QP-1102",
+      "dep": "11:45",
+      "arr": "14:00",
+      "base": 3300,
+      "tax": 840,
+      "fee": 199
+    }
+  ]
+}

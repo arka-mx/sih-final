@@ -1,0 +1,511 @@
+INFO:     Started server process [38036]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:53941 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60261 - "GET /api/public/anomalies?days=90 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60255 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60260 - "GET /api/public/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60261 - "GET /api/public/anomalies?days=90 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60255 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60260 - "GET /api/public/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58061 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58061 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64534 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64538 - "GET /api/public/anomalies?days=90 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64537 - "GET /api/public/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64534 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64538 - "GET /api/public/anomalies?days=90 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64537 - "GET /api/public/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54659 - "GET /api/public/anomalies?days=90 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54655 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54658 - "GET /api/public/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54659 - "GET /api/public/anomalies?days=90 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54655 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54658 - "GET /api/public/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59461 - "GET /api/backtest/dgca-comparison HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54866 - "GET /api/backtest/dgca-comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64922 - "GET /api/backtest/dgca-comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63443 - "GET /api/backtest/dgca-comparison HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\uvicorn\protocols\http\httptools_impl.py", line 422, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\uvicorn\middleware\proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\applications.py", line 1215, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\telemetry\_asgi.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\middleware\base.py", line 197, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SIH final\sih-final\apix-api\app\rate_limit.py", line 111, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\middleware\base.py", line 173, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\middleware\cors.py", line 91, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\middleware\cors.py", line 149, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\routing.py", line 676, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\routing.py", line 2786, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\routing.py", line 1817, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\routing.py", line 2869, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\routing.py", line 1843, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\routing.py", line 1308, in handle
+    await effective_context.app(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\routing.py", line 165, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\routing.py", line 151, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\routing.py", line 727, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\fastapi\routing.py", line 360, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\SIH final\sih-final\apix-api\app\routers\backtest.py", line 63, in get_dgca_comparison
+    result = await db.execute(query)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\ext\asyncio\session.py", line 651, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\util\concurrency.py", line 210, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\orm\session.py", line 2473, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\orm\session.py", line 2350, in _execute_internal
+    conn = self._connection_for_bind(bind)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\orm\session.py", line 2173, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<sqlalchemy generated _go() wrapper for sqlalchemy.orm.session.SessionTransaction._connection_for_bind>", line 2, in _connection_for_bind
+    return target(fn, self, bind, execution_options)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\orm\session.py", line 1203, in _connection_for_bind
+    conn = bind.connect()
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\engine\base.py", line 3260, in connect
+    return self._connection_cls(self)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\engine\base.py", line 149, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\engine\base.py", line 3284, in raw_connection
+    return self.pool.connect()
+           ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\pool\base.py", line 445, in connect
+    return _ConnectionFairy._checkout(self)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\pool\base.py", line 1287, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\pool\base.py", line 714, in checkout
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 166, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\pool\base.py", line 712, in checkout
+    dbapi_connection = rec.get_connection()
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\pool\base.py", line 861, in get_connection
+    self.__connect()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    with util.safe_reraise():
+         ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\util\langhelpers.py", line 166, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\pool\base.py", line 891, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\engine\create.py", line 645, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\engine\default.py", line 857, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 963, in connect
+    return await_(
+        AsyncAdapt_asyncpg_connection.create(
+    ...<4 lines>...
+        )
+    )
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\util\concurrency.py", line 167, in await_
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\util\concurrency.py", line 205, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\connectors\asyncio.py", line 378, in create
+    cls._handle_exception_no_connection(dbapi, error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 841, in _handle_exception_no_connection
+    super()._handle_exception_no_connection(dbapi, error)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\connectors\asyncio.py", line 409, in _handle_exception_no_connection
+    raise error.with_traceback(exc_info[2])
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\sqlalchemy\connectors\asyncio.py", line 376, in create
+    connection = await connection_awaitable
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\asyncpg\connection.py", line 2443, in connect
+    return await connect_utils._connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<22 lines>...
+    )
+    ^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\asyncpg\connect_utils.py", line 1249, in _connect
+    raise last_error or exceptions.TargetServerAttributeNotMatched(
+    ...<2 lines>...
+    )
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\asyncpg\connect_utils.py", line 1218, in _connect
+    conn = await _connect_addr(
+           ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\asyncpg\connect_utils.py", line 1050, in _connect_addr
+    return await __connect_addr(params, False, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\asyncpg\connect_utils.py", line 1099, in __connect_addr
+    tr, pr = await connector
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\somap\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\asyncpg\connect_utils.py", line 969, in _create_ssl_connection
+    tr, pr = await loop.create_connection(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        host, port)
+        ^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 1122, in create_connection
+    infos = await self._ensure_resolved(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        (host, port), family=family,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        type=socket.SOCK_STREAM, proto=proto, flags=flags, loop=self)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 1518, in _ensure_resolved
+    return await loop.getaddrinfo(host, port, family=family, type=type,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                  proto=proto, flags=flags)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 939, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        None, getaddr_func, host, port, family, type, proto, flags)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.3824.0_x64__qbz5n2kfra8p0\Lib\socket.py", line 981, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+INFO:     127.0.0.1:50993 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61357 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61443 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54122 - "GET /api/backtest/dgca-comparison HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58818 - "GET /api/routes/DEL-BOM/fares?window=T+45&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58817 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58816 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58819 - "GET /api/routes/DEL-BOM/fares?window=T+30&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58815 - "GET /api/routes/DEL-BOM/fares?window=T+15&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58814 - "GET /api/routes/DEL-BOM/fares?window=T+1&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58818 - "GET /api/routes/DEL-BOM/fares?window=T+45&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58816 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58819 - "GET /api/routes/DEL-BOM/fares?window=T+30&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58814 - "GET /api/routes/DEL-BOM/fares?window=T+1&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58815 - "GET /api/routes/DEL-BOM/fares?window=T+15&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58817 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56837 - "GET /api/routes/DEL-GOI/fares?window=T+7&limit=30 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56839 - "GET /api/routes/DEL-GOI/fares?window=T+7&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56840 - "GET /api/routes/DEL-GOI/fares?window=T+15&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56844 - "GET /api/routes/DEL-GOI/fares?window=T+45&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56838 - "GET /api/routes/DEL-GOI/fares?window=T+1&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56843 - "GET /api/routes/DEL-GOI/fares?window=T+30&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56837 - "GET /api/routes/BLR-GOI/fares?window=T+7&limit=30 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56839 - "GET /api/routes/BLR-GOI/fares?window=T+7&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56838 - "GET /api/routes/BLR-GOI/fares?window=T+1&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56840 - "GET /api/routes/BLR-GOI/fares?window=T+15&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56843 - "GET /api/routes/BLR-GOI/fares?window=T+30&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56844 - "GET /api/routes/BLR-GOI/fares?window=T+45&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56837 - "GET /api/routes/BLR-GOI/fares?window=T+30&limit=30 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56837 - "GET /api/routes/BLR-BOM/fares?window=T+30&limit=30 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56844 - "GET /api/routes/BLR-BOM/fares?window=T+45&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62313 - "GET /api/routes/BLR-BOM/fares?window=T+1&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62314 - "GET /api/routes/BLR-BOM/fares?window=T+7&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62315 - "GET /api/routes/BLR-BOM/fares?window=T+15&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62316 - "GET /api/routes/BLR-BOM/fares?window=T+30&limit=15 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64152 - "GET /api/metadata/routes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50285 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50292 - "GET /api/routes/DEL-BOM/fares?window=T+15&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50287 - "GET /api/routes/DEL-BOM/fares?window=T+1&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50289 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50292 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50289 - "GET /api/routes/DEL-BOM/fares?window=T+1&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50293 - "GET /api/routes/DEL-BOM/fares?window=T+30&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50295 - "GET /api/metadata/routes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50285 - "GET /api/routes/DEL-BOM/fares?window=T+45&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50292 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50287 - "GET /api/routes/DEL-BOM/fares?window=T+15&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50289 - "GET /api/routes/DEL-BOM/fares?window=T+30&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50293 - "GET /api/metadata/routes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50285 - "GET /api/routes/DEL-BOM/fares?window=T+45&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49677 - "GET /api/routes/DEL-BOM/fares?window=T+1&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63256 - "GET /api/metadata/routes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49681 - "GET /api/routes/DEL-BOM/fares?window=T+15&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49683 - "GET /api/routes/DEL-BOM/fares?window=T+30&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63256 - "GET /api/routes/DEL-BOM/fares?window=T+1&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /api/routes/DEL-BOM/fares?window=T+15&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49680 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49677 - "GET /api/routes/DEL-BOM/fares?window=T+45&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49683 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63256 - "GET /api/routes/DEL-BOM/fares?window=T+30&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49681 - "GET /api/metadata/routes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49677 - "GET /api/routes/DEL-BOM/fares?window=T+45&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52908 - "GET /api/public/anomalies?days=90 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52906 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52908 - "GET /api/public/anomalies?days=90 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52905 - "GET /api/public/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52906 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52905 - "GET /api/public/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53686 - "GET /api/routes/DEL-BOM/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53688 - "GET /api/routes/DEL-BLR/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63749 - "GET /api/routes/BOM-BLR/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63752 - "GET /api/routes/DEL-CCU/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54463 - "GET /api/routes/DEL-HYD/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54465 - "GET /api/routes/BLR-HYD/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54467 - "GET /api/routes/MAA-DEL/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54469 - "GET /api/routes/CCU-BLR/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54471 - "GET /api/routes/DEL-PNQ/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54473 - "GET /api/routes/BOM-GOI/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64363 - "GET /api/routes/DEL-PAT/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57914 - "GET /api/routes/DEL-GAU/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57916 - "GET /api/routes/DEL-IXR/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57918 - "GET /api/routes/BOM-PAT/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57920 - "GET /api/routes/CCU-GAU/fares?limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49676 - "GET /api/metadata/routes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49676 - "GET /api/routes/DEL-PNQ/fares?window=T+7&limit=5 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64443 - "GET /api/routes/DEL-BOM/fares?limit=3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64445 - "GET /api/sources HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63204 - "GET /api/routes/DEL-BOM/fares?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63162 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56364 - "GET /api/routes/DEL-BOM/fares?window=T+30&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56365 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56361 - "GET /api/routes/DEL-BOM/fares?window=T+15&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56363 - "GET /api/metadata/routes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56362 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63162 - "GET /api/routes/DEL-BOM/fares?window=T+1&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56364 - "GET /api/routes/DEL-BOM/fares?window=T+45&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56361 - "GET /api/routes/DEL-BOM/fares?window=T+30&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56365 - "GET /api/backtest/dgca-comparison?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63162 - "GET /api/routes/DEL-BOM/fares?window=T+15&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56362 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56364 - "GET /api/metadata/routes HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56361 - "GET /api/routes/DEL-BOM/fares?window=T+7&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56363 - "GET /api/index/daily HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63162 - "GET /api/routes/DEL-BOM/fares?window=T+45&limit=15 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56365 - "GET /api/routes/DEL-BOM/fares?window=T+1&limit=15 HTTP/1.1" 200 OK
+2026-09-30 08:04:46,439 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 08:04:46,443 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 08:04:46,445 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+1)
+2026-09-30 08:04:46,448 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 08:04:46,451 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+1)
+2026-09-30 08:04:46,454 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 08:04:46,456 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 08:04:46,463 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+7)
+2026-09-30 08:04:46,475 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 08:04:46,481 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+7)
+2026-09-30 08:04:46,482 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+15)
+2026-09-30 08:04:46,483 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+15)
+2026-09-30 08:04:46,485 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+15)
+2026-09-30 08:04:46,486 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+15)
+2026-09-30 08:04:46,489 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+15)
+2026-09-30 08:04:46,490 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+30)
+2026-09-30 08:04:46,492 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+30)
+2026-09-30 08:04:46,494 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+30)
+2026-09-30 08:04:46,496 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+30)
+2026-09-30 08:04:46,498 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+30)
+2026-09-30 08:04:46,500 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+45)
+2026-09-30 08:04:46,503 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+45)
+2026-09-30 08:04:46,506 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+45)
+2026-09-30 08:04:46,508 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+45)
+2026-09-30 08:04:46,509 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+45)
+2026-09-30 08:04:46,511 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 08:04:46,512 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 08:04:46,513 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+1)
+2026-09-30 08:04:46,514 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 08:04:46,515 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+1)
+2026-09-30 08:04:46,516 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+7)
+2026-09-30 08:04:46,517 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+7)
+2026-09-30 08:04:46,519 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+7)
+2026-09-30 08:04:46,520 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+7)
+2026-09-30 08:04:46,522 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+7)
+2026-09-30 08:04:46,523 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+15)
+2026-09-30 08:04:46,524 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+15)
+2026-09-30 08:04:46,525 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+15)
+2026-09-30 08:04:46,526 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+15)
+2026-09-30 08:04:46,527 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+15)
+2026-09-30 08:04:46,529 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+30)
+2026-09-30 08:04:46,530 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+30)
+2026-09-30 08:04:46,531 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+30)
+2026-09-30 08:04:46,532 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+30)
+2026-09-30 08:04:46,533 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+30)
+2026-09-30 08:04:46,534 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+45)
+2026-09-30 08:04:46,535 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+45)
+2026-09-30 08:04:46,536 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+45)
+2026-09-30 08:04:46,538 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+45)
+2026-09-30 08:04:46,540 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+45)
+2026-09-30 08:04:46,541 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 08:04:46,542 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 08:04:46,544 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+1)
+2026-09-30 08:04:46,546 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 08:04:46,547 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+1)
+2026-09-30 08:04:46,548 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+7)
+2026-09-30 08:04:46,549 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+7)
+2026-09-30 08:04:46,551 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+7)
+2026-09-30 08:04:46,552 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+7)
+2026-09-30 08:04:46,553 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+7)
+2026-09-30 08:04:46,556 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+15)
+2026-09-30 08:04:46,557 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+15)
+2026-09-30 08:04:46,559 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+15)
+2026-09-30 08:04:46,561 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+15)
+2026-09-30 08:04:46,564 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+15)
+2026-09-30 08:04:46,565 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+30)
+2026-09-30 08:04:46,567 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+30)
+2026-09-30 08:04:46,569 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+30)
+2026-09-30 08:04:46,571 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+30)
+2026-09-30 08:04:46,573 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+30)
+2026-09-30 08:04:46,575 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+45)
+2026-09-30 08:04:46,576 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+45)
+2026-09-30 08:04:46,579 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+45)
+2026-09-30 08:04:46,581 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+45)
+2026-09-30 08:04:46,583 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+45)
+2026-09-30 08:04:46,591 [INFO] pipeline.outlier_detection: Pipeline Quality Audit Complete: 150 raw -> 150 CPI eligible (0 dups, 0 outliers, 0 sold-out, Quality=100.0%)
+INFO:     127.0.0.1:63162 - "GET /api/pipeline/clean HTTP/1.1" 200 OK
+2026-09-30 08:04:46,757 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 08:04:46,758 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 08:04:46,760 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+1)
+2026-09-30 08:04:46,763 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+1)
+2026-09-30 08:04:46,764 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+1)
+2026-09-30 08:04:46,766 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 08:04:46,768 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 08:04:46,769 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+7)
+2026-09-30 08:04:46,771 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+7)
+2026-09-30 08:04:46,773 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+7)
+2026-09-30 08:04:46,774 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+15)
+2026-09-30 08:04:46,777 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+15)
+2026-09-30 08:04:46,779 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+15)
+2026-09-30 08:04:46,783 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+15)
+2026-09-30 08:04:46,785 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+15)
+2026-09-30 08:04:46,790 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+30)
+2026-09-30 08:04:46,792 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+30)
+2026-09-30 08:04:46,805 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+30)
+2026-09-30 08:04:46,808 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+30)
+2026-09-30 08:04:46,810 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+30)
+2026-09-30 08:04:46,826 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BOM (T+45)
+2026-09-30 08:04:46,827 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BOM (T+45)
+2026-09-30 08:04:46,834 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 4 records for DEL-BOM (T+45)
+2026-09-30 08:04:46,835 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BOM (T+45)
+2026-09-30 08:04:46,839 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 5 records for DEL-BOM (T+45)
+2026-09-30 08:04:46,846 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 08:04:46,847 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 08:04:46,858 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+1)
+2026-09-30 08:04:46,864 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+1)
+2026-09-30 08:04:46,872 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+1)
+2026-09-30 08:04:46,873 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+7)
+2026-09-30 08:04:46,878 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+7)
+2026-09-30 08:04:46,882 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+7)
+2026-09-30 08:04:46,883 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+7)
+2026-09-30 08:04:46,885 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+7)
+2026-09-30 08:04:46,890 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+15)
+2026-09-30 08:04:46,892 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+15)
+2026-09-30 08:04:46,893 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+15)
+2026-09-30 08:04:46,904 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+15)
+2026-09-30 08:04:46,906 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+15)
+2026-09-30 08:04:46,910 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+30)
+2026-09-30 08:04:46,911 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+30)
+2026-09-30 08:04:46,918 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+30)
+2026-09-30 08:04:46,921 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+30)
+2026-09-30 08:04:46,923 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+30)
+2026-09-30 08:04:46,934 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for DEL-BLR (T+45)
+2026-09-30 08:04:46,937 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for DEL-BLR (T+45)
+2026-09-30 08:04:46,938 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for DEL-BLR (T+45)
+2026-09-30 08:04:46,941 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for DEL-BLR (T+45)
+2026-09-30 08:04:46,945 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for DEL-BLR (T+45)
+2026-09-30 08:04:46,948 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 08:04:46,949 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 08:04:46,950 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+1)
+2026-09-30 08:04:46,955 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+1)
+2026-09-30 08:04:46,959 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+1)
+2026-09-30 08:04:46,964 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+7)
+2026-09-30 08:04:46,965 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+7)
+2026-09-30 08:04:46,968 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+7)
+2026-09-30 08:04:46,973 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+7)
+2026-09-30 08:04:46,974 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+7)
+2026-09-30 08:04:46,978 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+15)
+2026-09-30 08:04:46,980 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+15)
+2026-09-30 08:04:46,981 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+15)
+2026-09-30 08:04:46,983 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+15)
+2026-09-30 08:04:46,985 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+15)
+2026-09-30 08:04:46,987 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+30)
+2026-09-30 08:04:46,988 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+30)
+2026-09-30 08:04:46,989 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+30)
+2026-09-30 08:04:46,990 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+30)
+2026-09-30 08:04:46,992 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+30)
+2026-09-30 08:04:46,993 [INFO] scrapers.config_scraper: [simulated_air_india] Parsed 1 records for BOM-BLR (T+45)
+2026-09-30 08:04:46,995 [INFO] scrapers.config_scraper: [simulated_cleartrip] Parsed 1 records for BOM-BLR (T+45)
+2026-09-30 08:04:46,996 [INFO] scrapers.config_scraper: [simulated_indigo] Parsed 3 records for BOM-BLR (T+45)
+2026-09-30 08:04:46,997 [INFO] scrapers.config_scraper: [simulated_ixigo] Parsed 1 records for BOM-BLR (T+45)
+2026-09-30 08:04:46,999 [INFO] scrapers.config_scraper: [simulated_makemytrip] Parsed 3 records for BOM-BLR (T+45)
+2026-09-30 08:04:47,004 [INFO] pipeline.outlier_detection: Pipeline Quality Audit Complete: 150 raw -> 150 CPI eligible (0 dups, 0 outliers, 0 sold-out, Quality=100.0%)
+INFO:     127.0.0.1:63162 - "GET /api/pipeline/clean HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56361 - "GET /api/index/daily HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63162 - "GET /api/index/daily HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63162 - "GET /api/index/daily HTTP/1.1" 200 OK

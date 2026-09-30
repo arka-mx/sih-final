@@ -1,0 +1,45 @@
+{
+  "source": "simulated_indigo",
+  "provider_label": "Simulated IndiGo direct channel",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_INDIGO_16e1d08f",
+  "origin": "DEL",
+  "dest": "BOM",
+  "departure_date": "2026-10-07",
+  "advance_days": 7,
+  "flights_data": [
+    {
+      "flight_no": "6E-205",
+      "carrier": "IndiGo",
+      "dep": "06:00",
+      "arr": "08:15",
+      "base": 3450,
+      "tax": 850
+    },
+    {
+      "flight_no": "6E-503",
+      "carrier": "IndiGo",
+      "dep": "09:30",
+      "arr": "11:45",
+      "base": 3800,
+      "tax": 890
+    },
+    {
+      "flight_no": "6E-2114",
+      "carrier": "IndiGo",
+      "dep": "14:15",
+      "arr": "16:30",
+      "base": 3600,
+      "tax": 870
+    },
+    {
+      "flight_no": "6E-6814",
+      "carrier": "IndiGo",
+      "dep": "19:45",
+      "arr": "22:00",
+      "base": 4200,
+      "tax": 920
+    }
+  ]
+}
