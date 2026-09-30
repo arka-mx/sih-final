@@ -1,0 +1,22 @@
+{
+  "source": "simulated_cleartrip",
+  "provider_label": "Simulated Cleartrip OTA",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_CLEARTRIP_24c8e535",
+  "origin": "BOM",
+  "dest": "BLR",
+  "departure_date": "2026-10-15",
+  "advance_days": 15,
+  "flights_data": [
+    {
+      "carrier": "SpiceJet",
+      "flight_no": "SG-419",
+      "dep": "16:40",
+      "arr": "18:25",
+      "base": 2600,
+      "tax": 720,
+      "fee": 279
+    }
+  ]
+}

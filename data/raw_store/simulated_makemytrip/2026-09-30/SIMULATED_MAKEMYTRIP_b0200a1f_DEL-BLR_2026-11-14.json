@@ -1,0 +1,40 @@
+{
+  "source": "simulated_makemytrip",
+  "provider_label": "Simulated MakeMyTrip OTA fixture",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_MAKEMYTRIP_b0200a1f",
+  "origin": "DEL",
+  "dest": "BLR",
+  "departure_date": "2026-11-14",
+  "advance_days": 45,
+  "flights_data": [
+    {
+      "carrier": "IndiGo",
+      "flight_no": "6E-2131",
+      "dep": "07:10",
+      "arr": "10:00",
+      "base": 3100,
+      "tax": 800,
+      "fee": 399
+    },
+    {
+      "carrier": "Air India",
+      "flight_no": "AI-506",
+      "dep": "09:45",
+      "arr": "12:35",
+      "base": 3900,
+      "tax": 900,
+      "fee": 425
+    },
+    {
+      "carrier": "Akasa Air",
+      "flight_no": "QP-1331",
+      "dep": "15:20",
+      "arr": "18:10",
+      "base": 2980,
+      "tax": 790,
+      "fee": 350
+    }
+  ]
+}

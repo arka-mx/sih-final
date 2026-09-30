@@ -1,0 +1,21 @@
+{
+  "source": "simulated_air_india",
+  "provider_label": "Simulated Air India direct channel",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_AIR_INDIA_009a6224",
+  "origin": "DEL",
+  "dest": "BOM",
+  "departure_date": "2026-10-01",
+  "advance_days": 1,
+  "flights_data": [
+    {
+      "carrier": "Air India",
+      "flight_no": "AI-805",
+      "dep": "08:00",
+      "arr": "10:15",
+      "base": 4200,
+      "tax": 950
+    }
+  ]
+}

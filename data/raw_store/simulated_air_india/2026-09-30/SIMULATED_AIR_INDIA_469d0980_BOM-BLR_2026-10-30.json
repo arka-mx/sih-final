@@ -1,0 +1,21 @@
+{
+  "source": "simulated_air_india",
+  "provider_label": "Simulated Air India direct channel",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_AIR_INDIA_469d0980",
+  "origin": "BOM",
+  "dest": "BLR",
+  "departure_date": "2026-10-30",
+  "advance_days": 30,
+  "flights_data": [
+    {
+      "carrier": "Air India",
+      "flight_no": "AI-639",
+      "dep": "12:15",
+      "arr": "14:00",
+      "base": 3400,
+      "tax": 830
+    }
+  ]
+}
