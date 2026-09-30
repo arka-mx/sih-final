@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: apix-api
+    env: docker
+    dockerfilePath: apix-api/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: PORT
+        value: 8000
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
