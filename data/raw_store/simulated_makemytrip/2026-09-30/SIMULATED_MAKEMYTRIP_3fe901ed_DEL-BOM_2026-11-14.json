@@ -1,0 +1,58 @@
+{
+  "source": "simulated_makemytrip",
+  "provider_label": "Simulated MakeMyTrip OTA fixture",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_MAKEMYTRIP_3fe901ed",
+  "origin": "DEL",
+  "dest": "BOM",
+  "departure_date": "2026-11-14",
+  "advance_days": 45,
+  "flights_data": [
+    {
+      "carrier": "IndiGo",
+      "flight_no": "6E-205",
+      "dep": "06:00",
+      "arr": "08:15",
+      "base": 3450,
+      "tax": 850,
+      "fee": 399
+    },
+    {
+      "carrier": "IndiGo",
+      "flight_no": "6E-503",
+      "dep": "09:30",
+      "arr": "11:45",
+      "base": 3800,
+      "tax": 890,
+      "fee": 399
+    },
+    {
+      "carrier": "Air India",
+      "flight_no": "AI-805",
+      "dep": "08:00",
+      "arr": "10:15",
+      "base": 4200,
+      "tax": 950,
+      "fee": 425
+    },
+    {
+      "carrier": "Akasa Air",
+      "flight_no": "QP-1102",
+      "dep": "11:45",
+      "arr": "14:00",
+      "base": 3300,
+      "tax": 840,
+      "fee": 350
+    },
+    {
+      "carrier": "SpiceJet",
+      "flight_no": "SG-153",
+      "dep": "18:20",
+      "arr": "20:45",
+      "base": 3250,
+      "tax": 820,
+      "fee": 399
+    }
+  ]
+}

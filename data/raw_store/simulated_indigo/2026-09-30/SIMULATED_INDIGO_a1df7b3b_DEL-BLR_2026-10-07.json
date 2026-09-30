@@ -1,0 +1,37 @@
+{
+  "source": "simulated_indigo",
+  "provider_label": "Simulated IndiGo direct channel",
+  "data_mode": "simulated",
+  "is_live_data": false,
+  "scrape_id": "SIMULATED_INDIGO_a1df7b3b",
+  "origin": "DEL",
+  "dest": "BLR",
+  "departure_date": "2026-10-07",
+  "advance_days": 7,
+  "flights_data": [
+    {
+      "flight_no": "6E-2131",
+      "carrier": "IndiGo",
+      "dep": "07:10",
+      "arr": "10:00",
+      "base": 3100,
+      "tax": 800
+    },
+    {
+      "flight_no": "6E-5002",
+      "carrier": "IndiGo",
+      "dep": "11:20",
+      "arr": "14:10",
+      "base": 3350,
+      "tax": 820
+    },
+    {
+      "flight_no": "6E-2423",
+      "carrier": "IndiGo",
+      "dep": "17:50",
+      "arr": "20:40",
+      "base": 3750,
+      "tax": 860
+    }
+  ]
+}
